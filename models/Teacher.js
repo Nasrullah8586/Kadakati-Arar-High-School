@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const teacherSchema = new mongoose.Schema(
     {
+        // ==============================
+        // TEACHER BASIC INFORMATION
+        // ==============================
         name: {
             type: String,
             required: true,
@@ -29,6 +32,9 @@ const teacherSchema = new mongoose.Schema(
             minlength: 6
         },
 
+        // ==============================
+        // PROFILE INFORMATION
+        // ==============================
         photo: {
             type: String,
             default: ""
@@ -75,6 +81,39 @@ const teacherSchema = new mongoose.Schema(
                 type: String,
                 default: ""
             }
+        },
+
+        // ==============================
+        // EMAIL VERIFICATION
+        // ==============================
+        // Teacher must verify email
+        // before being allowed to login.
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+
+        verificationCodeHash: {
+            type: String,
+            default: null
+        },
+
+        verificationCodeExpires: {
+            type: Date,
+            default: null
+        },
+
+        // ==============================
+        // PASSWORD RESET
+        // ==============================
+        resetCodeHash: {
+            type: String,
+            default: null
+        },
+
+        resetCodeExpires: {
+            type: Date,
+            default: null
         }
     },
     {

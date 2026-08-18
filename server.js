@@ -6,6 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
+const noticeRoutes = require("./routes/noticeRoutes");
 
 const app = express();
 
@@ -29,7 +30,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // Teacher Routes
-app.use("/api/teacher", teacherRoutes);
+app.use("/api/teachers", teacherRoutes);
+
+// Notice Routes
+app.use("/api/notice", noticeRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
