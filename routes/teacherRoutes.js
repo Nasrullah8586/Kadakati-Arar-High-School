@@ -7,10 +7,12 @@ const {
     forgotTeacherPassword,
     resetTeacherPassword,
     getAllTeachers,
+    getAllTeachersForAdmin,
     getTeacherById,
     getMyProfile,
     updateMyProfile,
-    adminUpdateTeacher
+    adminUpdateTeacher,
+    deleteTeacher
 } = require("../controllers/teacherController");
 
 const teacherAuth = require("../middleware/teacherAuth");
@@ -83,6 +85,16 @@ router.put(
     updateMyProfile
 );
 
+// ======================================================
+// ADMIN → GET ALL TEACHERS
+// ======================================================
+
+router.get(
+    "/admin/all",
+    auth,
+    getAllTeachersForAdmin
+);
+
 
 // ======================================================
 // PUBLIC → GET ALL VERIFIED TEACHERS
@@ -93,6 +105,15 @@ router.get(
     getAllTeachers
 );
 
+// ======================================================
+// ADMIN → DELETE TEACHER
+// ======================================================
+
+router.delete(
+    "/:id",
+    auth,
+    deleteTeacher
+);
 
 // ======================================================
 // ADMIN → UPDATE ANY TEACHER

@@ -4,9 +4,13 @@ const express = require("express");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+
 const authRoutes = require("./routes/authRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
 const noticeRoutes = require("./routes/noticeRoutes");
+const newsEventRoutes = require("./routes/newsEventRoutes");
+const galleryRoutes = require("./routes/galleryRoutes");
+const siteContentRoutes = require("./routes/siteContentRoutes");
 
 const app = express();
 
@@ -34,6 +38,15 @@ app.use("/api/teachers", teacherRoutes);
 
 // Notice Routes
 app.use("/api/notice", noticeRoutes);
+
+// News & Event Routes
+app.use("/api/news-events", newsEventRoutes);
+
+// Gallery Routes
+app.use("/api/gallery", galleryRoutes);
+
+// Site Content Routes
+app.use("/api/site-content", siteContentRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

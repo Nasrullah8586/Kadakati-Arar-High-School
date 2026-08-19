@@ -532,11 +532,184 @@ const verifyAdminEmail = async (req, res) => {
 
 
 // ======================================================
+// SUPER ADMIN → GET ALL NORMAL ADMINS
+// ======================================================
+
+const getAllAdmins = async (req, res) => {
+    try {
+        // ----------------------------------------------
+        // Only Super Admin can access
+        // ----------------------------------------------
+
+        if (!req.admin || req.admin.isSuperAdmin !== true) {
+            return res.status(403).json({
+                success: false,
+                message: "Only Super Admin can view Admin list"
+            });
+        }
+
+        // ----------------------------------------------
+        // Get all Normal Admins
+        // ----------------------------------------------
+
+        const admins = await Admin.find({
+            isSuperAdmin: false
+        })
+            .select("-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: admins.length,
+            admins
+        });
+
+    } catch (error) {
+        console.error(
+            "Get All Admins Error:",
+            error.message
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get Admin list"
+        });
+    }
+};
+
+// ======================================================
+// SUPER ADMIN → GET SINGLE NORMAL ADMIN
+// ======================================================
+
+const getAdminById = async (req, res) => {
+    try {
+        // ----------------------------------------------
+        // Only Super Admin can access
+        // ----------------------------------------------
+
+        if (!req.admin || req.admin.isSuperAdmin !== true) {
+            return res.status(403).json({
+                success: false,
+                message: "Only Super Admin can view Admin details"
+            });
+        }
+
+        // ----------------------------------------------
+        // Find Normal Admin
+        // ----------------------------------------------
+
+        const admin = await Admin.findOne({
+            _id: req.params.id,
+            isSuperAdmin: false
+        })
+            .select("-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires");
+
+        if (!admin) {
+            return res.status(404).json({
+                success: false,
+                message: "Normal Admin not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            admin
+        });
+
+    } catch (error) {
+        console.error(
+            "Get Admin By ID Error:",
+            error.message
+        );
+
+        if (error.name === "CastError") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Admin ID"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get Admin details"
+        });
+    }
+};
+
+// ======================================================
+// SUPER ADMIN → DELETE NORMAL ADMIN
+// ======================================================
+
+const deleteAdmin = async (req, res) => {
+    try {
+        // ----------------------------------------------
+        // Only Super Admin can delete an Admin
+        // ----------------------------------------------
+
+        if (!req.admin || req.admin.isSuperAdmin !== true) {
+            return res.status(403).json({
+                success: false,
+                message: "Only Super Admin can delete an Admin"
+            });
+        }
+
+        // ----------------------------------------------
+        // Find Normal Admin
+        // ----------------------------------------------
+
+        const admin = await Admin.findOne({
+            _id: req.params.id,
+            isSuperAdmin: false
+        });
+
+        if (!admin) {
+            return res.status(404).json({
+                success: false,
+                message: "Normal Admin not found"
+            });
+        }
+
+        // ----------------------------------------------
+        // Delete Admin
+        // ----------------------------------------------
+
+        await Admin.findByIdAndDelete(req.params.id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Normal Admin deleted successfully"
+        });
+
+    } catch (error) {
+        console.error(
+            "Delete Admin Error:",
+            error.message
+        );
+
+        if (error.name === "CastError") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Admin ID"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete Admin"
+        });
+    }
+};
+
+
+// ======================================================
 // EXPORT
 // ======================================================
 
 module.exports = {
     loginAdmin,
     registerAdmin,
-    verifyAdminEmail
+    verifyAdminEmail,
+    getAllAdmins,
+    getAdminById,
+    deleteAdmin
 };

@@ -3,7 +3,10 @@ const express = require("express");
 const {
     loginAdmin,
     registerAdmin,
-    verifyAdminEmail
+    verifyAdminEmail,
+    getAllAdmins,
+    getAdminById,
+    deleteAdmin
 } = require("../controllers/authController");
 
 const protect = require("../middleware/auth");
@@ -41,6 +44,35 @@ router.post(
     verifyAdminEmail
 );
 
+// ======================================================
+// SUPER ADMIN → GET ALL NORMAL ADMINS
+// ======================================================
+
+router.get(
+    "/admins",
+    protect,
+    getAllAdmins
+);
+
+// ======================================================
+// SUPER ADMIN → GET SINGLE NORMAL ADMIN
+// ======================================================
+
+router.get(
+    "/admins/:id",
+    protect,
+    getAdminById
+);
+
+// ======================================================
+// SUPER ADMIN → DELETE NORMAL ADMIN
+// ======================================================
+
+router.delete(
+    "/admins/:id",
+    protect,
+    deleteAdmin
+);
 
 // ======================================================
 // PROTECTED ADMIN TEST ROUTE

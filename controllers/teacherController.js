@@ -929,6 +929,115 @@ const adminUpdateTeacher = async (req, res) => {
 
 
 // ======================================================
+// ADMIN → GET ALL TEACHERS
+// ======================================================
+
+const getAllTeachersForAdmin = async (req, res) => {
+    try {
+        // ----------------------------------------------
+        // Only Admin / Super Admin can access
+        // ----------------------------------------------
+
+        if (!req.admin || req.admin.role !== "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Admin access required"
+            });
+        }
+
+        // ----------------------------------------------
+        // Get all teachers
+        // ----------------------------------------------
+
+        const teachers = await Teacher.find({})
+            .select(
+                "-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires"
+            )
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: teachers.length,
+            teachers
+        });
+
+    } catch (error) {
+        console.error(
+            "Admin Get All Teachers Error:",
+            error.message
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get Teacher list"
+        });
+    }
+};
+
+// ======================================================
+// ADMIN → DELETE TEACHER
+// ======================================================
+
+const deleteTeacher = async (req, res) => {
+    try {
+        // ----------------------------------------------
+        // Only Admin / Super Admin can delete Teacher
+        // ----------------------------------------------
+
+        if (!req.admin || req.admin.role !== "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Admin access required"
+            });
+        }
+
+        // ----------------------------------------------
+        // Find Teacher
+        // ----------------------------------------------
+
+        const { id } = req.params;
+
+        const teacher = await Teacher.findById(id);
+
+        if (!teacher) {
+            return res.status(404).json({
+                success: false,
+                message: "Teacher not found"
+            });
+        }
+
+        // ----------------------------------------------
+        // Delete Teacher
+        // ----------------------------------------------
+
+        await Teacher.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Teacher deleted successfully"
+        });
+
+    } catch (error) {
+        console.error(
+            "Delete Teacher Error:",
+            error.message
+        );
+
+        if (error.name === "CastError") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Teacher ID"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete Teacher"
+        });
+    }
+};
+
+// ======================================================
 // EXPORT
 // ======================================================
 
@@ -942,5 +1051,7 @@ module.exports = {
     getTeacherById,
     getMyProfile,
     updateMyProfile,
-    adminUpdateTeacher
+    adminUpdateTeacher,
+    getAllTeachersForAdmin,
+    deleteTeacher
 };
