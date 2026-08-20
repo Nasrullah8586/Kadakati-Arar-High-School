@@ -5,16 +5,18 @@ const crypto = require("crypto");
 const Admin = require("../models/Admin");
 const sendEmail = require("../utils/sendEmail");
 
+
 // ======================================================
-// HELPER: GENERATE 6 DIGIT OTP
+// HELPER → GENERATE 6 DIGIT OTP
 // ======================================================
 
 const generateOTP = () => {
     return crypto.randomInt(100000, 1000000).toString();
 };
 
+
 // ======================================================
-// HELPER: HASH OTP
+// HELPER → HASH OTP
 // ======================================================
 
 const hashOTP = (otp) => {
@@ -24,162 +26,239 @@ const hashOTP = (otp) => {
         .digest("hex");
 };
 
+
 // ======================================================
 // ADMIN LOGIN
+// LOGIN WITH USERNAME OR EMAIL
 // ======================================================
 
 const loginAdmin = async (req, res) => {
     try {
-        const { email, password } = req.body;
 
-        // ----------------------------------------------
-        // Required fields
-        // ----------------------------------------------
+        const {
+            login,
+            username,
+            email,
+            password
+        } = req.body;
 
-        if (!email || !password) {
+
+        const loginValue =
+            login ||
+            username ||
+            email;
+
+
+        if (!loginValue || !password) {
             return res.status(400).json({
                 success: false,
-                message: "Email and password are required"
+                message:
+                    "Username/email and password are required"
             });
         }
 
-        const loginEmail = email.toLowerCase().trim();
 
-        // ----------------------------------------------
-        // Check JWT secret
-        // ----------------------------------------------
+        const loginInput =
+            loginValue.trim().toLowerCase();
+
+
+        // ==================================================
+        // JWT SECRET CHECK
+        // ==================================================
 
         if (!process.env.JWT_SECRET) {
-            console.error("JWT_SECRET is missing in .env");
+
+            console.error(
+                "JWT_SECRET is missing in .env"
+            );
 
             return res.status(500).json({
                 success: false,
-                message: "Server configuration error"
+                message:
+                    "Server configuration error"
             });
         }
+
 
         // ==================================================
         // SUPER ADMIN LOGIN
         // ==================================================
 
-        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL
-            ? process.env.SUPER_ADMIN_EMAIL.toLowerCase().trim()
-            : "";
+        const superAdminEmail =
+            process.env.SUPER_ADMIN_EMAIL
+                ? process.env.SUPER_ADMIN_EMAIL
+                    .toLowerCase()
+                    .trim()
+                : "";
+
 
         const superAdminPassword =
             process.env.SUPER_ADMIN_PASSWORD || "";
 
+
         if (
             superAdminEmail &&
             superAdminPassword &&
-            loginEmail === superAdminEmail &&
+            loginInput === superAdminEmail &&
             password === superAdminPassword
         ) {
+
             const token = jwt.sign(
                 {
                     id: "super-admin",
+                    username: "superadmin",
                     email: superAdminEmail,
                     role: "admin",
                     isSuperAdmin: true
                 },
+
                 process.env.JWT_SECRET,
+
                 {
                     expiresIn: "1d"
                 }
             );
 
+
             return res.status(200).json({
+
                 success: true,
-                message: "Super Admin login successful",
+
+                message:
+                    "Super Admin login successful",
+
                 token,
+
                 admin: {
                     id: "super-admin",
                     name: "Super Admin",
+                    username: "superadmin",
                     email: superAdminEmail,
                     role: "admin",
                     isSuperAdmin: true
                 }
+
             });
         }
+
 
         // ==================================================
         // NORMAL ADMIN LOGIN
         // ==================================================
 
         const admin = await Admin.findOne({
-            email: loginEmail
+            $or: [
+                {
+                    email: loginInput
+                },
+                {
+                    username: loginInput
+                }
+            ]
         });
 
+
         if (!admin) {
+
             return res.status(401).json({
                 success: false,
-                message: "Invalid email or password"
+                message:
+                    "Invalid username/email or password"
             });
         }
 
-        // ----------------------------------------------
-        // Password check
-        // ----------------------------------------------
 
-        const isPasswordCorrect = await bcrypt.compare(
-            password,
-            admin.password
-        );
+        // ==================================================
+        // PASSWORD CHECK
+        // ==================================================
+
+        const isPasswordCorrect =
+            await bcrypt.compare(
+                password,
+                admin.password
+            );
+
 
         if (!isPasswordCorrect) {
+
             return res.status(401).json({
                 success: false,
-                message: "Invalid email or password"
+                message:
+                    "Invalid username/email or password"
             });
         }
 
-        // ----------------------------------------------
-        // Email verification
-        // ----------------------------------------------
 
-        if (admin.isVerified === false) {
+        // ==================================================
+        // EMAIL VERIFICATION
+        // ==================================================
+
+        if (admin.isVerified !== true) {
+
             return res.status(403).json({
                 success: false,
-                message: "Please verify your email before logging in"
+                message:
+                    "Please verify your email before logging in"
             });
         }
 
-        // ----------------------------------------------
-        // Create JWT
-        // ----------------------------------------------
+
+        // ==================================================
+        // CREATE JWT
+        // ==================================================
 
         const token = jwt.sign(
             {
                 id: admin._id,
+                username: admin.username,
                 email: admin.email,
                 role: "admin",
-                isSuperAdmin: admin.isSuperAdmin === true
+                isSuperAdmin:
+                    admin.isSuperAdmin === true
             },
+
             process.env.JWT_SECRET,
+
             {
                 expiresIn: "1d"
             }
         );
 
+
         return res.status(200).json({
+
             success: true,
-            message: "Admin login successful",
+
+            message:
+                "Admin login successful",
+
             token,
+
             admin: {
                 id: admin._id,
                 name: admin.name,
+                username: admin.username,
                 email: admin.email,
                 role: "admin",
-                isSuperAdmin: admin.isSuperAdmin === true
+                isSuperAdmin:
+                    admin.isSuperAdmin === true
             }
+
         });
 
+
     } catch (error) {
-        console.error("Admin Login Error:", error.message);
+
+        console.error(
+            "Admin Login Error:",
+            error.message
+        );
+
 
         return res.status(500).json({
             success: false,
-            message: "Server error"
+            message:
+                "Server error"
         });
     }
 };
@@ -190,17 +269,34 @@ const loginAdmin = async (req, res) => {
 // ======================================================
 
 const registerAdmin = async (req, res) => {
-    try {
-        // ----------------------------------------------
-        // Only Super Admin can register a new Admin
-        // ----------------------------------------------
 
-        if (!req.admin || req.admin.isSuperAdmin !== true) {
+    try {
+
+        console.log("🔥 REGISTER ADMIN HIT");
+        console.log("🔥 ADMIN BODY:", req.body);
+        console.log("🔥 ADMIN USER:", req.admin);
+
+
+        // ==================================================
+        // ONLY SUPER ADMIN
+        // ==================================================
+
+        if (
+            !req.admin ||
+            req.admin.isSuperAdmin !== true
+        ) {
+
             return res.status(403).json({
                 success: false,
-                message: "Only Super Admin can register a new Admin"
+                message:
+                    "Only Super Admin can register a new Admin"
             });
         }
+
+
+        // ==================================================
+        // GET DATA FROM FRONTEND
+        // ==================================================
 
         const {
             name,
@@ -208,191 +304,417 @@ const registerAdmin = async (req, res) => {
             password
         } = req.body;
 
-        // ----------------------------------------------
-        // Required fields
-        // ----------------------------------------------
 
-        if (!name || !email || !password) {
+        // ==================================================
+        // REQUIRED FIELDS
+        // ==================================================
+
+        if (
+            !name ||
+            !email ||
+            !password
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Name, email and password are required"
+                message:
+                    "Name, email and password are required"
             });
         }
+
+
+        // ==================================================
+        // CLEAN DATA
+        // ==================================================
+
+        const adminName =
+            name.trim();
+
+        const adminEmail =
+            email.trim().toLowerCase();
+
+
+        // ==================================================
+        // NAME CHECK
+        // ==================================================
+
+        if (!adminName) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Name cannot be empty"
+            });
+        }
+
+
+        // ==================================================
+        // EMAIL CHECK
+        // ==================================================
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (!emailRegex.test(adminEmail)) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Please provide a valid email address"
+            });
+        }
+
+
+        // ==================================================
+        // PASSWORD CHECK
+        // ==================================================
 
         if (password.length < 6) {
+
             return res.status(400).json({
                 success: false,
-                message: "Password must be at least 6 characters"
+                message:
+                    "Password must be at least 6 characters"
             });
         }
 
-        const adminEmail = email.toLowerCase().trim();
 
-        // ----------------------------------------------
-        // Prevent using Super Admin email
-        // ----------------------------------------------
+        // ==================================================
+        // SUPER ADMIN EMAIL CHECK
+        // ==================================================
 
-        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL
-            ? process.env.SUPER_ADMIN_EMAIL.toLowerCase().trim()
-            : "";
+        const superAdminEmail =
+            process.env.SUPER_ADMIN_EMAIL
+                ? process.env.SUPER_ADMIN_EMAIL
+                    .toLowerCase()
+                    .trim()
+                : "";
 
-        if (adminEmail === superAdminEmail) {
+
+        if (
+            adminEmail ===
+            superAdminEmail
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Super Admin email cannot be registered as a normal Admin"
+                message:
+                    "Super Admin email cannot be registered as a normal Admin"
             });
         }
 
-        // ----------------------------------------------
-        // Check existing Admin
-        // ----------------------------------------------
 
-        const existingAdmin = await Admin.findOne({
-            email: adminEmail
-        });
+        // ==================================================
+        // CHECK EXISTING EMAIL
+        // ==================================================
 
-        if (existingAdmin) {
+        const existingEmail =
+            await Admin.findOne({
+                email: adminEmail
+            });
+
+
+        if (existingEmail) {
+
             return res.status(409).json({
                 success: false,
-                message: "An Admin with this email already exists"
+                message:
+                    "An Admin with this email already exists"
             });
         }
 
-        // ----------------------------------------------
-        // Generate OTP
-        // ----------------------------------------------
 
-        const otp = generateOTP();
+        // ==================================================
+        // GENERATE USERNAME FROM EMAIL
+        // ==================================================
 
-        const otpHash = hashOTP(otp);
+        let adminUsername =
+            adminEmail
+                .split("@")[0]
+                .replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase();
 
-        // OTP valid for 10 minutes
-        const otpExpires = new Date(
-            Date.now() + 10 * 60 * 1000
-        );
 
-        // ----------------------------------------------
-        // Hash password
-        // ----------------------------------------------
+        if (adminUsername.length < 3) {
 
-        const hashedPassword = await bcrypt.hash(
-            password,
-            12
-        );
+            adminUsername =
+                "admin" +
+                crypto
+                    .randomInt(1000, 9999)
+                    .toString();
+        }
 
-        // ----------------------------------------------
-        // Create Admin
-        // ----------------------------------------------
 
-        const admin = await Admin.create({
-            name: name.trim(),
-            email: adminEmail,
-            password: hashedPassword,
+        // ==================================================
+        // CHECK USERNAME
+        // ==================================================
 
-            // This is a normal Admin
-            isSuperAdmin: false,
+        let existingUsername =
+            await Admin.findOne({
+                username: adminUsername
+            });
 
-            // Must verify email
-            isVerified: false,
 
-            verificationCodeHash: otpHash,
-            verificationCodeExpires: otpExpires
-        });
+        if (existingUsername) {
 
-        // ----------------------------------------------
-        // Send OTP email
-        // ----------------------------------------------
+            adminUsername =
+                adminUsername +
+                crypto
+                    .randomInt(1000, 9999)
+                    .toString();
 
-        const emailResult = await sendEmail(
-            adminEmail,
-            "Admin Email Verification - Kadakati Arar High School",
-            `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 30px;">
 
-                <h2 style="color: #176B45;">
-                    Kadakati Arar High School
-                </h2>
+            existingUsername =
+                await Admin.findOne({
+                    username: adminUsername
+                });
 
-                <p>Hello <strong>${admin.name}</strong>,</p>
 
-                <p>
-                    Your Admin account has been created by the
-                    Super Admin.
-                </p>
+            if (existingUsername) {
 
-                <p>
-                    Please use the following verification code:
-                </p>
+                return res.status(409).json({
+                    success: false,
+                    message:
+                        "Could not generate a unique username"
+                });
+            }
+        }
 
+
+        // ==================================================
+        // GENERATE OTP
+        // ==================================================
+
+        const otp =
+            generateOTP();
+
+
+        const otpHash =
+            hashOTP(otp);
+
+
+        const otpExpires =
+            new Date(
+                Date.now() +
+                10 * 60 * 1000
+            );
+
+
+        // ==================================================
+        // HASH PASSWORD
+        // ==================================================
+
+        const hashedPassword =
+            await bcrypt.hash(
+                password,
+                12
+            );
+
+
+        // ==================================================
+        // CREATE ADMIN
+        // ==================================================
+
+        const admin =
+            await Admin.create({
+
+                name:
+                    adminName,
+
+                username:
+                    adminUsername,
+
+                email:
+                    adminEmail,
+
+                password:
+                    hashedPassword,
+
+                isSuperAdmin:
+                    false,
+
+                isVerified:
+                    false,
+
+                verificationCodeHash:
+                    otpHash,
+
+                verificationCodeExpires:
+                    otpExpires
+
+            });
+
+
+        // ==================================================
+        // SEND VERIFICATION EMAIL
+        // ==================================================
+
+        const emailResult =
+            await sendEmail(
+
+                adminEmail,
+
+                "Admin Email Verification - Kadakati Arar High School",
+
+                `
                 <div style="
-                    font-size: 32px;
-                    font-weight: bold;
-                    letter-spacing: 8px;
-                    color: #176B45;
-                    padding: 20px;
-                    background: #f4f8f6;
-                    text-align: center;
-                    margin: 20px 0;
+                    font-family: Arial, sans-serif;
+                    max-width: 600px;
+                    margin: auto;
+                    padding: 30px;
                 ">
-                    ${otp}
+
+                    <h2 style="color: #176B45;">
+                        Kadakati Arar High School
+                    </h2>
+
+                    <p>
+                        Hello
+                        <strong>${admin.name}</strong>,
+                    </p>
+
+                    <p>
+                        Your Admin account has been
+                        created by the Super Admin.
+                    </p>
+
+                    <p>
+                        Your Admin username is:
+                    </p>
+
+                    <div style="
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: #176B45;
+                        padding: 15px;
+                        background: #f4f8f6;
+                        text-align: center;
+                        margin: 20px 0;
+                    ">
+                        ${admin.username}
+                    </div>
+
+                    <p>
+                        Your verification code is:
+                    </p>
+
+                    <div style="
+                        font-size: 32px;
+                        font-weight: bold;
+                        letter-spacing: 8px;
+                        color: #176B45;
+                        padding: 20px;
+                        background: #f4f8f6;
+                        text-align: center;
+                        margin: 20px 0;
+                    ">
+                        ${otp}
+                    </div>
+
+                    <p>
+                        This code will expire in
+                        <strong>10 minutes</strong>.
+                    </p>
+
+                    <p>
+                        If you did not expect this account,
+                        please contact the school administrator.
+                    </p>
+
+                    <hr>
+
+                    <p style="color: #777;">
+                        Kadakati Arar High School
+                    </p>
+
                 </div>
+                `
+            );
 
-                <p>
-                    This verification code will expire in
-                    <strong>10 minutes</strong>.
-                </p>
 
-                <p>
-                    If you did not expect this account,
-                    please contact the school administrator.
-                </p>
-
-                <hr>
-
-                <p style="color: #777;">
-                    Kadakati Arar High School
-                </p>
-
-            </div>
-            `
-        );
-
-        // ----------------------------------------------
-        // If email failed
-        // ----------------------------------------------
+        // ==================================================
+        // EMAIL FAILED
+        // ==================================================
 
         if (!emailResult.success) {
-            // Remove account if email could not be sent
-            await Admin.findByIdAndDelete(admin._id);
+
+            await Admin.findByIdAndDelete(
+                admin._id
+            );
 
             return res.status(500).json({
                 success: false,
-                message: "Admin account could not be created because verification email failed"
+                message:
+                    "Admin account could not be created because verification email failed"
             });
         }
 
-        // ----------------------------------------------
-        // Success
-        // ----------------------------------------------
+
+        // ==================================================
+        // SUCCESS
+        // ==================================================
 
         return res.status(201).json({
+
             success: true,
-            message: "Admin registered successfully. Verification code has been sent to the email.",
+
+            message:
+                "Admin registered successfully. Verification code has been sent to the email.",
+
             admin: {
-                id: admin._id,
-                name: admin.name,
-                email: admin.email,
-                isSuperAdmin: false,
-                isVerified: false
+
+                id:
+                    admin._id,
+
+                name:
+                    admin.name,
+
+                username:
+                    admin.username,
+
+                email:
+                    admin.email,
+
+                isSuperAdmin:
+                    false,
+
+                isVerified:
+                    false
+
             }
+
         });
 
+
     } catch (error) {
-        console.error("Admin Registration Error:", error.message);
+
+        console.error(
+            "Admin Registration Error:",
+            error
+        );
+
+
+        // ==================================================
+        // DUPLICATE KEY
+        // ==================================================
+
+        if (
+            error.code === 11000
+        ) {
+
+            return res.status(409).json({
+                success: false,
+                message:
+                    "Username or email already exists"
+            });
+        }
+
 
         return res.status(500).json({
             success: false,
-            message: "Server error"
+            message:
+                "Server error"
         });
     }
 };
@@ -403,129 +725,521 @@ const registerAdmin = async (req, res) => {
 // ======================================================
 
 const verifyAdminEmail = async (req, res) => {
+
     try {
+
         const {
             email,
             verificationCode
         } = req.body;
 
-        // ----------------------------------------------
-        // Required fields
-        // ----------------------------------------------
 
-        if (!email || !verificationCode) {
+        if (
+            !email ||
+            !verificationCode
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Email and verification code are required"
+                message:
+                    "Email and verification code are required"
             });
         }
 
-        const adminEmail = email.toLowerCase().trim();
 
-        // ----------------------------------------------
-        // Find Admin
-        // ----------------------------------------------
+        const adminEmail =
+            email.toLowerCase().trim();
 
-        const admin = await Admin.findOne({
-            email: adminEmail
-        });
+
+        const admin =
+            await Admin.findOne({
+                email: adminEmail
+            });
+
 
         if (!admin) {
+
             return res.status(404).json({
                 success: false,
-                message: "Admin account not found"
+                message:
+                    "Admin account not found"
             });
         }
 
-        // ----------------------------------------------
-        // Already verified
-        // ----------------------------------------------
 
-        if (admin.isVerified === true) {
+        if (
+            admin.isVerified === true
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Admin email is already verified"
+                message:
+                    "Admin email is already verified"
             });
         }
 
-        // ----------------------------------------------
-        // Check OTP exists
-        // ----------------------------------------------
 
         if (
             !admin.verificationCodeHash ||
             !admin.verificationCodeExpires
         ) {
+
             return res.status(400).json({
                 success: false,
-                message: "No verification code is available"
+                message:
+                    "No verification code is available"
             });
         }
 
-        // ----------------------------------------------
-        // Check OTP expiry
-        // ----------------------------------------------
 
         if (
             new Date() >
-            new Date(admin.verificationCodeExpires)
+            new Date(
+                admin.verificationCodeExpires
+            )
         ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Verification code has expired"
+                message:
+                    "Verification code has expired"
             });
         }
 
-        // ----------------------------------------------
-        // Compare OTP
-        // ----------------------------------------------
 
-        const submittedOTPHash = hashOTP(
-            verificationCode.toString().trim()
-        );
+        const submittedOTPHash =
+            hashOTP(
+                verificationCode
+                    .toString()
+                    .trim()
+            );
+
 
         if (
             submittedOTPHash !==
             admin.verificationCodeHash
         ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Invalid verification code"
+                message:
+                    "Invalid verification code"
             });
         }
 
-        // ----------------------------------------------
-        // Verify Admin
-        // ----------------------------------------------
 
         admin.isVerified = true;
 
         admin.verificationCodeHash = null;
+
         admin.verificationCodeExpires = null;
+
 
         await admin.save();
 
+
         return res.status(200).json({
+
             success: true,
-            message: "Admin email verified successfully. You can now login.",
+
+            message:
+                "Admin email verified successfully. You can now login.",
+
             admin: {
                 id: admin._id,
                 name: admin.name,
+                username: admin.username,
                 email: admin.email,
                 isSuperAdmin: false,
                 isVerified: true
             }
+
         });
 
+
     } catch (error) {
+
         console.error(
             "Admin Email Verification Error:",
             error.message
         );
 
+
         return res.status(500).json({
             success: false,
-            message: "Server error"
+            message:
+                "Server error"
+        });
+    }
+};
+
+
+// ======================================================
+// ADMIN → FORGOT PASSWORD
+// ======================================================
+
+const forgotAdminPassword = async (req, res) => {
+
+    try {
+
+        const {
+            email
+        } = req.body;
+
+
+        if (!email) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Email is required"
+            });
+        }
+
+
+        const adminEmail =
+            email.toLowerCase().trim();
+
+
+        const admin =
+            await Admin.findOne({
+                email: adminEmail
+            });
+
+
+        // ==================================================
+        // SECURITY
+        // ==================================================
+
+        if (!admin) {
+
+            return res.status(200).json({
+                success: true,
+                message:
+                    "If an account exists with this email, a password reset code has been sent."
+            });
+        }
+
+
+        // ==================================================
+        // SUPER ADMIN
+        // ==================================================
+
+        if (
+            admin.isSuperAdmin === true
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Super Admin password is managed through server configuration"
+            });
+        }
+
+
+        // ==================================================
+        // GENERATE RESET OTP
+        // ==================================================
+
+        const otp =
+            generateOTP();
+
+
+        const otpHash =
+            hashOTP(otp);
+
+
+        const otpExpires =
+            new Date(
+                Date.now() +
+                10 * 60 * 1000
+            );
+
+
+        admin.resetCodeHash =
+            otpHash;
+
+        admin.resetCodeExpires =
+            otpExpires;
+
+
+        await admin.save();
+
+
+        // ==================================================
+        // SEND RESET EMAIL
+        // ==================================================
+
+        const emailResult =
+            await sendEmail(
+
+                adminEmail,
+
+                "Admin Password Reset - Kadakati Arar High School",
+
+                `
+                <div style="
+                    font-family: Arial, sans-serif;
+                    max-width: 600px;
+                    margin: auto;
+                    padding: 30px;
+                ">
+
+                    <h2 style="color: #176B45;">
+                        Kadakati Arar High School
+                    </h2>
+
+                    <p>
+                        Hello
+                        <strong>${admin.name}</strong>,
+                    </p>
+
+                    <p>
+                        We received a request to reset
+                        your Admin account password.
+                    </p>
+
+                    <p>
+                        Your password reset code is:
+                    </p>
+
+                    <div style="
+                        font-size: 32px;
+                        font-weight: bold;
+                        letter-spacing: 8px;
+                        color: #176B45;
+                        padding: 20px;
+                        background: #f4f8f6;
+                        text-align: center;
+                        margin: 20px 0;
+                    ">
+                        ${otp}
+                    </div>
+
+                    <p>
+                        This code will expire in
+                        <strong>10 minutes</strong>.
+                    </p>
+
+                    <p>
+                        If you did not request a password reset,
+                        you can safely ignore this email.
+                    </p>
+
+                    <hr>
+
+                    <p style="color: #777;">
+                        Kadakati Arar High School
+                    </p>
+
+                </div>
+                `
+            );
+
+
+        if (!emailResult.success) {
+
+            admin.resetCodeHash = null;
+
+            admin.resetCodeExpires = null;
+
+            await admin.save();
+
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "Password reset email could not be sent"
+            });
+        }
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "If an account exists with this email, a password reset code has been sent."
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin Forgot Password Error:",
+            error.message
+        );
+
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Server error"
+        });
+    }
+};
+
+
+// ======================================================
+// ADMIN → RESET PASSWORD
+// ======================================================
+
+const resetAdminPassword = async (req, res) => {
+
+    try {
+
+        const {
+            email,
+            resetCode,
+            newPassword
+        } = req.body;
+
+
+        if (
+            !email ||
+            !resetCode ||
+            !newPassword
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Email, reset code and new password are required"
+            });
+        }
+
+
+        if (
+            newPassword.length < 6
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "New password must be at least 6 characters"
+            });
+        }
+
+
+        const adminEmail =
+            email.toLowerCase().trim();
+
+
+        const admin =
+            await Admin.findOne({
+                email: adminEmail
+            });
+
+
+        if (!admin) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Invalid reset request"
+            });
+        }
+
+
+        if (
+            admin.isSuperAdmin === true
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Super Admin password is managed through server configuration"
+            });
+        }
+
+
+        if (
+            !admin.resetCodeHash ||
+            !admin.resetCodeExpires
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "No password reset request is available"
+            });
+        }
+
+
+        if (
+            new Date() >
+            new Date(
+                admin.resetCodeExpires
+            )
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Password reset code has expired"
+            });
+        }
+
+
+        const submittedOTPHash =
+            hashOTP(
+                resetCode
+                    .toString()
+                    .trim()
+            );
+
+
+        if (
+            submittedOTPHash !==
+            admin.resetCodeHash
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Invalid password reset code"
+            });
+        }
+
+
+        admin.password =
+            await bcrypt.hash(
+                newPassword,
+                12
+            );
+
+
+        admin.resetCodeHash = null;
+
+        admin.resetCodeExpires = null;
+
+
+        await admin.save();
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Password reset successful. You can now login."
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin Reset Password Error:",
+            error.message
+        );
+
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Server error"
         });
     }
 };
@@ -536,166 +1250,324 @@ const verifyAdminEmail = async (req, res) => {
 // ======================================================
 
 const getAllAdmins = async (req, res) => {
-    try {
-        // ----------------------------------------------
-        // Only Super Admin can access
-        // ----------------------------------------------
 
-        if (!req.admin || req.admin.isSuperAdmin !== true) {
+    try {
+
+        if (
+            !req.admin ||
+            req.admin.isSuperAdmin !== true
+        ) {
+
             return res.status(403).json({
                 success: false,
-                message: "Only Super Admin can view Admin list"
+                message:
+                    "Only Super Admin can view Admin list"
             });
         }
 
-        // ----------------------------------------------
-        // Get all Normal Admins
-        // ----------------------------------------------
 
-        const admins = await Admin.find({
-            isSuperAdmin: false
-        })
-            .select("-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires")
-            .sort({ createdAt: -1 });
+        const admins =
+            await Admin.find({
+                isSuperAdmin: false
+            })
+                .select(
+                    "-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires"
+                )
+                .sort({
+                    createdAt: -1
+                });
+
 
         return res.status(200).json({
+
             success: true,
-            count: admins.length,
+
+            count:
+                admins.length,
+
             admins
+
         });
 
+
     } catch (error) {
+
         console.error(
             "Get All Admins Error:",
             error.message
         );
 
+
         return res.status(500).json({
             success: false,
-            message: "Failed to get Admin list"
+            message:
+                "Failed to get Admin list"
         });
     }
 };
+
 
 // ======================================================
 // SUPER ADMIN → GET SINGLE NORMAL ADMIN
 // ======================================================
 
 const getAdminById = async (req, res) => {
-    try {
-        // ----------------------------------------------
-        // Only Super Admin can access
-        // ----------------------------------------------
 
-        if (!req.admin || req.admin.isSuperAdmin !== true) {
+    try {
+
+        if (
+            !req.admin ||
+            req.admin.isSuperAdmin !== true
+        ) {
+
             return res.status(403).json({
                 success: false,
-                message: "Only Super Admin can view Admin details"
+                message:
+                    "Only Super Admin can view Admin details"
             });
         }
 
-        // ----------------------------------------------
-        // Find Normal Admin
-        // ----------------------------------------------
 
-        const admin = await Admin.findOne({
-            _id: req.params.id,
-            isSuperAdmin: false
-        })
-            .select("-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires");
+        const admin =
+            await Admin.findOne({
+                _id: req.params.id,
+                isSuperAdmin: false
+            })
+                .select(
+                    "-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires"
+                );
+
 
         if (!admin) {
+
             return res.status(404).json({
                 success: false,
-                message: "Normal Admin not found"
+                message:
+                    "Normal Admin not found"
             });
         }
 
+
         return res.status(200).json({
+
             success: true,
+
             admin
+
         });
 
+
     } catch (error) {
+
         console.error(
             "Get Admin By ID Error:",
             error.message
         );
 
-        if (error.name === "CastError") {
+
+        if (
+            error.name === "CastError"
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Invalid Admin ID"
+                message:
+                    "Invalid Admin ID"
             });
         }
 
+
         return res.status(500).json({
             success: false,
-            message: "Failed to get Admin details"
+            message:
+                "Failed to get Admin details"
         });
     }
 };
+
 
 // ======================================================
 // SUPER ADMIN → DELETE NORMAL ADMIN
 // ======================================================
 
 const deleteAdmin = async (req, res) => {
-    try {
-        // ----------------------------------------------
-        // Only Super Admin can delete an Admin
-        // ----------------------------------------------
 
-        if (!req.admin || req.admin.isSuperAdmin !== true) {
+    try {
+
+        if (
+            !req.admin ||
+            req.admin.isSuperAdmin !== true
+        ) {
+
             return res.status(403).json({
                 success: false,
-                message: "Only Super Admin can delete an Admin"
+                message:
+                    "Only Super Admin can delete an Admin"
             });
         }
 
-        // ----------------------------------------------
-        // Find Normal Admin
-        // ----------------------------------------------
 
-        const admin = await Admin.findOne({
-            _id: req.params.id,
-            isSuperAdmin: false
-        });
+        const admin =
+            await Admin.findOne({
+                _id: req.params.id,
+                isSuperAdmin: false
+            });
+
 
         if (!admin) {
+
             return res.status(404).json({
                 success: false,
-                message: "Normal Admin not found"
+                message:
+                    "Normal Admin not found"
             });
         }
 
-        // ----------------------------------------------
-        // Delete Admin
-        // ----------------------------------------------
 
-        await Admin.findByIdAndDelete(req.params.id);
+        await Admin.findByIdAndDelete(
+            req.params.id
+        );
+
 
         return res.status(200).json({
+
             success: true,
-            message: "Normal Admin deleted successfully"
+
+            message:
+                "Normal Admin deleted successfully"
+
         });
 
+
     } catch (error) {
+
         console.error(
             "Delete Admin Error:",
             error.message
         );
 
-        if (error.name === "CastError") {
+
+        if (
+            error.name === "CastError"
+        ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Invalid Admin ID"
+                message:
+                    "Invalid Admin ID"
             });
         }
 
+
         return res.status(500).json({
             success: false,
-            message: "Failed to delete Admin"
+            message:
+                "Failed to delete Admin"
+        });
+    }
+};
+
+
+// ======================================================
+// ADMIN → GET CURRENT ADMIN PROFILE
+// ======================================================
+
+const getMyAdminProfile = async (req, res) => {
+
+    try {
+
+        if (
+            !req.admin
+        ) {
+
+            return res.status(401).json({
+                success: false,
+                message:
+                    "Authentication required"
+            });
+        }
+
+
+        // ==================================================
+        // SUPER ADMIN PROFILE
+        // ==================================================
+
+        if (
+            req.admin.isSuperAdmin === true
+        ) {
+
+            return res.status(200).json({
+
+                success: true,
+
+                admin: {
+                    id:
+                        "super-admin",
+
+                    name:
+                        "Super Admin",
+
+                    username:
+                        "superadmin",
+
+                    email:
+                        process.env.SUPER_ADMIN_EMAIL,
+
+                    role:
+                        "admin",
+
+                    isSuperAdmin:
+                        true
+                }
+
+            });
+        }
+
+
+        // ==================================================
+        // NORMAL ADMIN PROFILE
+        // ==================================================
+
+        const admin =
+            await Admin.findById(
+                req.admin.id
+            )
+                .select(
+                    "-password -verificationCodeHash -verificationCodeExpires -resetCodeHash -resetCodeExpires"
+                );
+
+
+        if (!admin) {
+
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Admin not found"
+            });
+        }
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            admin
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Get Admin Profile Error:",
+            error.message
+        );
+
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Server error"
         });
     }
 };
@@ -706,10 +1578,23 @@ const deleteAdmin = async (req, res) => {
 // ======================================================
 
 module.exports = {
+
     loginAdmin,
+
     registerAdmin,
+
     verifyAdminEmail,
+
+    forgotAdminPassword,
+
+    resetAdminPassword,
+
     getAllAdmins,
+
     getAdminById,
-    deleteAdmin
+
+    deleteAdmin,
+
+    getMyAdminProfile
+
 };

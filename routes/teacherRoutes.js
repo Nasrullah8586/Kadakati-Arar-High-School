@@ -25,7 +25,10 @@ const router = express.Router();
 // TEACHER LOGIN
 // ======================================================
 
-router.post("/login", loginTeacher);
+router.post(
+    "/login",
+    loginTeacher
+);
 
 
 // ======================================================
@@ -70,7 +73,7 @@ router.post(
 
 
 // ======================================================
-// TEACHER OWN PROFILE
+// TEACHER → OWN PROFILE
 // ======================================================
 
 router.get(
@@ -85,14 +88,38 @@ router.put(
     updateMyProfile
 );
 
+
 // ======================================================
-// ADMIN → GET ALL TEACHERS
+// ADMIN / SUPER ADMIN → GET ALL TEACHERS
+// IMPORTANT: MUST COME BEFORE /:id
 // ======================================================
 
 router.get(
     "/admin/all",
     auth,
     getAllTeachersForAdmin
+);
+
+
+// ======================================================
+// ADMIN / SUPER ADMIN → DELETE TEACHER
+// ======================================================
+
+router.delete(
+    "/:id",
+    auth,
+    deleteTeacher
+);
+
+
+// ======================================================
+// ADMIN / SUPER ADMIN → UPDATE ANY TEACHER
+// ======================================================
+
+router.put(
+    "/:id",
+    auth,
+    adminUpdateTeacher
 );
 
 
@@ -105,29 +132,10 @@ router.get(
     getAllTeachers
 );
 
-// ======================================================
-// ADMIN → DELETE TEACHER
-// ======================================================
-
-router.delete(
-    "/:id",
-    auth,
-    deleteTeacher
-);
-
-// ======================================================
-// ADMIN → UPDATE ANY TEACHER
-// ======================================================
-
-router.put(
-    "/:id",
-    auth,
-    adminUpdateTeacher
-);
-
 
 // ======================================================
 // PUBLIC → GET SINGLE VERIFIED TEACHER
+// IMPORTANT: KEEP /:id AFTER /admin/all
 // ======================================================
 
 router.get(

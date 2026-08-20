@@ -4,27 +4,64 @@ const {
     loginAdmin,
     registerAdmin,
     verifyAdminEmail,
+    forgotAdminPassword,
+    resetAdminPassword,
     getAllAdmins,
     getAdminById,
-    deleteAdmin
+    deleteAdmin,
+    getMyAdminProfile
 } = require("../controllers/authController");
 
-const protect = require("../middleware/auth");
+const protect =
+    require("../middleware/auth");
 
-const router = express.Router();
+const router =
+    express.Router();
 
 
 // ======================================================
 // ADMIN LOGIN
 // ======================================================
 
-router.post("/login", loginAdmin);
+router.post(
+    "/login",
+    loginAdmin
+);
+
+
+// ======================================================
+// FORGOT PASSWORD
+// ======================================================
+
+router.post(
+    "/forgot-password",
+    forgotAdminPassword
+);
+
+
+// ======================================================
+// RESET PASSWORD
+// ======================================================
+
+router.post(
+    "/reset-password",
+    resetAdminPassword
+);
+
+
+// ======================================================
+// VERIFY ADMIN EMAIL
+// ======================================================
+
+router.post(
+    "/verify-email",
+    verifyAdminEmail
+);
 
 
 // ======================================================
 // SUPER ADMIN → REGISTER NORMAL ADMIN
 // ======================================================
-// Only Super Admin can access this route.
 
 router.post(
     "/register",
@@ -32,17 +69,6 @@ router.post(
     registerAdmin
 );
 
-
-// ======================================================
-// VERIFY ADMIN EMAIL
-// ======================================================
-// This route is public because the new Admin
-// does not have a login token yet.
-
-router.post(
-    "/verify-email",
-    verifyAdminEmail
-);
 
 // ======================================================
 // SUPER ADMIN → GET ALL NORMAL ADMINS
@@ -54,6 +80,7 @@ router.get(
     getAllAdmins
 );
 
+
 // ======================================================
 // SUPER ADMIN → GET SINGLE NORMAL ADMIN
 // ======================================================
@@ -63,6 +90,7 @@ router.get(
     protect,
     getAdminById
 );
+
 
 // ======================================================
 // SUPER ADMIN → DELETE NORMAL ADMIN
@@ -74,23 +102,16 @@ router.delete(
     deleteAdmin
 );
 
+
 // ======================================================
-// PROTECTED ADMIN TEST ROUTE
+// GET CURRENT ADMIN PROFILE
 // ======================================================
 
-router.get("/me", protect, (req, res) => {
-
-    res.status(200).json({
-
-        success: true,
-
-        message: "Admin authentication successful",
-
-        admin: req.admin
-
-    });
-
-});
+router.get(
+    "/me",
+    protect,
+    getMyAdminProfile
+);
 
 
 module.exports = router;

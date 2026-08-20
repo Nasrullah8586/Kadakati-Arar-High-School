@@ -1,18 +1,21 @@
 const SiteContent = require("../models/SiteContent");
+const uploadToCloudinary = require("../utils/uploadToCloudinary");
+
 
 // ======================================================
-// GET SITE CONTENT - PUBLIC
+// PUBLIC → GET WEBSITE CONTENT
 // ======================================================
 
 const getSiteContent = async (req, res) => {
     try {
-        const content = await SiteContent.findOne();
+        let content = await SiteContent.findOne();
+
+        // ------------------------------------------------
+        // Create default document if none exists
+        // ------------------------------------------------
 
         if (!content) {
-            return res.status(404).json({
-                success: false,
-                message: "Site content not found"
-            });
+            content = await SiteContent.create({});
         }
 
         return res.status(200).json({
@@ -28,99 +31,22 @@ const getSiteContent = async (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Failed to get site content"
+            message: "Failed to get website content"
         });
     }
 };
 
 
 // ======================================================
-// CREATE SITE CONTENT
-// ADMIN / SUPER ADMIN
-// ======================================================
-
-const createSiteContent = async (req, res) => {
-    try {
-        if (!req.admin || req.admin.role !== "admin") {
-            return res.status(403).json({
-                success: false,
-                message: "Admin access required"
-            });
-        }
-
-        const existingContent = await SiteContent.findOne();
-
-        if (existingContent) {
-            return res.status(409).json({
-                success: false,
-                message: "Site content already exists"
-            });
-        }
-
-        const {
-            schoolName,
-            shortDescription,
-            about,
-            history,
-            heroImageUrl,
-            address,
-            googleMapsLink,
-            phone,
-            email,
-            socialLinks
-        } = req.body;
-
-        if (!schoolName) {
-            return res.status(400).json({
-                success: false,
-                message: "School name is required"
-            });
-        }
-
-        const content = await SiteContent.create({
-            schoolName: schoolName.trim(),
-            shortDescription: shortDescription || "",
-            about: about || "",
-            history: history || "",
-            heroImageUrl: heroImageUrl || "",
-            address: address || "",
-            googleMapsLink: googleMapsLink || "",
-            phone: phone || "",
-            email: email || "",
-            socialLinks: {
-                facebook: socialLinks?.facebook || "",
-                instagram: socialLinks?.instagram || "",
-                linkedin: socialLinks?.linkedin || ""
-            }
-        });
-
-        return res.status(201).json({
-            success: true,
-            message: "Site content created successfully",
-            content
-        });
-
-    } catch (error) {
-        console.error(
-            "Create Site Content Error:",
-            error.message
-        );
-
-        return res.status(500).json({
-            success: false,
-            message: "Failed to create site content"
-        });
-    }
-};
-
-
-// ======================================================
-// UPDATE SITE CONTENT
-// ADMIN / SUPER ADMIN
+// ADMIN / SUPER ADMIN → UPDATE WEBSITE CONTENT
 // ======================================================
 
 const updateSiteContent = async (req, res) => {
     try {
+        // ------------------------------------------------
+        // Admin authentication check
+        // ------------------------------------------------
+
         if (!req.admin || req.admin.role !== "admin") {
             return res.status(403).json({
                 success: false,
@@ -128,80 +54,242 @@ const updateSiteContent = async (req, res) => {
             });
         }
 
-        const content = await SiteContent.findOne();
+        // ------------------------------------------------
+        // Get existing content
+        // ------------------------------------------------
+
+        let content = await SiteContent.findOne();
+
+        // ------------------------------------------------
+        // Create document if it doesn't exist
+        // ------------------------------------------------
 
         if (!content) {
-            return res.status(404).json({
-                success: false,
-                message: "Site content not found"
-            });
+            content = new SiteContent();
         }
 
         const {
             schoolName,
-            shortDescription,
-            about,
-            history,
-            heroImageUrl,
-            address,
-            googleMapsLink,
+            schoolNameBangla,
+
+            heroTitle,
+            heroSubtitle,
+
+            aboutTitle,
+            aboutDescription,
+
+            historyTitle,
+            historyDescription,
+
+            mission,
+            vision,
+
             phone,
             email,
+            address,
+
+            googleMapUrl,
+
             socialLinks
         } = req.body;
+
+
+        // ==================================================
+        // BASIC SCHOOL INFORMATION
+        // ==================================================
 
         if (schoolName !== undefined) {
             content.schoolName = schoolName.trim();
         }
 
-        if (shortDescription !== undefined) {
-            content.shortDescription = shortDescription;
+        if (schoolNameBangla !== undefined) {
+            content.schoolNameBangla =
+                schoolNameBangla.trim();
         }
 
-        if (about !== undefined) {
-            content.about = about;
+
+        // ==================================================
+        // HERO SECTION
+        // ==================================================
+
+        if (heroTitle !== undefined) {
+            content.heroTitle = heroTitle.trim();
         }
 
-        if (history !== undefined) {
-            content.history = history;
+        if (heroSubtitle !== undefined) {
+            content.heroSubtitle =
+                heroSubtitle.trim();
         }
 
-        if (heroImageUrl !== undefined) {
-            content.heroImageUrl = heroImageUrl;
+
+        // ==================================================
+        // ABOUT SECTION
+        // ==================================================
+
+        if (aboutTitle !== undefined) {
+            content.aboutTitle =
+                aboutTitle.trim();
         }
 
-        if (address !== undefined) {
-            content.address = address;
+        if (aboutDescription !== undefined) {
+            content.aboutDescription =
+                aboutDescription.trim();
         }
 
-        if (googleMapsLink !== undefined) {
-            content.googleMapsLink = googleMapsLink;
+
+        // ==================================================
+        // HISTORY
+        // ==================================================
+
+        if (historyTitle !== undefined) {
+            content.historyTitle =
+                historyTitle.trim();
         }
+
+        if (historyDescription !== undefined) {
+            content.historyDescription =
+                historyDescription.trim();
+        }
+
+
+        // ==================================================
+        // MISSION & VISION
+        // ==================================================
+
+        if (mission !== undefined) {
+            content.mission = mission.trim();
+        }
+
+        if (vision !== undefined) {
+            content.vision = vision.trim();
+        }
+
+
+        // ==================================================
+        // CONTACT INFORMATION
+        // ==================================================
 
         if (phone !== undefined) {
-            content.phone = phone;
+            content.phone = phone.trim();
         }
 
         if (email !== undefined) {
-            content.email = email;
+            content.email =
+                email.toLowerCase().trim();
         }
 
+        if (address !== undefined) {
+            content.address = address.trim();
+        }
+
+
+        // ==================================================
+        // LOCATION
+        // ==================================================
+
+        if (googleMapUrl !== undefined) {
+            content.googleMapUrl =
+                googleMapUrl.trim();
+        }
+
+
+        // ==================================================
+        // SOCIAL LINKS
+        // ==================================================
+
         if (socialLinks !== undefined) {
+
+            let parsedSocialLinks =
+                socialLinks;
+
+            // ------------------------------------------------
+            // Handle JSON string from multipart/form-data
+            // ------------------------------------------------
+
+            if (typeof socialLinks === "string") {
+                try {
+                    parsedSocialLinks =
+                        JSON.parse(socialLinks);
+                } catch (error) {
+                    return res.status(400).json({
+                        success: false,
+                        message:
+                            "Invalid socialLinks format"
+                    });
+                }
+            }
+
+            if (
+                typeof parsedSocialLinks !== "object" ||
+                parsedSocialLinks === null ||
+                Array.isArray(parsedSocialLinks)
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "socialLinks must be an object"
+                });
+            }
+
             content.socialLinks = {
                 ...content.socialLinks,
-                ...socialLinks
+                ...parsedSocialLinks
             };
         }
 
+
+        // ==================================================
+        // HERO IMAGE UPLOAD
+        // ==================================================
+
+        if (req.file) {
+
+            const uploadResult =
+                await uploadToCloudinary(
+                    req.file.buffer,
+                    "kadakati-school/site-content"
+                );
+
+            content.heroImage =
+                uploadResult.secure_url;
+        }
+
+
+        // ==================================================
+        // UPDATED BY
+        // ==================================================
+
+        content.updatedBy =
+            req.admin.isSuperAdmin === true
+                ? null
+                : req.admin.id;
+
+        content.updatedByType =
+            req.admin.isSuperAdmin === true
+                ? "SuperAdmin"
+                : "Admin";
+
+
+        // ==================================================
+        // SAVE
+        // ==================================================
+
         await content.save();
+
+
+        // ==================================================
+        // RESPONSE
+        // ==================================================
 
         return res.status(200).json({
             success: true,
-            message: "Site content updated successfully",
+            message:
+                "Website content updated successfully",
             content
         });
 
     } catch (error) {
+
         console.error(
             "Update Site Content Error:",
             error.message
@@ -209,7 +297,7 @@ const updateSiteContent = async (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Failed to update site content"
+            message: "Failed to update website content"
         });
     }
 };
@@ -221,6 +309,5 @@ const updateSiteContent = async (req, res) => {
 
 module.exports = {
     getSiteContent,
-    createSiteContent,
     updateSiteContent
 };

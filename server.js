@@ -37,7 +37,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/teachers", teacherRoutes);
 
 // Notice Routes
-app.use("/api/notice", noticeRoutes);
+app.use("/api/notices", noticeRoutes);
 
 // News & Event Routes
 app.use("/api/news-events", newsEventRoutes);

@@ -1,0 +1,294 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #f4f8f6;
+
+    color: #1d2924;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-page {
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 42px 38px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1ebe5;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   SCHOOL BRAND
+========================================================= */
+
+.school-brand {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.logo-mark {
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176b45;
+
+    color: #ffffff;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.school-brand h1 {
+    margin-bottom: 3px;
+
+    color: #176b45;
+
+    font-size: 23px;
+}
+
+.school-brand span {
+    color: #777;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+}
+
+
+/* =========================================================
+   LOGIN HEADING
+========================================================= */
+
+.login-heading {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+.login-heading h2 {
+    margin-bottom: 6px;
+
+    color: #20352c;
+
+    font-size: 25px;
+}
+
+.login-heading p {
+    color: #78837e;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #33433b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #ccd9d2;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #26342e;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.form-group input::placeholder {
+    color: #a1aaa6;
+}
+
+.form-group input:focus {
+    border-color: #176b45;
+
+    box-shadow:
+        0 0 0 3px rgba(23, 107, 69, 0.10);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.login-message {
+    min-height: 20px;
+
+    margin-bottom: 8px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #176b45;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease;
+}
+
+.login-button:hover {
+    background: #0f5133;
+
+    transform: translateY(-1px);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   BACK LINK
+========================================================= */
+
+.back-link {
+    display: block;
+
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: #176b45;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+    .login-page {
+        padding: 20px 15px;
+    }
+
+    .login-card {
+        padding: 35px 25px;
+    }
+
+    .school-brand h1 {
+        font-size: 21px;
+    }
+
+    .login-heading h2 {
+        font-size: 23px;
+    }
+}

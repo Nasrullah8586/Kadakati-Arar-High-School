@@ -26,17 +26,8 @@ router.get(
 
 
 // ======================================================
-// PUBLIC → GET SINGLE NEWS / EVENT
-// ======================================================
-
-router.get(
-    "/:id",
-    getNewsEventById
-);
-
-
-// ======================================================
 // ADMIN / SUPER ADMIN → GET ALL NEWS / EVENTS
+// IMPORTANT: MUST COME BEFORE /:id
 // ======================================================
 
 router.get(
@@ -78,6 +69,17 @@ router.delete(
     "/:id",
     auth,
     deleteNewsEvent
+);
+
+
+// ======================================================
+// PUBLIC → GET SINGLE NEWS / EVENT
+// IMPORTANT: KEEP /:id AFTER /admin/all
+// ======================================================
+
+router.get(
+    "/:id",
+    getNewsEventById
 );
 
 

@@ -2,17 +2,17 @@ const express = require("express");
 
 const {
     getSiteContent,
-    createSiteContent,
     updateSiteContent
 } = require("../controllers/siteContentController");
 
 const auth = require("../middleware/auth");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
 
 // ======================================================
-// PUBLIC → GET SITE CONTENT
+// PUBLIC → GET WEBSITE CONTENT
 // ======================================================
 
 router.get(
@@ -22,23 +22,13 @@ router.get(
 
 
 // ======================================================
-// ADMIN / SUPER ADMIN → CREATE SITE CONTENT
-// ======================================================
-
-router.post(
-    "/",
-    auth,
-    createSiteContent
-);
-
-
-// ======================================================
-// ADMIN / SUPER ADMIN → UPDATE SITE CONTENT
+// ADMIN / SUPER ADMIN → UPDATE WEBSITE CONTENT
 // ======================================================
 
 router.put(
     "/",
     auth,
+    upload.single("heroImage"),
     updateSiteContent
 );
 

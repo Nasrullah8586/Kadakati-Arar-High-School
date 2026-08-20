@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Kadakati Arar High School</title>
+
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <div class="school-logo">KA</div>
+
+            <div>
+                <h2>Kadakati Arar</h2>
+                <span>Admin Panel</span>
+            </div>
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <button class="nav-item active" data-section="dashboard">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item" data-section="notices">
+                <span class="nav-icon">▣</span>
+                <span>Notices</span>
+            </button>
+
+            <button class="nav-item" data-section="news-events">
+                <span class="nav-icon">◉</span>
+                <span>News & Events</span>
+            </button>
+
+            <button class="nav-item" data-section="gallery">
+                <span class="nav-icon">▧</span>
+                <span>Gallery</span>
+            </button>
+
+            <button class="nav-item" data-section="teachers">
+                <span class="nav-icon">♙</span>
+                <span>Teachers</span>
+            </button>
+
+            <button class="nav-item" data-section="admins">
+                <span class="nav-icon">♚</span>
+                <span>Admins</span>
+            </button>
+
+            <button class="nav-item" data-section="site-content">
+                <span class="nav-icon">⚙</span>
+                <span>Site Content</span>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button id="logoutBtn" class="logout-btn">
+                <span>⇥</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
+
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <button id="mobileMenuBtn" class="mobile-menu-btn">
+                ☰
+            </button>
+
+            <div class="page-heading">
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">
+                    Welcome to the school administration panel.
+                </p>
+            </div>
+
+            <div class="admin-info">
+
+                <div class="admin-avatar" id="adminAvatar">
+                    A
+                </div>
+
+                <div class="admin-details">
+                    <strong id="adminName">Admin</strong>
+                    <span id="adminRole">Administrator</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section id="dashboardSection" class="content-section active">
+
+            <div class="welcome-card">
+
+                <div>
+                    <span class="welcome-label">WELCOME BACK</span>
+
+                    <h2>
+                        School Administration Dashboard
+                    </h2>
+
+                    <p>
+                        Manage your school's website content,
+                        teachers, notices, events and gallery
+                        from one place.
+                    </p>
+                </div>
+
+                <div class="welcome-icon">
+                    🏫
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">▣</div>
+                    <div>
+                        <span>Notices</span>
+                        <strong id="noticeCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">◉</div>
+                    <div>
+                        <span>News & Events</span>
+                        <strong id="newsEventCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">▧</div>
+                    <div>
+                        <span>Gallery</span>
+                        <strong id="galleryCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">♙</div>
+                    <div>
+                        <span>Teachers</span>
+                        <strong id="teacherCount">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p>Frequently used management tools.</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <button class="quick-btn" data-action="notice">
+                            <span>▣</span>
+                            <strong>Create Notice</strong>
+                        </button>
+
+                        <button class="quick-btn" data-action="news">
+                            <span>◉</span>
+                            <strong>Add News/Event</strong>
+                        </button>
+
+                        <button class="quick-btn" data-action="gallery">
+                            <span>▧</span>
+                            <strong>Upload Gallery</strong>
+                        </button>
+
+                        <button class="quick-btn" data-action="teacher">
+                            <span>♙</span>
+                            <strong>Add Teacher</strong>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h3>System Status</h3>
+                            <p>Current dashboard connection.</p>
+                        </div>
+                    </div>
+
+                    <div class="system-status">
+
+                        <div class="status-row">
+                            <span>Backend API</span>
+                            <strong id="apiStatus" class="status pending">
+                                Checking...
+                            </strong>
+                        </div>
+
+                        <div class="status-row">
+                            <span>Authentication</span>
+                            <strong id="authStatus" class="status success">
+                                Active
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NOTICES
+        ================================================== -->
+
+        <section id="noticesSection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>Notices</h2>
+                    <p>Manage school notices.</p>
+                </div>
+
+                <button id="addNoticeBtn" class="primary-btn">
+                    + Add Notice
+                </button>
+
+            </div>
+
+            <div class="panel">
+
+                <div id="noticeList" class="data-list">
+                    <div class="loading">Loading notices...</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NEWS & EVENTS
+        ================================================== -->
+
+        <section id="newsEventsSection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>News & Events</h2>
+                    <p>Manage school news and upcoming events.</p>
+                </div>
+
+                <button id="addNewsEventBtn" class="primary-btn">
+                    + Add News / Event
+                </button>
+
+            </div>
+
+            <div class="panel">
+
+                <div id="newsEventList" class="data-list">
+                    <div class="loading">
+                        Loading news & events...
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GALLERY
+        ================================================== -->
+
+        <section id="gallerySection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>Gallery</h2>
+                    <p>Manage school gallery images.</p>
+                </div>
+
+                <button id="addGalleryBtn" class="primary-btn">
+                    + Upload Image
+                </button>
+
+            </div>
+
+            <div id="galleryGrid" class="gallery-grid">
+                <div class="loading">Loading gallery...</div>
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TEACHERS
+        ================================================== -->
+
+        <section id="teachersSection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>Teachers</h2>
+                    <p>Manage teacher profiles.</p>
+                </div>
+
+                <button id="addTeacherBtn" class="primary-btn">
+                    + Register Teacher
+                </button>
+
+            </div>
+
+            <div class="panel">
+
+                <div id="teacherList" class="data-list">
+                    <div class="loading">Loading teachers...</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ADMINS
+        ================================================== -->
+
+        <section id="adminsSection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>Admins</h2>
+                    <p>Manage normal administrator accounts.</p>
+                </div>
+
+                <button id="addAdminBtn" class="primary-btn">
+                    + Register Admin
+                </button>
+
+            </div>
+
+            <div class="panel">
+
+                <div id="adminList" class="data-list">
+                    <div class="loading">Loading admins...</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SITE CONTENT
+        ================================================== -->
+
+        <section id="siteContentSection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>Site Content</h2>
+                    <p>
+                        Update the information displayed on
+                        the school website.
+                    </p>
+                </div>
+
+                <button id="saveSiteContentBtn" class="primary-btn">
+                    Save Changes
+                </button>
+
+            </div>
+
+
+            <form id="siteContentForm" class="content-form">
+
+                <div class="form-card">
+
+                    <h3>School Information</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>School Name</label>
+                            <input
+                                type="text"
+                                id="schoolName"
+                                name="schoolName"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>School Name (Bangla)</label>
+                            <input
+                                type="text"
+                                id="schoolNameBangla"
+                                name="schoolNameBangla"
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>Hero Section</h3>
+
+                    <div class="form-group">
+                        <label>Hero Title</label>
+                        <input
+                            type="text"
+                            id="heroTitle"
+                            name="heroTitle"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hero Subtitle</label>
+                        <textarea
+                            id="heroSubtitle"
+                            name="heroSubtitle"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hero Image</label>
+                        <input
+                            type="file"
+                            id="heroImage"
+                            name="heroImage"
+                            accept="image/*"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>About Section</h3>
+
+                    <div class="form-group">
+                        <label>About Title</label>
+                        <input
+                            type="text"
+                            id="aboutTitle"
+                            name="aboutTitle"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>About Description</label>
+                        <textarea
+                            id="aboutDescription"
+                            name="aboutDescription"
+                            rows="5"
+                        ></textarea>
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>History</h3>
+
+                    <div class="form-group">
+                        <label>History Title</label>
+                        <input
+                            type="text"
+                            id="historyTitle"
+                            name="historyTitle"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>History Description</label>
+                        <textarea
+                            id="historyDescription"
+                            name="historyDescription"
+                            rows="5"
+                        ></textarea>
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>Mission & Vision</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Mission</label>
+                            <textarea
+                                id="mission"
+                                name="mission"
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Vision</label>
+                            <textarea
+                                id="vision"
+                                name="vision"
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>Contact Information</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea
+                            id="address"
+                            name="address"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Google Map URL</label>
+                        <input
+                            type="url"
+                            id="googleMapUrl"
+                            name="googleMapUrl"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <h3>Social Links</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Facebook</label>
+                            <input
+                                type="url"
+                                id="facebook"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>YouTube</label>
+                            <input
+                                type="url"
+                                id="youtube"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Instagram</label>
+                            <input
+                                type="url"
+                                id="instagram"
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         MODAL
+    ====================================================== -->
+
+    <div id="modalOverlay" class="modal-overlay">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">Add</h2>
+
+                <button id="closeModalBtn" class="close-btn">
+                    ×
+                </button>
+
+            </div>
+
+            <div id="modalBody"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST -->
+
+    <div id="toast" class="toast"></div>
+
+
+    <script src="admin-dashboard.js"></script>
+
+</body>
+</html>

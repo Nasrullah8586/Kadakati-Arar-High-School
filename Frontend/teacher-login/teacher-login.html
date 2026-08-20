@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Teacher Login | Kadakati Arar High School
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="teacher-login.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           PASSWORD WRAPPER
+        ===================================================== */
+
+        .password-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+        }
+
+
+        .password-wrapper input {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding-right: 50px;
+
+        }
+
+
+        /* =====================================================
+           PASSWORD TOGGLE
+        ===================================================== */
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 12px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: none;
+
+            background: transparent;
+
+            padding: 0;
+
+            cursor: pointer;
+
+            color: #555;
+
+        }
+
+
+        .password-toggle:hover {
+
+            color: #176B45;
+
+        }
+
+
+        .eye-icon {
+
+            width: 20px;
+
+            height: 20px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+
+        }
+
+
+        /* =====================================================
+           FORGOT PASSWORD
+        ===================================================== */
+
+        .forgot-password {
+
+            display: block;
+
+            margin-top: 10px;
+
+            text-align: right;
+
+            font-size: 14px;
+
+            color: #176B45;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .forgot-password:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =====================================================
+           RESET SECTION
+        ===================================================== */
+
+        .reset-section {
+
+            display: none;
+
+        }
+
+
+        .reset-section.active {
+
+            display: block;
+
+        }
+
+
+        /* =====================================================
+           RESET HEADING
+        ===================================================== */
+
+        .reset-heading {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .reset-heading h2 {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .reset-heading p {
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            opacity: 0.75;
+
+        }
+
+
+        /* =====================================================
+           RESET MESSAGE
+        ===================================================== */
+
+        .reset-message {
+
+            min-height: 20px;
+
+            margin: 10px 0;
+
+            text-align: center;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           BACK TO LOGIN
+        ===================================================== */
+
+        .back-to-login {
+
+            display: block;
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #176B45;
+
+            font-size: 14px;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .back-to-login:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =====================================================
+           DISABLED BUTTON
+        ===================================================== */
+
+        button:disabled {
+
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         LOGIN PAGE
+    ===================================================== -->
+
+    <main class="login-page">
+
+        <div class="login-card">
+
+
+            <!-- =================================================
+                 SCHOOL BRAND
+            ================================================= -->
+
+            <div class="school-brand">
+
+                <div class="logo-mark">
+                    K
+                </div>
+
+                <h1>
+                    Kadakati Arar
+                </h1>
+
+                <span>
+                    HIGH SCHOOL
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN SECTION
+            ================================================= -->
+
+            <section id="loginSection">
+
+
+                <div class="login-heading">
+
+                    <h2>
+                        Teacher Login
+                    </h2>
+
+                    <p>
+                        Sign in to access your teacher account
+                    </p>
+
+                </div>
+
+
+                <!-- LOGIN FORM -->
+
+                <form id="teacherLoginForm">
+
+
+                    <!-- USERNAME OR EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="loginInput">
+                            Username or Email
+                        </label>
+
+                        <input
+                            type="text"
+                            id="loginInput"
+                            name="login"
+                            placeholder="Enter username or email"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+
+                                <svg
+                                    class="eye-icon"
+                                    id="passwordEyeIcon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+
+                                    <path
+                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3"
+                                    ></circle>
+
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FORGOT PASSWORD -->
+
+                    <a
+                        href="#"
+                        id="forgotPasswordLink"
+                        class="forgot-password"
+                    >
+                        Forgot Password?
+                    </a>
+
+
+                    <!-- LOGIN MESSAGE -->
+
+                    <p
+                        id="loginMessage"
+                        class="login-message"
+                    ></p>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="login-button"
+                    >
+                        Login
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================================
+                 RESET PASSWORD SECTION
+            ================================================= -->
+
+            <section
+                id="resetSection"
+                class="reset-section"
+            >
+
+
+                <div class="reset-heading">
+
+                    <h2>
+                        Reset Password
+                    </h2>
+
+                    <p id="resetDescription">
+                        Enter your teacher account email to receive a verification code.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     STEP 1 — EMAIL
+                ================================================= -->
+
+                <form id="forgotPasswordForm">
+
+
+                    <div class="form-group">
+
+                        <label for="resetEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="resetEmail"
+                            placeholder="Enter your registered email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <p
+                        id="forgotMessage"
+                        class="reset-message"
+                    ></p>
+
+
+                    <button
+                        type="submit"
+                        id="sendCodeButton"
+                        class="login-button"
+                    >
+                        Send Verification Code
+                    </button>
+
+
+                </form>
+
+
+                <!-- =================================================
+                     STEP 2 — RESET CODE + PASSWORD
+                ================================================= -->
+
+                <form
+                    id="resetPasswordForm"
+                    style="display: none;"
+                >
+
+
+                    <!-- RESET CODE -->
+
+                    <div class="form-group">
+
+                        <label for="resetCode">
+                            Verification Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="resetCode"
+                            placeholder="Enter verification code"
+                            autocomplete="one-time-code"
+                            inputmode="numeric"
+                            maxlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- NEW PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="newPassword"
+                                placeholder="Enter new password"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="newPasswordToggle"
+                                aria-label="Show password"
+                            >
+
+                                <svg
+                                    class="eye-icon"
+                                    id="newPasswordEyeIcon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+
+                                    <path
+                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3"
+                                    ></circle>
+
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm New Password
+                        </label>
+
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Confirm new password"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="confirmPasswordToggle"
+                                aria-label="Show password"
+                            >
+
+                                <svg
+                                    class="eye-icon"
+                                    id="confirmPasswordEyeIcon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+
+                                    <path
+                                        d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                                    ></path>
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3"
+                                    ></circle>
+
+                                </svg>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RESET MESSAGE -->
+
+                    <p
+                        id="resetMessage"
+                        class="reset-message"
+                    ></p>
+
+
+                    <!-- RESET BUTTON -->
+
+                    <button
+                        type="submit"
+                        id="resetButton"
+                        class="login-button"
+                    >
+                        Reset Password
+                    </button>
+
+
+                </form>
+
+
+                <!-- BACK TO LOGIN -->
+
+                <a
+                    href="#"
+                    id="backToLogin"
+                    class="back-to-login"
+                >
+                    ← Back to Login
+                </a>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 BACK TO WEBSITE
+            ================================================= -->
+
+            <a
+                href="../index.html"
+                class="back-link"
+            >
+                ← Back to Website
+            </a>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="teacher-login.js"></script>
+
+</body>
+
+</html>

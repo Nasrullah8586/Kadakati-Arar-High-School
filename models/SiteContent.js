@@ -8,27 +8,13 @@ const siteContentSchema = new mongoose.Schema(
 
         schoolName: {
             type: String,
-            required: true,
-            trim: true
+            trim: true,
+            default: "Kadakati Arar High School"
         },
 
-        shortDescription: {
+        schoolNameBangla: {
             type: String,
-            default: "",
-            trim: true
-        },
-
-        // ==========================================
-        // ABOUT & HISTORY
-        // ==========================================
-
-        about: {
-            type: String,
-            default: ""
-        },
-
-        history: {
-            type: String,
+            trim: true,
             default: ""
         },
 
@@ -36,25 +22,69 @@ const siteContentSchema = new mongoose.Schema(
         // HERO SECTION
         // ==========================================
 
-        heroImageUrl: {
+        heroTitle: {
+            type: String,
+            trim: true,
+            default: ""
+        },
+
+        heroSubtitle: {
+            type: String,
+            trim: true,
+            default: ""
+        },
+
+        heroImage: {
             type: String,
             default: ""
         },
 
         // ==========================================
-        // LOCATION
+        // ABOUT SECTION
         // ==========================================
 
-        address: {
+        aboutTitle: {
             type: String,
-            default: "",
-            trim: true
+            trim: true,
+            default: "About Our School"
         },
 
-        googleMapsLink: {
+        aboutDescription: {
             type: String,
-            default: "",
-            trim: true
+            trim: true,
+            default: ""
+        },
+
+        // ==========================================
+        // HISTORY
+        // ==========================================
+
+        historyTitle: {
+            type: String,
+            trim: true,
+            default: "Our History"
+        },
+
+        historyDescription: {
+            type: String,
+            trim: true,
+            default: ""
+        },
+
+        // ==========================================
+        // MISSION & VISION
+        // ==========================================
+
+        mission: {
+            type: String,
+            trim: true,
+            default: ""
+        },
+
+        vision: {
+            type: String,
+            trim: true,
+            default: ""
         },
 
         // ==========================================
@@ -63,15 +93,31 @@ const siteContentSchema = new mongoose.Schema(
 
         phone: {
             type: String,
-            default: "",
-            trim: true
+            trim: true,
+            default: ""
         },
 
         email: {
             type: String,
-            default: "",
+            trim: true,
             lowercase: true,
-            trim: true
+            default: ""
+        },
+
+        address: {
+            type: String,
+            trim: true,
+            default: ""
+        },
+
+        // ==========================================
+        // LOCATION
+        // ==========================================
+
+        googleMapUrl: {
+            type: String,
+            trim: true,
+            default: ""
         },
 
         // ==========================================
@@ -81,21 +127,37 @@ const siteContentSchema = new mongoose.Schema(
         socialLinks: {
             facebook: {
                 type: String,
-                default: "",
-                trim: true
+                trim: true,
+                default: ""
+            },
+
+            youtube: {
+                type: String,
+                trim: true,
+                default: ""
             },
 
             instagram: {
                 type: String,
-                default: "",
-                trim: true
-            },
-
-            linkedin: {
-                type: String,
-                default: "",
-                trim: true
+                trim: true,
+                default: ""
             }
+        },
+
+        // ==========================================
+        // LAST UPDATED BY
+        // ==========================================
+
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Admin",
+            default: null
+        },
+
+        updatedByType: {
+            type: String,
+            enum: ["Admin", "SuperAdmin"],
+            default: null
         }
     },
     {

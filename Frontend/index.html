@@ -5,156 +5,650 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kadakati Arar High School</title>
+    <title>Kadakati Arar High School | EduConnect</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- ================= NAVBAR ================= -->
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
 
-    <header class="navbar">
+<header class="navbar">
 
-        <div class="logo">
-            <h2>Kadakati Arar High School</h2>
-        </div>
+    <!-- ================= LEFT SIDE ================= -->
 
-        <nav class="nav-links">
+    <div class="navbar-left">
 
-            <a href="#home">Home</a>
+        <!-- THREE LINE MENU -->
 
-            <a href="#about">About</a>
+        <div class="menu-wrapper">
 
-            <a href="#teachers">Teachers</a>
-
-            <a href="#gallery">Gallery</a>
-
-            <a href="#contact">Contact</a>
-
-        </nav>
-
-        <div class="auth-buttons">
-
-            <button id="teacherLoginBtn">
-                Teacher Login
+            <button
+                id="menuToggle"
+                class="menu-toggle"
+                type="button"
+                aria-label="Open login menu"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
 
-            <button id="adminLoginBtn">
-                Admin Login
-            </button>
+
+            <!-- LOGIN DROPDOWN -->
+
+            <div
+                id="loginMenu"
+                class="login-menu"
+            >
+
+                <button
+                    id="teacherLoginBtn"
+                    type="button"
+                >
+                    Teacher Login
+                </button>
+
+                <button
+                    id="adminLoginBtn"
+                    type="button"
+                >
+                    Admin Login
+                </button>
+
+            </div>
 
         </div>
 
-    </header>
+
+        <!-- SCHOOL BRAND -->
+
+        <div class="school-brand">
+
+            <a
+                href="#home"
+                class="logo-area"
+            >
+
+                <span class="logo-mark">
+                    K
+                </span>
+
+                <div class="school-name">
+
+                    <h2>
+                        Kadakati Arar
+                    </h2>
+
+                    <span>
+                        HIGH SCHOOL
+                    </span>
+
+                </div>
+
+            </a>
 
 
-    <!-- ================= HERO ================= -->
+            <!-- SCHOOL LOCATION -->
 
-    <section id="home" class="hero">
-
-        <div class="hero-content">
-
-            <h1>
-                Welcome to Kadakati Arar High School
-            </h1>
-
-            <p>
-                Knowledge • Discipline • Morality
-            </p>
-
-            <p>
-                Empowering students through quality education
-                and a brighter future.
-            </p>
-
-            <a href="#about" class="hero-button">
-                Explore Our School
+            <a
+                href="#"
+                id="schoolLocationBtn"
+                class="school-location"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                School Location
             </a>
 
         </div>
 
+
+        
+
+    </div>
+
+
+    <!-- ================= RIGHT NAVIGATION ================= -->
+
+    <nav class="nav-links">
+
+        <a
+            href="#home"
+            class="active"
+        >
+            Home
+        </a>
+
+        <a href="#history">
+            History
+        </a>
+
+        <a href="#notice">
+            Notice
+        </a>
+
+        <a href="#news-events">
+            News &amp; Events
+        </a>
+
+        <a href="#gallery">
+            Gallery
+        </a>
+
+        <a href="#teachers">
+            Teachers
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section
+        id="home"
+        class="hero"
+    >
+
+        <div class="hero-overlay"></div>
+
+
+        <div class="hero-content">
+
+            <span class="hero-welcome">
+                Welcome to
+            </span>
+
+
+            <h1>
+                Kadakati Arar High School
+            </h1>
+
+
+            <p class="hero-tagline">
+
+                Knowledge
+
+                <span>•</span>
+
+                Discipline
+
+                <span>•</span>
+
+                Morality
+
+            </p>
+
+
+            <p class="hero-description">
+                Empowering students through quality education,
+                strong values and a brighter future.
+            </p>
+
+
+            <!-- ABOUT ACTION -->
+
+            <button
+                id="aboutToggle"
+                class="about-trigger"
+                type="button"
+                aria-expanded="false"
+            >
+
+                About Our School
+
+                <span class="about-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <!-- ABOUT CONTENT -->
+
+            <div
+                id="aboutPanel"
+                class="about-panel"
+                aria-hidden="true"
+            >
+
+                <div class="about-panel-inner">
+
+                    <h2>
+                        About Our School
+                    </h2>
+
+                    <p id="schoolAbout">
+                        Loading school information...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCROLL DOWN -->
+
+        <a
+            href="#history"
+            class="scroll-indicator"
+            aria-label="Scroll to next section"
+        >
+
+            <span>
+                Scroll Down
+            </span>
+
+            <span class="scroll-arrow">
+                ↓
+            </span>
+
+        </a>
+
     </section>
 
 
-    <!-- ================= ABOUT ================= -->
+    <!-- =====================================================
+         HISTORY
+    ====================================================== -->
 
-    <section id="about" class="section">
+    <section
+        id="history"
+        class="section history-section"
+    >
 
-        <h2>About Our School</h2>
+        <div class="section-container">
 
-        <p>
-            Kadakati Arar High School is committed to providing
-            quality education and developing students with
-            knowledge, discipline and moral values.
-        </p>
+            <span class="section-label">
+                OUR STORY
+            </span>
 
-    </section>
+            <h2>
+                School History
+            </h2>
 
-
-    <!-- ================= TEACHERS ================= -->
-
-    <section id="teachers" class="section">
-
-        <h2>Our Teachers</h2>
-
-        <p>
-            Meet our dedicated teachers who are committed
-            to guiding and educating our students.
-        </p>
-
-        <div id="teacherList">
-
-            <!-- Teachers will come from backend later -->
+            <p id="schoolHistory">
+                Loading school history...
+            </p>
 
         </div>
 
     </section>
 
 
-    <!-- ================= GALLERY ================= -->
+    <!-- =====================================================
+         NOTICE
+    ====================================================== -->
 
-    <section id="gallery" class="section">
+    <section
+        id="notice"
+        class="section notice-section"
+    >
 
-        <h2>School Gallery</h2>
+        <div class="section-container">
 
-        <p>
-            Explore memorable moments of our school.
-        </p>
+            <span class="section-label">
+                IMPORTANT INFORMATION
+            </span>
+
+            <h2>
+                Notice
+            </h2>
+
+            <div
+                id="noticeList"
+                class="notice-list"
+            >
+                <!-- Notices from backend -->
+            </div>
+
+        </div>
 
     </section>
 
 
-    <!-- ================= CONTACT ================= -->
+    <!-- =====================================================
+         NEWS & EVENTS
+    ====================================================== -->
 
-    <section id="contact" class="section">
+    <section
+        id="news-events"
+        class="section news-section"
+    >
 
-        <h2>Contact Us</h2>
+        <div class="section-container">
 
-        <p>
+            <span class="section-label">
+                SCHOOL ACTIVITIES
+            </span>
+
+            <h2>
+                News &amp; Events
+            </h2>
+
+            <div
+                id="newsEventList"
+                class="news-event-list"
+            >
+                <!-- News and events from backend -->
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         GALLERY
+    ====================================================== -->
+
+    <section
+        id="gallery"
+        class="section gallery-section"
+    >
+
+        <div class="section-container">
+
+            <span class="section-label">
+                MEMORABLE MOMENTS
+            </span>
+
+            <h2>
+                School Gallery
+            </h2>
+
+            <div
+                id="galleryList"
+                class="gallery-list"
+            >
+                <!-- Gallery images from backend -->
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TEACHERS
+    ====================================================== -->
+
+    <section
+        id="teachers"
+        class="section teachers-section"
+    >
+
+        <div class="section-container">
+
+            <span class="section-label">
+                OUR FACULTY
+            </span>
+
+            <h2>
+                Our Teachers
+            </h2>
+
+            <p class="section-intro">
+                Meet our dedicated teachers who are committed
+                to guiding and educating our students.
+            </p>
+
+
+            <!-- TEACHER FILTERS -->
+
+            <div
+                id="teacherFilters"
+                class="teacher-filters"
+            >
+
+                <button
+                    class="filter-btn active"
+                    data-division="All"
+                    type="button"
+                >
+                    All
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-division="Science"
+                    type="button"
+                >
+                    Science
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-division="Arts"
+                    type="button"
+                >
+                    Arts
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-division="Commerce"
+                    type="button"
+                >
+                    Commerce
+                </button>
+
+            </div>
+
+
+            <div
+                id="teacherList"
+                class="teacher-list"
+            >
+                <!-- Teachers from backend -->
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTACT
+    ====================================================== -->
+
+    <section
+        id="contact"
+        class="section contact-section"
+    >
+
+        <div class="section-container">
+
+            <span class="section-label">
+                GET IN TOUCH
+            </span>
+
+            <h2>
+                Contact Us
+            </h2>
+
+
+            <div class="contact-grid">
+
+
+                <!-- ADDRESS -->
+
+                <div class="contact-item">
+
+                    <h3>
+                        Address
+                    </h3>
+
+                    <p id="schoolAddress">
+                        Loading address...
+                    </p>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="contact-item">
+
+                    <h3>
+                        Phone
+                    </h3>
+
+                    <p id="schoolPhone">
+                        Loading phone...
+                    </p>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="contact-item">
+
+                    <h3>
+                        Email
+                    </h3>
+
+                    <p id="schoolEmail">
+                        Loading email...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- GOOGLE MAPS -->
+
+            <a
+                href="#"
+                id="googleMapsLink"
+                class="location-button"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Open Google Maps
+            </a>
+
+
+            <!-- SOCIAL LINKS -->
+
+            <div class="social-links">
+
+                <a
+                    href="#"
+                    id="facebookLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="social-icon">
+                        f
+                    </span>
+
+                    <span>
+                        Facebook
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    id="instagramLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="social-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Instagram
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    id="linkedinLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="social-icon">
+                        in
+                    </span>
+
+                    <span>
+                        LinkedIn
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <h3>
             Kadakati Arar High School
-        </p>
+        </h3>
 
         <p>
-            Email: info@kadakatiararschool.com
+            Knowledge • Discipline • Morality
         </p>
 
-    </section>
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer>
-
-        <p>
+        <p class="copyright">
             © 2026 Kadakati Arar High School.
             All Rights Reserved.
         </p>
 
-    </footer>
+    </div>
+
+</footer>
 
 
-    <script src="script.js"></script>
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="script.js"></script>
 
 </body>
 

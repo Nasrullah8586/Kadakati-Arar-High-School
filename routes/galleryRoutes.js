@@ -14,26 +14,33 @@ const upload = require("../middleware/upload");
 
 const router = express.Router();
 
-// Public - Get all published gallery images
+
+// ======================================================
+// PUBLIC → GET ALL PUBLISHED GALLERY IMAGES
+// ======================================================
+
 router.get(
     "/",
     getAllGallery
 );
 
-// Public - Get single published gallery image
-router.get(
-    "/:id",
-    getGalleryById
-);
 
-// Admin/Super Admin - Get all gallery images
+// ======================================================
+// ADMIN / SUPER ADMIN → GET ALL GALLERY IMAGES
+// IMPORTANT: MUST COME BEFORE /:id
+// ======================================================
+
 router.get(
     "/admin/all",
     auth,
     getAllGalleryForAdmin
 );
 
-// Admin/Super Admin - Create gallery image
+
+// ======================================================
+// ADMIN / SUPER ADMIN → CREATE GALLERY IMAGE
+// ======================================================
+
 router.post(
     "/",
     auth,
@@ -41,7 +48,11 @@ router.post(
     createGallery
 );
 
-// Admin/Super Admin - Update gallery image
+
+// ======================================================
+// ADMIN / SUPER ADMIN → UPDATE GALLERY IMAGE
+// ======================================================
+
 router.put(
     "/:id",
     auth,
@@ -49,11 +60,27 @@ router.put(
     updateGallery
 );
 
-// Admin/Super Admin - Delete gallery image
+
+// ======================================================
+// ADMIN / SUPER ADMIN → DELETE GALLERY IMAGE
+// ======================================================
+
 router.delete(
     "/:id",
     auth,
     deleteGallery
 );
+
+
+// ======================================================
+// PUBLIC → GET SINGLE GALLERY IMAGE
+// IMPORTANT: KEEP /:id AFTER /admin/all
+// ======================================================
+
+router.get(
+    "/:id",
+    getGalleryById
+);
+
 
 module.exports = router;
