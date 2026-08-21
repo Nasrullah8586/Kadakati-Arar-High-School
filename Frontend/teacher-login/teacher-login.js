@@ -2,9 +2,7 @@
    API CONFIGURATION
 ========================================================= */
 
-const API_BASE_URL =
-    "http://localhost:5000";
-
+const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com";
 
 /* =========================================================
    LOGIN DOM ELEMENTS

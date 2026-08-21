@@ -2,7 +2,7 @@
    API CONFIGURATION
 ========================================================= */
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com";
 
 
 /* =========================================================
@@ -802,7 +802,7 @@ async function fetchNotices() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/api/notice`
+            `${API_BASE_URL}/api/notices`
         );
 
 
