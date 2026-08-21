@@ -6,14 +6,16 @@
 const API_BASE_URL =
     "https://kadakati-arar-high-school-api.onrender.com/api";
 
-
 // ======================================================
-// GET TOKEN
+// TOKEN
 // ======================================================
 
-const token =
-    localStorage.getItem("teacherToken");
+const token = localStorage.getItem("teacherToken");
 
+if (!token) {
+    window.location.href =
+        "../teacher-login/teacher-login.html";
+}
 
 // ======================================================
 // ELEMENTS
@@ -39,7 +41,6 @@ const logoutBtn =
 
 const statusMessage =
     document.getElementById("statusMessage");
-
 
 // ======================================================
 // FORM INPUTS
@@ -78,7 +79,6 @@ const linkedinInput =
 const instagramInput =
     document.getElementById("instagram");
 
-
 // ======================================================
 // PHOTO ELEMENTS
 // ======================================================
@@ -89,20 +89,20 @@ const photoInput =
 const browsePhotoBtn =
     document.getElementById("browsePhotoBtn");
 
+const previewPhotoBtn =
+    document.getElementById("previewPhotoBtn");
+
 const removePhotoBtn =
     document.getElementById("removePhotoBtn");
 
 const photoPreview =
     document.getElementById("photoPreview");
 
-const photoPreviewPlaceholder =
-    document.getElementById(
-        "photoPreviewPlaceholder"
-    );
-
+const photoDefault =
+    document.getElementById("photoDefault");
 
 // ======================================================
-// PROFILE HEADER ELEMENTS
+// PROFILE HEADER
 // ======================================================
 
 const profileName =
@@ -123,43 +123,23 @@ const profilePhoto =
 const defaultAvatar =
     document.getElementById("defaultAvatar");
 
-
 // ======================================================
-// ORIGINAL PROFILE DATA
+// DATA
 // ======================================================
 
 let originalProfile = null;
-
-
-// ======================================================
-// NEW PHOTO DATA
-// ======================================================
 
 let selectedPhoto = null;
 
 let removePhoto = false;
 
-
 // ======================================================
-// PAGE AUTH CHECK
-// ======================================================
-
-if (!token) {
-
-    window.location.href =
-        "../teacher-login/teacher-login.html";
-
-}
-
-
-// ======================================================
-// SHOW STATUS
+// STATUS
 // ======================================================
 
 function showStatus(message, type) {
 
-    statusMessage.textContent =
-        message;
+    statusMessage.textContent = message;
 
     statusMessage.className =
         `status-message ${type}`;
@@ -170,90 +150,67 @@ function showStatus(message, type) {
             "status-message";
 
     }, 4000);
-
 }
-
 
 // ======================================================
 // PHOTO PREVIEW
 // ======================================================
 
-function showPhotoPreview(
-    photoSource
-) {
+function showPhotoPreview(photoSource, teacherName = "Teacher") {
 
-    if (!photoPreview) {
-        return;
-    }
+    const firstLetter =
+        teacherName
+            .charAt(0)
+            .toUpperCase();
 
     if (photoSource) {
 
-        photoPreview.src =
-            photoSource;
+        photoPreview.src = photoSource;
 
-        photoPreview.style.display =
-            "block";
+        photoPreview.style.display = "block";
 
-        if (photoPreviewPlaceholder) {
-
-            photoPreviewPlaceholder.style.display =
-                "none";
-
-        }
+        photoDefault.style.display = "none";
 
     } else {
 
         photoPreview.src = "";
 
-        photoPreview.style.display =
-            "none";
+        photoPreview.style.display = "none";
 
-        if (photoPreviewPlaceholder) {
+        photoDefault.textContent = firstLetter;
 
-            photoPreviewPlaceholder.style.display =
-                "flex";
-
-        }
-
+        photoDefault.style.display = "flex";
     }
-
 }
 
-
 // ======================================================
-// UPDATE PROFILE HEADER PHOTO
+// UPDATE HEADER PHOTO
 // ======================================================
 
-function updateProfilePhoto(
-    photoSource,
-    teacherName
-) {
+function updateProfilePhoto(photoSource, teacherName) {
 
     const firstLetter =
         (teacherName || "Teacher")
             .charAt(0)
             .toUpperCase();
 
-
     topbarAvatar.innerHTML = "";
-
 
     if (photoSource) {
 
         const avatarImage =
             document.createElement("img");
 
-        avatarImage.src =
-            photoSource;
+        avatarImage.src = photoSource;
 
-        avatarImage.alt =
-            "Teacher Photo";
+        avatarImage.alt = "Teacher Photo";
 
         avatarImage.onerror = () => {
 
+            topbarAvatar.innerHTML = "";
+
             topbarAvatar.textContent =
                 firstLetter;
-
         };
 
         topbarAvatar.appendChild(
@@ -277,6 +234,8 @@ function updateProfilePhoto(
             defaultAvatar.style.display =
                 "flex";
 
+            defaultAvatar.textContent =
+                firstLetter;
         };
 
     } else {
@@ -292,16 +251,13 @@ function updateProfilePhoto(
         defaultAvatar.style.display =
             "flex";
 
+        defaultAvatar.textContent =
+            firstLetter;
     }
-
-
-    defaultAvatar.textContent =
-        firstLetter;
 }
 
-
 // ======================================================
-// LOAD TEACHER PROFILE
+// LOAD PROFILE
 // ======================================================
 
 async function loadProfile() {
@@ -321,10 +277,8 @@ async function loadProfile() {
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (
             response.status === 401 ||
@@ -341,7 +295,6 @@ async function loadProfile() {
             return;
         }
 
-
         if (
             !response.ok ||
             !data.success
@@ -351,9 +304,7 @@ async function loadProfile() {
                 data.message ||
                 "Failed to load profile"
             );
-
         }
-
 
         originalProfile =
             JSON.parse(
@@ -362,11 +313,11 @@ async function loadProfile() {
                 )
             );
 
-
         populateProfile(
             data.teacher
         );
 
+        setEditMode(false);
 
     } catch (error) {
 
@@ -385,11 +336,8 @@ async function loadProfile() {
 
         loadingScreen.style.display =
             "none";
-
     }
-
 }
-
 
 // ======================================================
 // POPULATE PROFILE
@@ -421,7 +369,6 @@ function populateProfile(teacher) {
     aboutInput.value =
         teacher.about || "";
 
-
     facebookInput.value =
         teacher.socialLinks?.facebook || "";
 
@@ -431,10 +378,8 @@ function populateProfile(teacher) {
     instagramInput.value =
         teacher.socialLinks?.instagram || "";
 
-
     const teacherName =
         teacher.name || "Teacher";
-
 
     profileName.textContent =
         teacherName;
@@ -442,31 +387,30 @@ function populateProfile(teacher) {
     topbarName.textContent =
         teacherName;
 
-
     profileDepartment.textContent =
         `${teacher.division || ""} • ${teacher.department || ""}`;
-
 
     updateProfilePhoto(
         teacher.photo || "",
         teacherName
     );
 
-
     showPhotoPreview(
-        teacher.photo || ""
+        teacher.photo || "",
+        teacherName
     );
-
 
     selectedPhoto = null;
 
     removePhoto = false;
 
+    if (photoInput) {
+        photoInput.value = "";
+    }
 }
 
-
 // ======================================================
-// SET EDIT MODE
+// EDIT MODE
 // ======================================================
 
 function setEditMode(enabled) {
@@ -498,13 +442,9 @@ function setEditMode(enabled) {
     instagramInput.disabled =
         !enabled;
 
+    usernameInput.disabled = true;
 
-    usernameInput.disabled =
-        true;
-
-    emailInput.disabled =
-        true;
-
+    emailInput.disabled = true;
 
     if (enabled) {
 
@@ -514,6 +454,20 @@ function setEditMode(enabled) {
         editBtn.style.display =
             "none";
 
+        photoInput.disabled = false;
+
+        browsePhotoBtn.disabled = false;
+
+        previewPhotoBtn.disabled = false;
+
+        removePhotoBtn.disabled = false;
+
+        browsePhotoBtn.style.opacity = "1";
+
+        previewPhotoBtn.style.opacity = "1";
+
+        removePhotoBtn.style.opacity = "1";
+
     } else {
 
         formActions.style.display =
@@ -522,186 +476,21 @@ function setEditMode(enabled) {
         editBtn.style.display =
             "block";
 
+        photoInput.disabled = true;
+
+        browsePhotoBtn.disabled = true;
+
+        previewPhotoBtn.disabled = true;
+
+        removePhotoBtn.disabled = true;
+
+        browsePhotoBtn.style.opacity = "0.55";
+
+        previewPhotoBtn.style.opacity = "0.55";
+
+        removePhotoBtn.style.opacity = "0.55";
     }
-
-
-    if (browsePhotoBtn) {
-
-        browsePhotoBtn.style.pointerEvents =
-            enabled ? "auto" : "none";
-
-        browsePhotoBtn.style.opacity =
-            enabled ? "1" : "0.55";
-
-    }
-
-    if (removePhotoBtn) {
-
-        removePhotoBtn.style.pointerEvents =
-            enabled ? "auto" : "none";
-
-        removePhotoBtn.style.opacity =
-            enabled ? "1" : "0.55";
-
-    }
-
 }
-
-
-// ======================================================
-// BROWSE PHOTO
-// ======================================================
-
-if (browsePhotoBtn && photoInput) {
-
-    browsePhotoBtn.addEventListener(
-        "click",
-        () => {
-
-            if (photoInput.disabled) {
-                return;
-            }
-
-            photoInput.click();
-
-        }
-    );
-
-}
-
-
-// ======================================================
-// PHOTO SELECT
-// ======================================================
-
-if (photoInput) {
-
-    photoInput.addEventListener(
-        "change",
-        (event) => {
-
-            const file =
-                event.target.files[0];
-
-
-            if (!file) {
-                return;
-            }
-
-
-            // ------------------------------------------
-            // FILE TYPE CHECK
-            // ------------------------------------------
-
-            if (
-                !file.type.startsWith(
-                    "image/"
-                )
-            ) {
-
-                showStatus(
-                    "Please select a valid image file.",
-                    "error"
-                );
-
-                photoInput.value = "";
-
-                return;
-            }
-
-
-            // ------------------------------------------
-            // FILE SIZE CHECK
-            // Maximum 5 MB
-            // ------------------------------------------
-
-            if (
-                file.size >
-                5 * 1024 * 1024
-            ) {
-
-                showStatus(
-                    "Image size must be less than 5 MB.",
-                    "error"
-                );
-
-                photoInput.value = "";
-
-                return;
-            }
-
-
-            selectedPhoto =
-                file;
-
-            removePhoto =
-                false;
-
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                function () {
-
-                    showPhotoPreview(
-                        reader.result
-                    );
-
-                };
-
-
-            reader.readAsDataURL(
-                file
-            );
-
-        }
-    );
-
-}
-
-
-// ======================================================
-// REMOVE PHOTO
-// ======================================================
-
-if (removePhotoBtn) {
-
-    removePhotoBtn.addEventListener(
-        "click",
-        () => {
-
-            if (
-                browsePhotoBtn &&
-                browsePhotoBtn.style.pointerEvents ===
-                "none"
-            ) {
-                return;
-            }
-
-
-            selectedPhoto = null;
-
-            removePhoto = true;
-
-
-            if (photoInput) {
-
-                photoInput.value = "";
-
-            }
-
-
-            showPhotoPreview(
-                ""
-            );
-
-        }
-    );
-
-}
-
 
 // ======================================================
 // EDIT BUTTON
@@ -716,9 +505,153 @@ editBtn.addEventListener(
     }
 );
 
+// ======================================================
+// BROWSE PHOTO
+// ======================================================
+
+browsePhotoBtn.addEventListener(
+    "click",
+    () => {
+
+        if (photoInput.disabled) {
+            return;
+        }
+
+        photoInput.click();
+
+    }
+);
 
 // ======================================================
-// CANCEL EDIT
+// PHOTO SELECT
+// ======================================================
+
+photoInput.addEventListener(
+    "change",
+    (event) => {
+
+        const file =
+            event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (
+            !allowedTypes.includes(
+                file.type
+            )
+        ) {
+
+            showStatus(
+                "Please select JPG, PNG or WebP image.",
+                "error"
+            );
+
+            photoInput.value = "";
+
+            return;
+        }
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            showStatus(
+                "Image size must be less than 5 MB.",
+                "error"
+            );
+
+            photoInput.value = "";
+
+            return;
+        }
+
+        selectedPhoto = file;
+
+        removePhoto = false;
+
+        const reader =
+            new FileReader();
+
+        reader.onload = () => {
+
+            showPhotoPreview(
+                reader.result,
+                nameInput.value || "Teacher"
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+    }
+);
+
+// ======================================================
+// PREVIEW PHOTO
+// ======================================================
+
+previewPhotoBtn.addEventListener(
+    "click",
+    () => {
+
+        if (
+            !selectedPhoto &&
+            !photoPreview.src
+        ) {
+
+            showStatus(
+                "Please select a photo first.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (photoPreview.src) {
+
+            window.open(
+                photoPreview.src,
+                "_blank"
+            );
+        }
+    }
+);
+
+// ======================================================
+// REMOVE PHOTO
+// ======================================================
+
+removePhotoBtn.addEventListener(
+    "click",
+    () => {
+
+        if (removePhotoBtn.disabled) {
+            return;
+        }
+
+        selectedPhoto = null;
+
+        removePhoto = true;
+
+        photoInput.value = "";
+
+        showPhotoPreview(
+            "",
+            nameInput.value || "Teacher"
+        );
+    }
+);
+
+// ======================================================
+// CANCEL
 // ======================================================
 
 cancelBtn.addEventListener(
@@ -730,17 +663,47 @@ cancelBtn.addEventListener(
             populateProfile(
                 originalProfile
             );
-
         }
 
         setEditMode(false);
-
     }
 );
 
+// ======================================================
+// CONVERT IMAGE TO BASE64
+// ======================================================
+
+function convertImageToBase64(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+            reader.onload = () => {
+
+                resolve(
+                    reader.result
+                );
+            };
+
+            reader.onerror = () => {
+
+                reject(
+                    new Error(
+                        "Could not read selected image."
+                    )
+                );
+            };
+
+            reader.readAsDataURL(file);
+        }
+    );
+}
 
 // ======================================================
-// UPDATE PROFILE
+// SAVE PROFILE
 // ======================================================
 
 profileForm.addEventListener(
@@ -749,49 +712,28 @@ profileForm.addEventListener(
 
         event.preventDefault();
 
-
         const saveBtn =
             profileForm.querySelector(
                 ".save-btn"
             );
 
-
-        const originalButtonText =
+        const originalText =
             saveBtn.textContent;
 
-
-        saveBtn.disabled =
-            true;
+        saveBtn.disabled = true;
 
         saveBtn.textContent =
             "Saving...";
 
-
         try {
-
-            /*
-             * IMPORTANT:
-             *
-             * Current backend accepts JSON.
-             *
-             * Therefore selected image is temporarily
-             * converted to Base64 and sent as "photo".
-             *
-             * Backend upload/storage support will be
-             * connected in the next step.
-             */
-
 
             let photoValue =
                 originalProfile?.photo || "";
 
-
             if (removePhoto) {
 
                 photoValue = "";
-
             }
-
 
             if (selectedPhoto) {
 
@@ -799,9 +741,7 @@ profileForm.addEventListener(
                     await convertImageToBase64(
                         selectedPhoto
                     );
-
             }
-
 
             const updatedData = {
 
@@ -836,11 +776,8 @@ profileForm.addEventListener(
 
                     instagram:
                         instagramInput.value.trim()
-
                 }
-
             };
-
 
             const response =
                 await fetch(
@@ -855,21 +792,17 @@ profileForm.addEventListener(
 
                             "Authorization":
                                 `Bearer ${token}`
-
                         },
 
                         body:
                             JSON.stringify(
                                 updatedData
                             )
-
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             if (
                 response.status === 401 ||
@@ -886,7 +819,6 @@ profileForm.addEventListener(
                 return;
             }
 
-
             if (
                 !response.ok ||
                 !data.success
@@ -896,9 +828,7 @@ profileForm.addEventListener(
                     data.message ||
                     "Profile update failed"
                 );
-
             }
-
 
             originalProfile =
                 JSON.parse(
@@ -907,20 +837,16 @@ profileForm.addEventListener(
                     )
                 );
 
-
             populateProfile(
                 data.teacher
             );
 
-
             setEditMode(false);
-
 
             showStatus(
                 "Profile updated successfully!",
                 "success"
             );
-
 
         } catch (error) {
 
@@ -937,62 +863,13 @@ profileForm.addEventListener(
 
         } finally {
 
-            saveBtn.disabled =
-                false;
+            saveBtn.disabled = false;
 
             saveBtn.textContent =
-                originalButtonText;
-
+                originalText;
         }
-
     }
 );
-
-
-// ======================================================
-// CONVERT IMAGE TO BASE64
-// ======================================================
-
-function convertImageToBase64(file) {
-
-    return new Promise(
-        (resolve, reject) => {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                () => {
-
-                    resolve(
-                        reader.result
-                    );
-
-                };
-
-
-            reader.onerror =
-                () => {
-
-                    reject(
-                        new Error(
-                            "Could not read selected image."
-                        )
-                    );
-
-                };
-
-
-            reader.readAsDataURL(
-                file
-            );
-
-        }
-    );
-
-}
-
 
 // ======================================================
 // LOGOUT
@@ -1007,23 +884,18 @@ logoutBtn.addEventListener(
                 "Are you sure you want to logout?"
             );
 
-
         if (!confirmLogout) {
             return;
         }
-
 
         localStorage.removeItem(
             "teacherToken"
         );
 
-
         window.location.href =
             "../teacher-login/teacher-login.html";
-
     }
 );
-
 
 // ======================================================
 // START

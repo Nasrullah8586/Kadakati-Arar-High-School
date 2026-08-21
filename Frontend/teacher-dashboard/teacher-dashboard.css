@@ -11,7 +11,9 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar {
     position: fixed;
@@ -98,20 +100,25 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    transition: 0.2s;
 }
 
 .logout-btn:hover {
     background: rgba(255,255,255,0.12);
 }
 
-/* MAIN */
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
 
 .main-content {
     margin-left: 250px;
     min-height: 100vh;
 }
 
-/* TOPBAR */
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar {
     height: 82px;
@@ -151,12 +158,15 @@ body {
     justify-content: center;
     font-weight: bold;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .topbar-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
+    display: block;
 }
 
 .topbar-user-info {
@@ -174,7 +184,9 @@ body {
     color: #7b8794;
 }
 
-/* CONTAINER */
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
 .dashboard-container {
     max-width: 1100px;
@@ -182,7 +194,9 @@ body {
     padding: 30px;
 }
 
-/* PROFILE HEADER */
+/* =====================================================
+   PROFILE HEADER
+===================================================== */
 
 .profile-header-card {
     background: white;
@@ -200,18 +214,22 @@ body {
     height: 90px;
     position: relative;
     flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .profile-avatar,
 .default-avatar {
-    width: 90px;
-    height: 90px;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    object-fit: cover;
 }
 
 .profile-avatar {
     display: none;
+    object-fit: cover;
 }
 
 .default-avatar {
@@ -222,6 +240,10 @@ body {
     justify-content: center;
     font-size: 30px;
     font-weight: bold;
+}
+
+.profile-header-info {
+    min-width: 0;
 }
 
 .profile-header-info h2 {
@@ -245,7 +267,9 @@ body {
     font-weight: 600;
 }
 
-/* PROFILE CARD */
+/* =====================================================
+   PROFILE CARD
+===================================================== */
 
 .profile-card {
     background: white;
@@ -260,6 +284,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .card-header h2 {
@@ -281,13 +306,17 @@ body {
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
+    white-space: nowrap;
+    transition: 0.2s;
 }
 
 .edit-btn:hover {
     opacity: 0.9;
 }
 
-/* FORM */
+/* =====================================================
+   FORM
+===================================================== */
 
 #profileForm {
     padding: 25px;
@@ -360,7 +389,9 @@ body {
     cursor: not-allowed;
 }
 
-/* PHOTO UPLOAD */
+/* =====================================================
+   PHOTO UPLOAD
+===================================================== */
 
 .photo-upload-box {
     background: #f8faf9;
@@ -374,37 +405,43 @@ body {
 }
 
 .photo-preview-container {
-    width: 100px;
-    height: 100px;
+    width: 105px;
+    height: 105px;
     border-radius: 50%;
     overflow: hidden;
     background: #176B45;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 }
 
 .photo-preview {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
     display: none;
 }
 
 .photo-default {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #176B45;
     color: white;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: bold;
 }
 
 .photo-upload-content {
     flex: 1;
+    min-width: 0;
 }
 
 .photo-help {
@@ -433,6 +470,12 @@ body {
     opacity: 0.9;
 }
 
+.browse-photo-btn:disabled,
+.photo-action-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 .photo-actions {
     display: flex;
     gap: 10px;
@@ -458,7 +501,9 @@ body {
     background: #fff5f5;
 }
 
-/* FORM ACTIONS */
+/* =====================================================
+   FORM ACTIONS
+===================================================== */
 
 .form-actions {
     display: none;
@@ -498,7 +543,9 @@ body {
     cursor: not-allowed;
 }
 
-/* STATUS */
+/* =====================================================
+   STATUS
+===================================================== */
 
 .status-message {
     display: none;
@@ -520,7 +567,9 @@ body {
     color: #c62828;
 }
 
-/* LOADING */
+/* =====================================================
+   LOADING
+===================================================== */
 
 .loading-screen {
     position: fixed;
@@ -558,7 +607,9 @@ body {
     }
 }
 
-/* RESPONSIVE */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media (max-width: 800px) {
 
@@ -622,6 +673,15 @@ body {
         padding: 18px;
     }
 
+    .profile-avatar-wrapper {
+        width: 75px;
+        height: 75px;
+    }
+
+    .profile-header-info h2 {
+        font-size: 20px;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
     }
@@ -637,12 +697,13 @@ body {
     }
 
     .photo-upload-box {
+        flex-direction: column;
         align-items: flex-start;
     }
 
     .photo-preview-container {
-        width: 85px;
-        height: 85px;
+        width: 95px;
+        height: 95px;
     }
 
     .photo-upload-content {
