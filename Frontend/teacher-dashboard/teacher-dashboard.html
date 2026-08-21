@@ -37,7 +37,6 @@
 
         </div>
 
-
         <nav class="sidebar-nav">
 
             <button
@@ -50,7 +49,6 @@
             </button>
 
         </nav>
-
 
         <div class="sidebar-bottom">
 
@@ -85,7 +83,6 @@
                     Manage your teacher profile
                 </p>
             </div>
-
 
             <div class="topbar-user">
 
@@ -208,57 +205,54 @@
                     </div>
 
 
-                    <div
-                        class="photo-edit-section"
-                        id="photoEditSection"
-                    >
+                    <div class="photo-upload-section">
 
-                        <div class="photo-preview-box">
+                        <div class="photo-preview-wrapper">
 
                             <img
                                 id="photoPreview"
+                                class="photo-preview"
                                 src=""
                                 alt="Photo Preview"
-                                class="photo-preview"
                             >
 
                             <div
-                                id="photoDefaultPreview"
-                                class="photo-default-preview"
+                                id="photoDefault"
+                                class="photo-default"
                             >
-                                T
+                                N
                             </div>
 
                         </div>
 
 
-                        <div class="photo-input-area">
-
-                            <label for="photo">
-                                Photo URL
-                            </label>
+                        <div class="photo-upload-content">
 
                             <input
-                                type="url"
-                                id="photo"
-                                name="photo"
-                                disabled
-                                placeholder="https://example.com/photo.jpg"
-                                autocomplete="off"
+                                type="file"
+                                id="photoInput"
+                                accept="image/jpeg,image/png,image/webp"
+                                hidden
                             >
 
-                            <small>
-                                Enter a direct image URL.
-                            </small>
+                            <button
+                                type="button"
+                                id="browsePhotoBtn"
+                                class="browse-photo-btn"
+                            >
+                                📁 Browse Photo
+                            </button>
 
+                            <p class="photo-help">
+                                JPG, PNG or WebP. Maximum 5MB.
+                            </p>
 
-                            <div class="photo-buttons">
+                            <div class="photo-actions">
 
                                 <button
                                     type="button"
                                     id="previewPhotoBtn"
-                                    class="photo-preview-btn"
-                                    disabled
+                                    class="photo-action-btn"
                                 >
                                     👁️ Preview
                                 </button>
@@ -266,8 +260,7 @@
                                 <button
                                     type="button"
                                     id="removePhotoBtn"
-                                    class="remove-photo-btn"
-                                    disabled
+                                    class="photo-action-btn remove"
                                 >
                                     🗑️ Remove Photo
                                 </button>
