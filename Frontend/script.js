@@ -162,10 +162,8 @@ function showLoading(
 ) {
 
     if (element) {
-
         element.innerHTML =
             `<p>${escapeHTML(text)}</p>`;
-
     }
 }
 
@@ -176,10 +174,8 @@ function showError(
 ) {
 
     if (element) {
-
         element.innerHTML =
             `<p>${escapeHTML(text)}</p>`;
-
     }
 }
 
@@ -199,10 +195,22 @@ function getArrayFromResponse(
             return data[key];
         }
 
+        if (Array.isArray(data?.data?.[key])) {
+            return data.data[key];
+        }
+
+        if (Array.isArray(data?.content?.[key])) {
+            return data.content[key];
+        }
+
     }
 
     if (Array.isArray(data?.data)) {
         return data.data;
+    }
+
+    if (Array.isArray(data?.content)) {
+        return data.content;
     }
 
     return [];
@@ -218,6 +226,12 @@ function getImageUrl(item) {
         item?.secure_url ||
         item?.photoUrl ||
         item?.photo ||
+        item?.profileImage ||
+        item?.profileImageUrl ||
+        item?.teacherImage ||
+        item?.teacherImageUrl ||
+        item?.picture ||
+        item?.pictureUrl ||
         ""
     );
 }
@@ -467,7 +481,10 @@ async function loadSiteContent() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/site-content`
+                `${API_BASE_URL}/site-content`,
+                {
+                    cache: "no-store"
+                }
             );
 
 
@@ -486,33 +503,65 @@ async function loadSiteContent() {
 
 
         const content =
-            data.content ||
-            data.data ||
+            data?.content ||
+            data?.data?.content ||
+            data?.data ||
             data;
 
+
+        /* =========================
+           ABOUT
+        ========================= */
 
         if (schoolAbout) {
 
             schoolAbout.textContent =
-                content.about ||
+                content?.about ||
+                content?.schoolAbout ||
                 "School information is not available.";
 
         }
 
 
+        /* =========================
+           HISTORY
+        ========================= */
+
         if (schoolHistory) {
 
-            schoolHistory.textContent =
-                content.history ||
-                "School history is not available.";
+            const historyText =
+                content?.history ||
+                content?.schoolHistory ||
+                content?.historyText ||
+                content?.school_history ||
+                "";
+
+            if (
+                historyText &&
+                String(historyText).trim() !== ""
+            ) {
+
+                schoolHistory.textContent =
+                    historyText;
+
+            } else {
+
+                schoolHistory.textContent =
+                    "School history is not available.";
+
+            }
 
         }
 
 
+        /* =========================
+           CONTACT
+        ========================= */
+
         if (schoolAddress) {
 
             schoolAddress.textContent =
-                content.address ||
+                content?.address ||
                 "Address is not available.";
 
         }
@@ -521,7 +570,7 @@ async function loadSiteContent() {
         if (schoolPhone) {
 
             schoolPhone.textContent =
-                content.phone ||
+                content?.phone ||
                 "Phone number is not available.";
 
         }
@@ -530,18 +579,29 @@ async function loadSiteContent() {
         if (schoolEmail) {
 
             schoolEmail.textContent =
-                content.email ||
+                content?.email ||
                 "Email is not available.";
 
         }
 
 
+        /* =========================
+           GOOGLE MAPS
+        ========================= */
+
+        const mapsUrl =
+            content?.googleMapsLink ||
+            content?.googleMapLink ||
+            content?.mapsLink ||
+            "";
+
+
         if (googleMapsLink) {
 
-            if (content.googleMapsLink) {
+            if (mapsUrl) {
 
                 googleMapsLink.href =
-                    content.googleMapsLink;
+                    mapsUrl;
 
                 googleMapsLink.target =
                     "_blank";
@@ -564,10 +624,10 @@ async function loadSiteContent() {
 
         if (schoolLocationBtn) {
 
-            if (content.googleMapsLink) {
+            if (mapsUrl) {
 
                 schoolLocationBtn.href =
-                    content.googleMapsLink;
+                    mapsUrl;
 
                 schoolLocationBtn.target =
                     "_blank";
@@ -588,26 +648,40 @@ async function loadSiteContent() {
         }
 
 
+        /* =========================
+           SOCIAL LINKS
+        ========================= */
+
+        const socialLinks =
+            content?.socialLinks ||
+            content?.social ||
+            {};
+
+
         setupSocialLink(
             facebookLink,
-            content.socialLinks?.facebook
+            socialLinks?.facebook
         );
 
         setupSocialLink(
             instagramLink,
-            content.socialLinks?.instagram
+            socialLinks?.instagram
         );
 
         setupSocialLink(
             linkedinLink,
-            content.socialLinks?.linkedin
+            socialLinks?.linkedin
         );
 
+
+        /* =========================
+           CONTACT PAGE
+        ========================= */
 
         if (contactAddress) {
 
             contactAddress.textContent =
-                content.address ||
+                content?.address ||
                 "Address is not available.";
 
         }
@@ -616,7 +690,7 @@ async function loadSiteContent() {
         if (contactPhone) {
 
             const phone =
-                content.phone || "";
+                content?.phone || "";
 
             if (phone) {
 
@@ -648,7 +722,7 @@ async function loadSiteContent() {
         if (contactEmail) {
 
             const email =
-                content.email || "";
+                content?.email || "";
 
             if (email) {
 
@@ -676,26 +750,26 @@ async function loadSiteContent() {
 
         setupSocialLink(
             contactFacebook,
-            content.socialLinks?.facebook
+            socialLinks?.facebook
         );
 
         setupSocialLink(
             contactInstagram,
-            content.socialLinks?.instagram
+            socialLinks?.instagram
         );
 
         setupSocialLink(
             contactLinkedin,
-            content.socialLinks?.linkedin
+            socialLinks?.linkedin
         );
 
 
         if (contactGoogleMaps) {
 
-            if (content.googleMapsLink) {
+            if (mapsUrl) {
 
                 contactGoogleMaps.href =
-                    content.googleMapsLink;
+                    mapsUrl;
 
                 contactGoogleMaps.target =
                     "_blank";
@@ -718,10 +792,10 @@ async function loadSiteContent() {
 
         if (contactLocationBtn) {
 
-            if (content.googleMapsLink) {
+            if (mapsUrl) {
 
                 contactLocationBtn.href =
-                    content.googleMapsLink;
+                    mapsUrl;
 
                 contactLocationBtn.target =
                     "_blank";
@@ -803,7 +877,10 @@ async function fetchNotices() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/notices`
+            `${API_BASE_URL}/notices`,
+            {
+                cache: "no-store"
+            }
         );
 
 
@@ -1303,7 +1380,10 @@ async function fetchNewsEvents() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/news-events`
+            `${API_BASE_URL}/news-events`,
+            {
+                cache: "no-store"
+            }
         );
 
 
@@ -1395,10 +1475,6 @@ async function loadNewsEvents() {
                             data-news-index="${index}"
                             role="button"
                             tabindex="0"
-                            aria-label="View ${escapeHTML(
-                                item.title ||
-                                "News and Event"
-                            )}"
                         >
 
                             ${
@@ -1613,7 +1689,6 @@ async function loadNewsEventsPage() {
                                     : ""
                             }
 
-
                             <div class="news-event-page-content">
 
                                 ${
@@ -1814,10 +1889,7 @@ function setupNewsImageLightbox(
             "";
 
         if (caption) {
-
-            caption.textContent =
-                "";
-
+            caption.textContent = "";
         }
 
         document.body.style.overflow =
@@ -1830,14 +1902,7 @@ function setupNewsImageLightbox(
 
         closeButton.addEventListener(
             "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                closeImage();
-
-            }
+            closeImage
         );
 
     }
@@ -1886,7 +1951,10 @@ async function fetchGallery() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/gallery`
+            `${API_BASE_URL}/gallery`,
+            {
+                cache: "no-store"
+            }
         );
 
 
@@ -2206,7 +2274,6 @@ function setupGalleryLightbox() {
                 <button
                     type="button"
                     class="gallery-lightbox-close"
-                    aria-label="Close image"
                 >
                     ×
                 </button>
@@ -2230,9 +2297,7 @@ function setupGalleryLightbox() {
 
 
     const image =
-        modal.querySelector(
-            "img"
-        );
+        modal.querySelector("img");
 
     const caption =
         modal.querySelector(
@@ -2276,11 +2341,9 @@ function setupGalleryLightbox() {
                         imageCaption ||
                         "School Gallery";
 
-
                     caption.textContent =
                         imageCaption ||
                         "";
-
 
                     modal.classList.add(
                         "show"
@@ -2366,7 +2429,6 @@ function setupFullGalleryLightbox(
                 <button
                     type="button"
                     class="gallery-lightbox-close"
-                    aria-label="Close image"
                 >
                     ×
                 </button>
@@ -2390,9 +2452,7 @@ function setupFullGalleryLightbox(
 
 
     const image =
-        modal.querySelector(
-            "img"
-        );
+        modal.querySelector("img");
 
     const caption =
         modal.querySelector(
@@ -2456,7 +2516,6 @@ function setupFullGalleryLightbox(
                         imageCaption ||
                         "School Gallery";
 
-
                     caption.textContent =
                         imageCaption;
 
@@ -2500,25 +2559,6 @@ function setupFullGalleryLightbox(
         closeGallery
     );
 
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Escape" &&
-                modal.classList.contains(
-                    "show"
-                )
-            ) {
-
-                closeGallery();
-
-            }
-
-        }
-    );
-
 }
 
 
@@ -2546,7 +2586,10 @@ async function loadTeachers() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/teachers`
+                `${API_BASE_URL}/teachers`,
+                {
+                    cache: "no-store"
+                }
             );
 
 
@@ -2568,7 +2611,8 @@ async function loadTeachers() {
             getArrayFromResponse(
                 data,
                 [
-                    "teachers"
+                    "teachers",
+                    "teacher"
                 ]
             );
 
@@ -2592,6 +2636,515 @@ async function loadTeachers() {
         );
 
     }
+
+}
+
+
+/* =========================================================
+   TEACHER PROFILE MODAL
+========================================================= */
+
+function createTeacherProfileModal() {
+
+    if (
+        document.getElementById(
+            "teacherProfileModal"
+        )
+    ) {
+        return;
+    }
+
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "teacher-profile-modal-style";
+
+    style.textContent = `
+
+        .teacher-profile-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .teacher-profile-modal.show {
+            display: flex;
+        }
+
+        .teacher-profile-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+        }
+
+        .teacher-profile-content {
+            position: relative;
+            z-index: 2;
+            width: min(850px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+        }
+
+        .teacher-profile-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            z-index: 5;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            color: #176B45;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .teacher-profile-top {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            padding: 35px;
+        }
+
+        .teacher-profile-image {
+            width: 100%;
+            height: 330px;
+            overflow: hidden;
+            border-radius: 14px;
+            background: #e9f0ec;
+        }
+
+        .teacher-profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .teacher-profile-info {
+            padding: 15px 0;
+        }
+
+        .teacher-profile-info h2 {
+            margin-bottom: 8px;
+            color: #1b3025;
+            font-size: 30px;
+        }
+
+        .teacher-profile-designation {
+            margin-bottom: 18px;
+            color: #176B45;
+            font-weight: 700;
+        }
+
+        .teacher-profile-meta {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: #405048;
+        }
+
+        .teacher-profile-about {
+            padding: 25px 35px 35px;
+            border-top: 1px solid #e1eae5;
+        }
+
+        .teacher-profile-about h3 {
+            margin-bottom: 10px;
+            color: #176B45;
+            font-size: 20px;
+        }
+
+        .teacher-profile-about p {
+            color: #68756e;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .teacher-profile-social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .teacher-profile-social a {
+            display: inline-flex;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #edf5f0;
+            color: #176B45;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 650px) {
+
+            .teacher-profile-top {
+                grid-template-columns: 1fr;
+                padding: 25px;
+            }
+
+            .teacher-profile-image {
+                height: 300px;
+            }
+
+            .teacher-profile-about {
+                padding: 25px;
+            }
+
+            .teacher-profile-info h2 {
+                font-size: 25px;
+            }
+
+        }
+
+    `;
+
+    document.head.appendChild(style);
+
+
+    const modal =
+        document.createElement("div");
+
+    modal.id =
+        "teacherProfileModal";
+
+    modal.className =
+        "teacher-profile-modal";
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    modal.innerHTML = `
+
+        <div class="teacher-profile-overlay"></div>
+
+        <div class="teacher-profile-content">
+
+            <button
+                type="button"
+                class="teacher-profile-close"
+                aria-label="Close teacher profile"
+            >
+                ×
+            </button>
+
+            <div
+                id="teacherProfileBody"
+            ></div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+
+
+    const closeButton =
+        modal.querySelector(
+            ".teacher-profile-close"
+        );
+
+    const overlay =
+        modal.querySelector(
+            ".teacher-profile-overlay"
+        );
+
+
+    function closeModal() {
+
+        modal.classList.remove(
+            "show"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    closeButton.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains("show")
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SHOW TEACHER PROFILE
+========================================================= */
+
+function showTeacherProfile(
+    teacher
+) {
+
+    createTeacherProfileModal();
+
+
+    const modal =
+        document.getElementById(
+            "teacherProfileModal"
+        );
+
+    const body =
+        document.getElementById(
+            "teacherProfileBody"
+        );
+
+
+    if (
+        !modal ||
+        !body
+    ) {
+        return;
+    }
+
+
+    const photo =
+        getImageUrl(teacher) ||
+        "images/teacher-placeholder.jpg";
+
+
+    const about =
+        teacher.about ||
+        teacher.bio ||
+        teacher.description ||
+        teacher.details ||
+        teacher.profile ||
+        teacher.aboutTeacher ||
+        "No information available about this teacher.";
+
+
+    const phone =
+        teacher.phone ||
+        teacher.phoneNumber ||
+        "";
+
+
+    const socialLinks =
+        teacher.socialLinks ||
+        teacher.social ||
+        {};
+
+
+    body.innerHTML = `
+
+        <div class="teacher-profile-top">
+
+            <div class="teacher-profile-image">
+
+                <img
+                    src="${escapeHTML(
+                        photo
+                    )}"
+                    alt="${escapeHTML(
+                        teacher.name ||
+                        "Teacher"
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="teacher-profile-info">
+
+                <h2>
+                    ${escapeHTML(
+                        teacher.name ||
+                        "Teacher"
+                    )}
+                </h2>
+
+                ${
+                    teacher.designation
+                        ? `
+                            <p class="teacher-profile-designation">
+                                ${escapeHTML(
+                                    teacher.designation
+                                )}
+                            </p>
+                        `
+                        : ""
+                }
+
+
+                <div class="teacher-profile-meta">
+
+                    <div>
+                        <strong>Division:</strong>
+                        ${escapeHTML(
+                            teacher.division ||
+                            "N/A"
+                        )}
+                    </div>
+
+                    <div>
+                        <strong>Department:</strong>
+                        ${escapeHTML(
+                            teacher.department ||
+                            "N/A"
+                        )}
+                    </div>
+
+                    <div>
+                        <strong>Subject:</strong>
+                        ${escapeHTML(
+                            teacher.subject ||
+                            "N/A"
+                        )}
+                    </div>
+
+                    ${
+                        phone
+                            ? `
+                                <div>
+                                    <strong>Phone:</strong>
+                                    ${escapeHTML(
+                                        phone
+                                    )}
+                                </div>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+
+                <div class="teacher-profile-social">
+
+                    ${
+                        socialLinks.facebook
+                            ? `
+                                <a
+                                    href="${escapeHTML(
+                                        socialLinks.facebook
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Facebook
+                                </a>
+                            `
+                            : ""
+                    }
+
+                    ${
+                        socialLinks.instagram
+                            ? `
+                                <a
+                                    href="${escapeHTML(
+                                        socialLinks.instagram
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Instagram
+                                </a>
+                            `
+                            : ""
+                    }
+
+                    ${
+                        socialLinks.linkedin
+                            ? `
+                                <a
+                                    href="${escapeHTML(
+                                        socialLinks.linkedin
+                                    )}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    LinkedIn
+                                </a>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="teacher-profile-about">
+
+            <h3>
+                About Teacher
+            </h3>
+
+            <p>
+                ${escapeHTML(
+                    about
+                )}
+            </p>
+
+        </div>
+
+    `;
+
+
+    modal.classList.add(
+        "show"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow =
+        "hidden";
 
 }
 
@@ -2640,17 +3193,20 @@ function renderTeachers(
 
     teacherList.innerHTML =
         teachers.map(
-            teacher => {
+            (teacher, index) => {
 
                 const photo =
-                    teacher.photoUrl ||
-                    teacher.photo ||
-                    teacher.profileImage ||
+                    getImageUrl(
+                        teacher
+                    ) ||
                     "images/teacher-placeholder.jpg";
 
 
                 return `
-                    <article class="teacher-card">
+                    <article
+                        class="teacher-card"
+                        data-teacher-index="${index}"
+                    >
 
                         <div class="teacher-image">
 
@@ -2663,6 +3219,7 @@ function renderTeachers(
                                     "Teacher"
                                 )}"
                                 loading="lazy"
+                                onerror="this.onerror=null;this.src='images/teacher-placeholder.jpg';"
                             >
 
                         </div>
@@ -2719,6 +3276,41 @@ function renderTeachers(
 
             }
         ).join("");
+
+
+    /* =====================================================
+       TEACHER CARD CLICK
+    ===================================================== */
+
+    const cards =
+        teacherList.querySelectorAll(
+            ".teacher-card"
+        );
+
+
+    cards.forEach(
+        (card, index) => {
+
+            card.addEventListener(
+                "click",
+                function () {
+
+                    const teacher =
+                        teachers[index];
+
+                    if (teacher) {
+
+                        showTeacherProfile(
+                            teacher
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 }
 
