@@ -3,15 +3,20 @@
 // Kadakati Arar High School
 // ======================================================
 
+
+// ======================================================
+// API BASE URL
+// ======================================================
+
 const API_BASE_URL =
     "https://kadakati-arar-high-school-api.onrender.com/api";
 
 
 // ======================================================
-// TOKEN
+// GET TOKEN
 // ======================================================
 
-let token =
+const token =
     localStorage.getItem("teacherToken");
 
 
@@ -80,7 +85,33 @@ const instagramInput =
 
 
 // ======================================================
-// PROFILE HEADER
+// PHOTO ELEMENTS
+// ======================================================
+
+const photoInput =
+    document.getElementById("photo");
+
+const photoPreview =
+    document.getElementById("photoPreview");
+
+const photoDefaultPreview =
+    document.getElementById(
+        "photoDefaultPreview"
+    );
+
+const previewPhotoBtn =
+    document.getElementById(
+        "previewPhotoBtn"
+    );
+
+const removePhotoBtn =
+    document.getElementById(
+        "removePhotoBtn"
+    );
+
+
+// ======================================================
+// PROFILE HEADER ELEMENTS
 // ======================================================
 
 const profileName =
@@ -103,78 +134,106 @@ const defaultAvatar =
 
 
 // ======================================================
-// ORIGINAL PROFILE
+// ORIGINAL PROFILE DATA
 // ======================================================
 
 let originalProfile = null;
 
 
 // ======================================================
-// AUTH CHECK
+// PAGE AUTH CHECK
 // ======================================================
 
 if (!token) {
 
-    window.location.replace(
-        "../teacher-login/teacher-login.html"
-    );
+    window.location.href =
+        "../teacher-login/teacher-login.html";
 
 }
 
 
 // ======================================================
-// STATUS MESSAGE
+// SHOW STATUS
 // ======================================================
 
 function showStatus(message, type) {
 
-    statusMessage.textContent = message;
+    statusMessage.textContent =
+        message;
 
     statusMessage.className =
         `status-message ${type}`;
 
-    clearTimeout(showStatus.timeout);
+    setTimeout(() => {
 
-    showStatus.timeout =
-        setTimeout(() => {
+        statusMessage.className =
+            "status-message";
 
-            statusMessage.textContent = "";
-
-            statusMessage.className =
-                "status-message";
-
-        }, 4000);
+    }, 4000);
 
 }
 
 
 // ======================================================
-// HANDLE AUTH FAILURE
+// SET PHOTO PREVIEW
 // ======================================================
 
-function handleAuthFailure() {
+function setPhotoPreview(photoUrl, teacherName) {
 
-    localStorage.removeItem("teacherToken");
+    const firstLetter =
+        (teacherName || "Teacher")
+            .charAt(0)
+            .toUpperCase();
 
-    token = null;
 
-    window.location.replace(
-        "../teacher-login/teacher-login.html"
-    );
+    photoPreview.onerror = () => {
+
+        photoPreview.style.display =
+            "none";
+
+        photoDefaultPreview.style.display =
+            "flex";
+
+        photoDefaultPreview.textContent =
+            firstLetter;
+
+    };
+
+
+    if (photoUrl) {
+
+        photoPreview.src =
+            photoUrl;
+
+        photoPreview.style.display =
+            "block";
+
+        photoDefaultPreview.style.display =
+            "none";
+
+    } else {
+
+        photoPreview.removeAttribute("src");
+
+        photoPreview.style.display =
+            "none";
+
+        photoDefaultPreview.style.display =
+            "flex";
+
+        photoDefaultPreview.textContent =
+            firstLetter;
+
+    }
 
 }
 
 
 // ======================================================
-// LOAD PROFILE
+// LOAD TEACHER PROFILE
 // ======================================================
 
 async function loadProfile() {
-
-    if (!token) {
-        handleAuthFailure();
-        return;
-    }
 
     try {
 
@@ -192,21 +251,26 @@ async function loadProfile() {
             );
 
 
-        let data = {};
+        const data =
+            await response.json();
 
-        try {
-            data = await response.json();
-        } catch {
-            data = {};
-        }
 
+        // ----------------------------------------------
+        // TOKEN INVALID / EXPIRED
+        // ----------------------------------------------
 
         if (
             response.status === 401 ||
             response.status === 403
         ) {
 
-            handleAuthFailure();
+            localStorage.removeItem(
+                "teacherToken"
+            );
+
+            window.location.href =
+                "../teacher-login/teacher-login.html";
+
             return;
 
         }
@@ -214,8 +278,7 @@ async function loadProfile() {
 
         if (
             !response.ok ||
-            !data.success ||
-            !data.teacher
+            !data.success
         ) {
 
             throw new Error(
@@ -266,6 +329,10 @@ async function loadProfile() {
 
 function populateProfile(teacher) {
 
+    // ----------------------------------------------
+    // Form
+    // ----------------------------------------------
+
     nameInput.value =
         teacher.name || "";
 
@@ -291,6 +358,18 @@ function populateProfile(teacher) {
         teacher.about || "";
 
 
+    // ----------------------------------------------
+    // Photo
+    // ----------------------------------------------
+
+    photoInput.value =
+        teacher.photo || "";
+
+
+    // ----------------------------------------------
+    // Social Links
+    // ----------------------------------------------
+
     facebookInput.value =
         teacher.socialLinks?.facebook || "";
 
@@ -301,9 +380,12 @@ function populateProfile(teacher) {
         teacher.socialLinks?.instagram || "";
 
 
-    const teacherName =
-        teacher.name?.trim() || "Teacher";
+    // ----------------------------------------------
+    // Header
+    // ----------------------------------------------
 
+    const teacherName =
+        teacher.name || "Teacher";
 
     profileName.textContent =
         teacherName;
@@ -312,25 +394,13 @@ function populateProfile(teacher) {
         teacherName;
 
 
-    const division =
-        teacher.division || "";
-
-    const department =
-        teacher.department || "";
+    profileDepartment.textContent =
+        `${teacher.division || ""} • ${teacher.department || ""}`;
 
 
-    if (division && department) {
-
-        profileDepartment.textContent =
-            `${division} • ${department}`;
-
-    } else {
-
-        profileDepartment.textContent =
-            division || department || "Teacher";
-
-    }
-
+    // ----------------------------------------------
+    // Avatar
+    // ----------------------------------------------
 
     const firstLetter =
         teacherName
@@ -345,10 +415,7 @@ function populateProfile(teacher) {
         firstLetter;
 
 
-    if (
-        teacher.photo &&
-        teacher.photo.trim()
-    ) {
+    if (teacher.photo) {
 
         profilePhoto.src =
             teacher.photo;
@@ -359,17 +426,15 @@ function populateProfile(teacher) {
         defaultAvatar.style.display =
             "none";
 
+        profilePhoto.onerror = () => {
 
-        profilePhoto.onerror =
-            () => {
+            profilePhoto.style.display =
+                "none";
 
-                profilePhoto.style.display =
-                    "none";
+            defaultAvatar.style.display =
+                "flex";
 
-                defaultAvatar.style.display =
-                    "flex";
-
-            };
+        };
 
     } else {
 
@@ -383,14 +448,28 @@ function populateProfile(teacher) {
 
     }
 
+
+    // ----------------------------------------------
+    // Photo Edit Preview
+    // ----------------------------------------------
+
+    setPhotoPreview(
+        teacher.photo || "",
+        teacherName
+    );
+
 }
 
 
 // ======================================================
-// EDIT MODE
+// SET EDIT MODE
 // ======================================================
 
 function setEditMode(enabled) {
+
+    // ----------------------------------------------
+    // Editable fields
+    // ----------------------------------------------
 
     nameInput.disabled =
         !enabled;
@@ -419,6 +498,23 @@ function setEditMode(enabled) {
     instagramInput.disabled =
         !enabled;
 
+    // ----------------------------------------------
+    // Photo
+    // ----------------------------------------------
+
+    photoInput.disabled =
+        !enabled;
+
+    previewPhotoBtn.disabled =
+        !enabled;
+
+    removePhotoBtn.disabled =
+        !enabled;
+
+
+    // ----------------------------------------------
+    // Username & Email remain disabled
+    // ----------------------------------------------
 
     usernameInput.disabled =
         true;
@@ -426,6 +522,10 @@ function setEditMode(enabled) {
     emailInput.disabled =
         true;
 
+
+    // ----------------------------------------------
+    // Buttons
+    // ----------------------------------------------
 
     if (enabled) {
 
@@ -449,6 +549,120 @@ function setEditMode(enabled) {
 
 
 // ======================================================
+// PHOTO PREVIEW BUTTON
+// ======================================================
+
+previewPhotoBtn.addEventListener(
+    "click",
+    () => {
+
+        const photoUrl =
+            photoInput.value.trim();
+
+
+        if (!photoUrl) {
+
+            showStatus(
+                "Please enter a photo URL first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const teacherName =
+            nameInput.value.trim() ||
+            "Teacher";
+
+
+        setPhotoPreview(
+            photoUrl,
+            teacherName
+        );
+
+
+        photoPreview.onload = () => {
+
+            showStatus(
+                "Photo preview loaded successfully.",
+                "success"
+            );
+
+        };
+
+
+        photoPreview.onerror = () => {
+
+            showStatus(
+                "Could not load this image URL.",
+                "error"
+            );
+
+        };
+
+    }
+);
+
+
+// ======================================================
+// REMOVE PHOTO
+// ======================================================
+
+removePhotoBtn.addEventListener(
+    "click",
+    () => {
+
+        photoInput.value =
+            "";
+
+        setPhotoPreview(
+            "",
+            nameInput.value.trim() ||
+            "Teacher"
+        );
+
+    }
+);
+
+
+// ======================================================
+// PHOTO URL LIVE PREVIEW
+// ======================================================
+
+photoInput.addEventListener(
+    "change",
+    () => {
+
+        const photoUrl =
+            photoInput.value.trim();
+
+
+        if (!photoUrl) {
+
+            setPhotoPreview(
+                "",
+                nameInput.value.trim() ||
+                "Teacher"
+            );
+
+            return;
+
+        }
+
+
+        setPhotoPreview(
+            photoUrl,
+            nameInput.value.trim() ||
+            "Teacher"
+        );
+
+    }
+);
+
+
+// ======================================================
 // EDIT BUTTON
 // ======================================================
 
@@ -463,7 +677,7 @@ editBtn.addEventListener(
 
 
 // ======================================================
-// CANCEL
+// CANCEL EDIT
 // ======================================================
 
 cancelBtn.addEventListener(
@@ -495,18 +709,13 @@ profileForm.addEventListener(
         event.preventDefault();
 
 
-        if (!token) {
-
-            handleAuthFailure();
-            return;
-
-        }
-
-
         const updatedData = {
 
             name:
                 nameInput.value.trim(),
+
+            photo:
+                photoInput.value.trim(),
 
             phone:
                 phoneInput.value.trim(),
@@ -539,41 +748,9 @@ profileForm.addEventListener(
         };
 
 
-        if (!updatedData.name) {
-
-            showStatus(
-                "Name is required.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (!updatedData.division) {
-
-            showStatus(
-                "Please select a division.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (!updatedData.department) {
-
-            showStatus(
-                "Department is required.",
-                "error"
-            );
-
-            return;
-
-        }
-
+        // ----------------------------------------------
+        // Disable Save Button
+        // ----------------------------------------------
 
         const saveBtn =
             profileForm.querySelector(
@@ -585,7 +762,8 @@ profileForm.addEventListener(
             saveBtn.textContent;
 
 
-        saveBtn.disabled = true;
+        saveBtn.disabled =
+            true;
 
         saveBtn.textContent =
             "Saving...";
@@ -618,21 +796,26 @@ profileForm.addEventListener(
                 );
 
 
-            let data = {};
+            const data =
+                await response.json();
 
-            try {
-                data = await response.json();
-            } catch {
-                data = {};
-            }
 
+            // ------------------------------------------
+            // AUTH ERROR
+            // ------------------------------------------
 
             if (
                 response.status === 401 ||
                 response.status === 403
             ) {
 
-                handleAuthFailure();
+                localStorage.removeItem(
+                    "teacherToken"
+                );
+
+                window.location.href =
+                    "../teacher-login/teacher-login.html";
+
                 return;
 
             }
@@ -640,8 +823,7 @@ profileForm.addEventListener(
 
             if (
                 !response.ok ||
-                !data.success ||
-                !data.teacher
+                !data.success
             ) {
 
                 throw new Error(
@@ -651,6 +833,10 @@ profileForm.addEventListener(
 
             }
 
+
+            // ------------------------------------------
+            // Update Local Profile
+            // ------------------------------------------
 
             originalProfile =
                 JSON.parse(
@@ -710,7 +896,7 @@ logoutBtn.addEventListener(
     () => {
 
         const confirmLogout =
-            window.confirm(
+            confirm(
                 "Are you sure you want to logout?"
             );
 
@@ -725,18 +911,15 @@ logoutBtn.addEventListener(
         );
 
 
-        window.location.replace(
-            "../teacher-login/teacher-login.html"
-        );
+        window.location.href =
+            "../teacher-login/teacher-login.html";
 
     }
 );
 
 
 // ======================================================
-// START DASHBOARD
+// START
 // ======================================================
-
-setEditMode(false);
 
 loadProfile();
