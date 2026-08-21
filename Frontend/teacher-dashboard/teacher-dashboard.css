@@ -404,6 +404,22 @@ body {
     margin-bottom: 30px;
 }
 
+/* IMPORTANT:
+   HTML uses .photo-preview-wrapper
+*/
+
+.photo-preview-wrapper {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #176B45;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Support both class names safely */
+
 .photo-preview-container {
     width: 105px;
     height: 105px;
@@ -701,6 +717,7 @@ body {
         align-items: flex-start;
     }
 
+    .photo-preview-wrapper,
     .photo-preview-container {
         width: 95px;
         height: 95px;
