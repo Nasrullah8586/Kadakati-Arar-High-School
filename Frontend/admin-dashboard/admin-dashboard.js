@@ -3,7 +3,7 @@
    ADMIN DASHBOARD
 ========================================================= */
 
-const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com";
+const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com/api";
 
 
 /* =========================================================
