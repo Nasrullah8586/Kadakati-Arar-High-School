@@ -2,7 +2,8 @@
    API CONFIGURATION
 ========================================================= */
 
-const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com/api";
+const API_BASE_URL =
+    "https://kadakati-arar-high-school-api.onrender.com/api";
 
 
 /* =========================================================
@@ -466,7 +467,7 @@ async function loadSiteContent() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/api/site-content`
+                `${API_BASE_URL}/site-content`
             );
 
 
@@ -802,7 +803,7 @@ async function fetchNotices() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/api/notices`
+            `${API_BASE_URL}/notices`
         );
 
 
@@ -1302,7 +1303,7 @@ async function fetchNewsEvents() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/api/news-events`
+            `${API_BASE_URL}/news-events`
         );
 
 
@@ -1346,7 +1347,6 @@ async function fetchNewsEvents() {
 
 /* =========================================================
    HOMEPAGE NEWS & EVENTS
-   CLICK → news-events.html
 ========================================================= */
 
 async function loadNewsEvents() {
@@ -1886,7 +1886,7 @@ async function fetchGallery() {
 
     const response =
         await fetch(
-            `${API_BASE_URL}/api/gallery`
+            `${API_BASE_URL}/gallery`
         );
 
 
@@ -2546,7 +2546,7 @@ async function loadTeachers() {
 
         const response =
             await fetch(
-                `${API_BASE_URL}/api/teachers`
+                `${API_BASE_URL}/teachers`
             );
 
 
