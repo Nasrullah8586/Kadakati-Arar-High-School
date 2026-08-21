@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gallery | Kadakati Arar High School</title>
+
+    <link rel="stylesheet" href="gallery.css">
+</head>
+
+<body>
+
+<header class="gallery-navbar">
+
+    <div class="gallery-brand">
+
+        <a href="index.html#home" class="logo-area">
+
+            <span class="logo-mark">
+                K
+            </span>
+
+            <div class="school-name">
+
+                <h2>
+                    Kadakati Arar
+                </h2>
+
+                <span>
+                    HIGH SCHOOL
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <nav class="gallery-nav-links">
+
+        <a href="index.html#home">
+            Home
+        </a>
+
+        <a href="index.html#about">
+            About
+        </a>
+
+        <a href="history.html">
+            History
+        </a>
+
+        <a href="index.html#notice">
+            Notice
+        </a>
+
+        <a href="index.html#news-events">
+            News &amp; Events
+        </a>
+
+        <a
+            href="gallery.html"
+            class="active"
+        >
+            Gallery
+        </a>
+
+        <a href="teachers.html">
+            Teachers
+        </a>
+
+        <a href="index.html#contact">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+    <!-- =====================================================
+         GALLERY HERO
+    ====================================================== -->
+
+    <section class="gallery-hero">
+
+        <div class="gallery-hero-overlay"></div>
+
+        <div class="gallery-hero-content">
+
+            <span>
+                MEMORABLE MOMENTS
+            </span>
+
+            <h1>
+                School Gallery
+            </h1>
+
+            <p>
+                Explore memorable moments and special events
+                from Kadakati Arar High School.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         GALLERY SECTION
+    ====================================================== -->
+
+    <section class="gallery-section">
+
+        <div class="gallery-container">
+
+            <div class="gallery-heading">
+
+                <span class="section-label">
+                    OUR MEMORIES
+                </span>
+
+                <h2>
+                    Moments We Remember
+                </h2>
+
+                <div class="heading-line"></div>
+
+                <p>
+                    Browse our collection of school activities,
+                    events and memorable moments.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 GALLERY LIST
+            ================================================== -->
+
+            <div
+                id="galleryList"
+                class="gallery-list"
+            >
+                <!-- Gallery images from backend -->
+            </div>
+
+
+            <!-- =================================================
+                 LOADING
+            ================================================== -->
+
+            <div
+                id="galleryLoading"
+                class="gallery-loading"
+            >
+                Loading gallery...
+            </div>
+
+
+            <!-- =================================================
+                 EMPTY
+            ================================================== -->
+
+            <div
+                id="galleryEmpty"
+                class="gallery-empty"
+                hidden
+            >
+                No gallery photos available.
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FULL IMAGE VIEWER / LIGHTBOX
+========================================================= -->
+
+<div
+    id="imageLightbox"
+    class="image-lightbox"
+    aria-hidden="true"
+>
+
+    <button
+        id="lightboxClose"
+        class="lightbox-close"
+        type="button"
+        aria-label="Close image"
+    >
+        &times;
+    </button>
+
+
+    <div class="lightbox-content">
+
+        <img
+            id="lightboxImage"
+            src=""
+            alt="Gallery image"
+        >
+
+        <div
+            id="lightboxCaption"
+            class="lightbox-caption"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="gallery-footer">
+
+    <div class="footer-content">
+
+        <h3>
+            Kadakati Arar High School
+        </h3>
+
+        <p>
+            Knowledge • Discipline • Morality
+        </p>
+
+        <p class="copyright">
+            © 2026 Kadakati Arar High School.
+            All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const galleryList = document.getElementById("galleryList");
+    const galleryLoading = document.getElementById("galleryLoading");
+    const galleryEmpty = document.getElementById("galleryEmpty");
+
+    const imageLightbox = document.getElementById("imageLightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+
+    /*
+     * Gallery API
+     */
+    const GALLERY_API = "http://localhost:5000/api/gallery";
+
+
+    /*
+     * Open full image
+     */
+    function openLightbox(imageUrl, caption) {
+
+        lightboxImage.src = imageUrl;
+
+        lightboxCaption.textContent =
+            caption || "Kadakati Arar High School";
+
+        imageLightbox.classList.add("show");
+
+        imageLightbox.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("lightbox-open");
+    }
+
+
+    /*
+     * Close full image
+     */
+    function closeLightbox() {
+
+        imageLightbox.classList.remove("show");
+
+        imageLightbox.setAttribute("aria-hidden", "true");
+
+        document.body.classList.remove("lightbox-open");
+
+        setTimeout(function () {
+
+            lightboxImage.src = "";
+
+        }, 250);
+    }
+
+
+    /*
+     * Close button
+     */
+    lightboxClose.addEventListener(
+        "click",
+        closeLightbox
+    );
+
+
+    /*
+     * Click outside image
+     */
+    imageLightbox.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === imageLightbox) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * ESC key
+     */
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                imageLightbox.classList.contains("show")
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Create gallery card
+     */
+    function createGalleryCard(item) {
+
+        const card = document.createElement("article");
+
+        card.className = "gallery-card";
+
+
+        const imageWrapper =
+            document.createElement("div");
+
+        imageWrapper.className =
+            "gallery-image-wrapper";
+
+
+        const image =
+            document.createElement("img");
+
+        image.className =
+            "gallery-image";
+
+
+        /*
+         * Support common backend field names
+         */
+        const imageUrl =
+            item.imageUrl ||
+            item.image ||
+            item.url ||
+            item.secure_url ||
+            (
+                item.image &&
+                item.image.url
+            );
+
+
+        if (!imageUrl) {
+            return null;
+        }
+
+
+        image.src = imageUrl;
+
+        image.alt =
+            item.caption ||
+            "Kadakati Arar High School Gallery";
+
+
+        image.loading = "lazy";
+
+
+        image.addEventListener(
+            "error",
+            function () {
+
+                card.style.display = "none";
+
+            }
+        );
+
+
+        imageWrapper.appendChild(image);
+
+
+        /*
+         * Zoom icon
+         */
+        const zoomIcon =
+            document.createElement("span");
+
+        zoomIcon.className =
+            "gallery-zoom-icon";
+
+        zoomIcon.innerHTML = "↗";
+
+        imageWrapper.appendChild(zoomIcon);
+
+
+        /*
+         * Caption
+         */
+        const caption =
+            document.createElement("div");
+
+        caption.className =
+            "gallery-caption";
+
+
+        const captionText =
+            item.caption ||
+            "Kadakati Arar High School";
+
+
+        caption.textContent = captionText;
+
+
+        card.appendChild(imageWrapper);
+
+        card.appendChild(caption);
+
+
+        /*
+         * Open image
+         */
+        card.addEventListener(
+            "click",
+            function () {
+
+                openLightbox(
+                    imageUrl,
+                    captionText
+                );
+
+            }
+        );
+
+
+        return card;
+    }
+
+
+    /*
+     * Load gallery
+     */
+    async function loadGallery() {
+
+        try {
+
+            galleryLoading.hidden = false;
+
+            galleryEmpty.hidden = true;
+
+
+            const response =
+                await fetch(GALLERY_API);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load gallery"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            /*
+             * Support different API response structures
+             */
+            let galleryData = [];
+
+            if (Array.isArray(result)) {
+
+                galleryData = result;
+
+            } else if (
+                Array.isArray(result.data)
+            ) {
+
+                galleryData = result.data;
+
+            } else if (
+                Array.isArray(result.gallery)
+            ) {
+
+                galleryData = result.gallery;
+
+            } else if (
+                Array.isArray(result.galleries)
+            ) {
+
+                galleryData = result.galleries;
+
+            }
+
+
+            galleryList.innerHTML = "";
+
+
+            if (galleryData.length === 0) {
+
+                galleryLoading.hidden = true;
+
+                galleryEmpty.hidden = false;
+
+                return;
+
+            }
+
+
+            galleryData.forEach(function (item) {
+
+                const card =
+                    createGalleryCard(item);
+
+
+                if (card) {
+
+                    galleryList.appendChild(card);
+
+                }
+
+            });
+
+
+            galleryLoading.hidden = true;
+
+
+            if (
+                galleryList.children.length === 0
+            ) {
+
+                galleryEmpty.hidden = false;
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Gallery Error:",
+                error
+            );
+
+
+            galleryLoading.hidden = true;
+
+            galleryEmpty.hidden = false;
+
+            galleryEmpty.textContent =
+                "Unable to load gallery photos.";
+
+        }
+
+    }
+
+
+    /*
+     * Start
+     */
+    loadGallery();
+
+});
+
+</script>
+
+</body>
+
+</html>

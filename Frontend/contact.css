@@ -1,0 +1,373 @@
+/* =========================================================
+   CONTACT PAGE
+========================================================= */
+
+.contact-page {
+    min-height: 100vh;
+    padding: 150px 6% 90px;
+    background: #f7faf8;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.contact-page-header {
+    max-width: 850px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.contact-page-header h1 {
+    margin: 10px 0 18px;
+    font-size: 48px;
+    color: #176B45;
+}
+
+.contact-page-header p {
+    margin: 0;
+    color: #666;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   CONTACT CARDS
+========================================================= */
+
+.contact-page-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 25px;
+}
+
+
+.contact-page-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+
+    padding: 30px 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4ebe7;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.contact-page-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #176B45;
+
+    box-shadow:
+        0 16px 35px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================================
+   CONTACT ICON
+========================================================= */
+
+.contact-card-icon {
+    flex-shrink: 0;
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #e8f4ee;
+
+    color: #176B45;
+
+    font-size: 25px;
+}
+
+
+.contact-page-card h2 {
+    margin: 2px 0 10px;
+
+    color: #1d2923;
+
+    font-size: 21px;
+}
+
+
+.contact-page-card p {
+    margin: 0;
+
+    color: #666;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   GOOGLE MAP SECTION
+========================================================= */
+
+.contact-map-section {
+    max-width: 850px;
+
+    margin: 60px auto 0;
+
+    padding: 45px 30px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e4ebe7;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+
+.contact-map-section h2 {
+    margin: 0 0 10px;
+
+    color: #176B45;
+
+    font-size: 30px;
+}
+
+
+.contact-map-section p {
+    margin: 0 0 25px;
+
+    color: #666;
+
+    line-height: 1.7;
+}
+
+
+.contact-map-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 13px 24px;
+
+    border-radius: 10px;
+
+    background: #176B45;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.contact-map-button::before {
+    content: "📍";
+}
+
+
+.contact-map-button:hover {
+    background: #0f5033;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   SOCIAL MEDIA
+========================================================= */
+
+.contact-social-section {
+    max-width: 900px;
+
+    margin: 55px auto 0;
+
+    text-align: center;
+}
+
+
+.contact-social-section h2 {
+    margin: 0 0 25px;
+
+    color: #176B45;
+
+    font-size: 30px;
+}
+
+
+.contact-social-links {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+}
+
+
+.contact-social-links a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 145px;
+
+    justify-content: center;
+
+    padding: 12px 18px;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4ebe7;
+
+    color: #176B45;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.contact-social-links a:hover {
+    transform: translateY(-3px);
+
+    background: #e8f4ee;
+
+    border-color: #176B45;
+}
+
+
+/* =========================================================
+   SOCIAL ICON
+========================================================= */
+
+.contact-social-icon {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176B45;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .contact-page {
+        padding: 120px 20px 60px;
+    }
+
+
+    .contact-page-header h1 {
+        font-size: 36px;
+    }
+
+
+    .contact-page-header p {
+        font-size: 15px;
+    }
+
+
+    .contact-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .contact-page-card {
+        padding: 24px 20px;
+    }
+
+
+    .contact-map-section {
+        padding: 35px 20px;
+    }
+
+
+    .contact-map-section h2,
+    .contact-social-section h2 {
+        font-size: 25px;
+    }
+
+
+    .contact-social-links {
+        flex-direction: column;
+    }
+
+
+    .contact-social-links a {
+        width: 100%;
+        max-width: 300px;
+    }
+
+}

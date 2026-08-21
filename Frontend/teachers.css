@@ -1,0 +1,671 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7faf8;
+    color: #1d2b24;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.teachers-navbar {
+    width: 100%;
+    min-height: 78px;
+
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e4ebe7;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.teachers-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: inherit;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176B45;
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.school-name {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.1;
+}
+
+.school-name h2 {
+    color: #176B45;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.school-name span {
+    margin-top: 4px;
+
+    color: #68756e;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.teachers-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 25px;
+}
+
+.teachers-nav-links a {
+    position: relative;
+
+    padding: 8px 0;
+
+    color: #34433b;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: color 0.3s ease;
+}
+
+.teachers-nav-links a:hover {
+    color: #176B45;
+}
+
+.teachers-nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    background: #176B45;
+
+    transition: width 0.3s ease;
+}
+
+.teachers-nav-links a:hover::after,
+.teachers-nav-links a.active::after {
+    width: 100%;
+}
+
+.teachers-nav-links a.active {
+    color: #176B45;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.teachers-hero {
+    min-height: 430px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(23, 107, 69, 0.88),
+            rgba(13, 70, 45, 0.92)
+        ),
+        url("images/school.jpg") center / cover no-repeat;
+}
+
+.teachers-hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        rgba(23, 107, 69, 0.35),
+        rgba(0, 0, 0, 0.2)
+    );
+}
+
+.teachers-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: min(900px, 90%);
+
+    text-align: center;
+
+    color: #ffffff;
+}
+
+.teachers-hero-content span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    opacity: 0.9;
+}
+
+.teachers-hero-content h1 {
+    margin-bottom: 18px;
+
+    font-size: clamp(40px, 6vw, 70px);
+
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+.teachers-hero-content p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   MAIN SECTION
+========================================================= */
+
+.teachers-section {
+    padding: 90px 0;
+
+    background: #ffffff;
+}
+
+.teachers-container {
+    width: min(1150px, 90%);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.teachers-heading {
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+.section-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #176B45;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+.teachers-heading h2 {
+    color: #1b3025;
+
+    font-size: clamp(30px, 4vw, 44px);
+
+    line-height: 1.2;
+}
+
+.heading-line {
+    width: 60px;
+    height: 3px;
+
+    margin: 18px auto;
+    
+    background: #176B45;
+}
+
+.teachers-heading p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: #68756e;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.teacher-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-bottom: 45px;
+}
+
+.filter-btn {
+    padding: 10px 24px;
+
+    border: 1px solid #cddbd3;
+
+    border-radius: 30px;
+
+    background: #ffffff;
+
+    color: #405048;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.filter-btn:hover {
+    border-color: #176B45;
+
+    color: #176B45;
+
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    border-color: #176B45;
+
+    background: #176B45;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TEACHER LIST
+========================================================= */
+
+.teacher-list {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+
+/* =========================================================
+   TEACHER CARD
+========================================================= */
+
+.teacher-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e1eae5;
+
+    border-radius: 14px;
+
+    box-shadow: 0 8px 25px rgba(23, 107, 69, 0.06);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.teacher-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow: 0 16px 35px rgba(23, 107, 69, 0.14);
+}
+
+
+/* =========================================================
+   TEACHER IMAGE
+========================================================= */
+
+.teacher-image {
+    width: 100%;
+
+    height: 250px;
+
+    overflow: hidden;
+
+    background: #e9f0ec;
+}
+
+.teacher-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.4s ease;
+}
+
+.teacher-card:hover .teacher-image img {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   TEACHER INFO
+========================================================= */
+
+.teacher-info {
+    padding: 20px;
+
+    text-align: center;
+}
+
+.teacher-info h3 {
+    margin-bottom: 6px;
+
+    color: #1b3025;
+
+    font-size: 19px;
+}
+
+.teacher-info .teacher-designation {
+    margin-bottom: 8px;
+
+    color: #176B45;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.teacher-info .teacher-division {
+    display: inline-block;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    background: #edf5f0;
+
+    color: #527063;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.teacher-loading {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #68756e;
+
+    font-size: 15px;
+}
+
+.teacher-loading.hidden {
+    display: none;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.teacher-empty {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #68756e;
+
+    font-size: 15px;
+}
+
+.teacher-empty[hidden] {
+    display: none;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.teachers-footer {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    background: #123d2b;
+
+    color: #ffffff;
+}
+
+.footer-content h3 {
+    margin-bottom: 8px;
+
+    font-size: 20px;
+}
+
+.footer-content p {
+    color: rgba(255, 255, 255, 0.8);
+
+    font-size: 14px;
+}
+
+.footer-content .copyright {
+    margin-top: 15px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .teachers-navbar {
+        padding: 0 3%;
+    }
+
+    .teachers-nav-links {
+        gap: 17px;
+    }
+
+    .teachers-nav-links a {
+        font-size: 13px;
+    }
+
+    .teacher-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .teachers-navbar {
+        flex-direction: column;
+
+        padding: 18px 5%;
+    }
+
+    .teachers-nav-links {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px 20px;
+    }
+
+    .teachers-hero {
+        min-height: 380px;
+    }
+
+    .teacher-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .teachers-navbar {
+        position: relative;
+    }
+
+    .school-name h2 {
+        font-size: 16px;
+    }
+
+    .teachers-nav-links {
+        gap: 8px 15px;
+    }
+
+    .teachers-nav-links a {
+        font-size: 12px;
+    }
+
+    .teachers-hero {
+        min-height: 330px;
+    }
+
+    .teachers-hero-content h1 {
+        font-size: 38px;
+    }
+
+    .teachers-hero-content p {
+        font-size: 14px;
+    }
+
+    .teachers-section {
+        padding: 65px 0;
+    }
+
+    .teacher-list {
+        grid-template-columns: 1fr;
+    }
+
+    .teacher-image {
+        height: 300px;
+    }
+
+    .teacher-filters {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 9px 18px;
+    }
+}

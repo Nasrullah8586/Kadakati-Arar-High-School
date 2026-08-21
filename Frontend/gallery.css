@@ -1,0 +1,780 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7faf8;
+    color: #1d2b24;
+    line-height: 1.6;
+}
+
+body.lightbox-open {
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.gallery-navbar {
+    width: 100%;
+    min-height: 78px;
+
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e4ebe7;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.gallery-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: inherit;
+    text-decoration: none;
+}
+
+.logo-mark {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176B45;
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.school-name {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.1;
+}
+
+.school-name h2 {
+    color: #176B45;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.school-name span {
+    margin-top: 4px;
+
+    color: #68756e;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.gallery-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 25px;
+}
+
+.gallery-nav-links a {
+    position: relative;
+
+    padding: 8px 0;
+
+    color: #34433b;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: color 0.3s ease;
+}
+
+.gallery-nav-links a:hover {
+    color: #176B45;
+}
+
+.gallery-nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    background: #176B45;
+
+    transition: width 0.3s ease;
+}
+
+.gallery-nav-links a:hover::after,
+.gallery-nav-links a.active::after {
+    width: 100%;
+}
+
+.gallery-nav-links a.active {
+    color: #176B45;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.gallery-hero {
+    min-height: 430px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(23, 107, 69, 0.88),
+            rgba(13, 70, 45, 0.92)
+        ),
+        url("images/school.jpg") center / cover no-repeat;
+}
+
+.gallery-hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        rgba(23, 107, 69, 0.35),
+        rgba(0, 0, 0, 0.2)
+    );
+}
+
+.gallery-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: min(900px, 90%);
+
+    text-align: center;
+
+    color: #ffffff;
+}
+
+.gallery-hero-content span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    opacity: 0.9;
+}
+
+.gallery-hero-content h1 {
+    margin-bottom: 18px;
+
+    font-size: clamp(40px, 6vw, 70px);
+
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+.gallery-hero-content p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   GALLERY SECTION
+========================================================= */
+
+.gallery-section {
+    padding: 90px 0;
+
+    background: #ffffff;
+}
+
+.gallery-container {
+    width: min(1200px, 90%);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.gallery-heading {
+    margin-bottom: 50px;
+
+    text-align: center;
+}
+
+.section-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #176B45;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+.gallery-heading h2 {
+    color: #1b3025;
+
+    font-size: clamp(30px, 4vw, 44px);
+
+    line-height: 1.2;
+}
+
+.heading-line {
+    width: 60px;
+    height: 3px;
+
+    margin: 18px auto;
+
+    background: #176B45;
+}
+
+.gallery-heading p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: #68756e;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   GALLERY GRID
+========================================================= */
+
+.gallery-list {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 28px;
+}
+
+
+/* =========================================================
+   GALLERY CARD
+========================================================= */
+
+.gallery-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e9e4;
+
+    border-radius: 14px;
+
+    box-shadow: 0 8px 25px rgba(23, 107, 69, 0.07);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.gallery-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow: 0 16px 35px rgba(23, 107, 69, 0.14);
+}
+
+
+/* =========================================================
+   IMAGE WRAPPER
+========================================================= */
+
+.gallery-image-wrapper {
+    width: 100%;
+
+    height: 280px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #e9f0ec;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+.gallery-card:hover .gallery-image {
+    transform: scale(1.06);
+}
+
+
+/* =========================================================
+   ZOOM ICON
+========================================================= */
+
+.gallery-zoom-icon {
+    position: absolute;
+
+    right: 15px;
+    bottom: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    opacity: 0;
+
+    transform: translateY(8px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.gallery-card:hover .gallery-zoom-icon {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   CAPTION
+========================================================= */
+
+.gallery-caption {
+    min-height: 65px;
+
+    padding: 17px 18px;
+
+    display: flex;
+    align-items: center;
+
+    color: #34483d;
+
+    background: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.gallery-loading {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: #68756e;
+
+    font-size: 15px;
+}
+
+.gallery-loading[hidden] {
+    display: none;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.gallery-empty {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: #68756e;
+
+    font-size: 15px;
+}
+
+.gallery-empty[hidden] {
+    display: none;
+}
+
+
+/* =========================================================
+   LIGHTBOX
+========================================================= */
+
+.image-lightbox {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.88);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.image-lightbox.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* =========================================================
+   LIGHTBOX CONTENT
+========================================================= */
+
+.lightbox-content {
+    max-width: 1200px;
+    max-height: 90vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: relative;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+
+    max-height: 78vh;
+
+    display: block;
+
+    object-fit: contain;
+
+    border-radius: 5px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================================
+   LIGHTBOX CAPTION
+========================================================= */
+
+.lightbox-caption {
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 12px 20px;
+
+    text-align: center;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.lightbox-close {
+    position: absolute;
+
+    top: 25px;
+    right: 30px;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    color: #ffffff;
+
+    font-size: 34px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.28);
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.gallery-footer {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    background: #123d2b;
+
+    color: #ffffff;
+}
+
+.footer-content h3 {
+    margin-bottom: 8px;
+
+    font-size: 20px;
+}
+
+.footer-content p {
+    color: rgba(255, 255, 255, 0.8);
+
+    font-size: 14px;
+}
+
+.footer-content .copyright {
+    margin-top: 15px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .gallery-navbar {
+        padding: 0 3%;
+    }
+
+    .gallery-nav-links {
+        gap: 17px;
+    }
+
+    .gallery-nav-links a {
+        font-size: 13px;
+    }
+
+    .gallery-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .gallery-navbar {
+        flex-direction: column;
+
+        padding: 18px 5%;
+    }
+
+    .gallery-nav-links {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px 20px;
+    }
+
+    .gallery-hero {
+        min-height: 380px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .gallery-navbar {
+        position: relative;
+    }
+
+    .school-name h2 {
+        font-size: 16px;
+    }
+
+    .gallery-nav-links {
+        gap: 8px 15px;
+    }
+
+    .gallery-nav-links a {
+        font-size: 12px;
+    }
+
+    .gallery-hero {
+        min-height: 330px;
+    }
+
+    .gallery-hero-content h1 {
+        font-size: 38px;
+    }
+
+    .gallery-hero-content p {
+        font-size: 14px;
+    }
+
+    .gallery-section {
+        padding: 65px 0;
+    }
+
+    .gallery-list {
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+    }
+
+    .gallery-image-wrapper {
+        height: 280px;
+    }
+
+    .image-lightbox {
+        padding: 20px;
+    }
+
+    .lightbox-close {
+        top: 15px;
+        right: 15px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 28px;
+    }
+
+    .lightbox-content img {
+        max-height: 72vh;
+    }
+
+}

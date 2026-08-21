@@ -1,0 +1,514 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7faf8;
+    color: #1d2b24;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.history-navbar {
+    width: 100%;
+    min-height: 78px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e4ebe7;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.history-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-mark {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176B45;
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.school-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.school-name h2 {
+    color: #176B45;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.school-name span {
+    margin-top: 4px;
+
+    color: #68756e;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
+
+.history-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.history-nav-links a {
+    position: relative;
+
+    padding: 8px 0;
+
+    color: #34433b;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: color 0.3s ease;
+}
+
+.history-nav-links a:hover {
+    color: #176B45;
+}
+
+.history-nav-links a::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    background: #176B45;
+
+    transition: width 0.3s ease;
+}
+
+.history-nav-links a:hover::after,
+.history-nav-links a.active::after {
+    width: 100%;
+}
+
+.history-nav-links a.active {
+    color: #176B45;
+}
+
+
+/* =========================================================
+   HISTORY HERO
+========================================================= */
+
+.history-hero {
+    min-height: 430px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(23, 107, 69, 0.88),
+            rgba(13, 70, 45, 0.92)
+        ),
+        url("images/school.jpg") center / cover no-repeat;
+}
+
+.history-hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        rgba(23, 107, 69, 0.35),
+        rgba(0, 0, 0, 0.2)
+    );
+}
+
+.history-hero-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(900px, 90%);
+
+    text-align: center;
+    color: #ffffff;
+}
+
+.history-hero-content span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    opacity: 0.9;
+}
+
+.history-hero-content h1 {
+    margin-bottom: 18px;
+
+    font-size: clamp(40px, 6vw, 70px);
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+.history-hero-content p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    font-size: 17px;
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* =========================================================
+   COMMON CONTAINER
+========================================================= */
+
+.history-container {
+    width: min(1100px, 90%);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HISTORY CONTENT
+========================================================= */
+
+.history-content-section {
+    padding: 90px 0;
+    background: #ffffff;
+}
+
+.history-heading {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #176B45;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+.history-heading h2 {
+    color: #1b3025;
+
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.2;
+}
+
+.heading-line {
+    width: 60px;
+    height: 3px;
+
+    margin: 18px auto 0;
+
+    background: #176B45;
+}
+
+.history-content {
+    width: min(850px, 100%);
+    margin: 0 auto;
+
+    padding: 40px;
+
+    background: #f7faf8;
+
+    border-left: 4px solid #176B45;
+
+    border-radius: 0 12px 12px 0;
+
+    box-shadow: 0 8px 30px rgba(23, 107, 69, 0.07);
+}
+
+.history-content p {
+    color: #53635b;
+
+    font-size: 17px;
+    line-height: 2;
+
+    white-space: pre-line;
+}
+
+
+/* =========================================================
+   VALUES SECTION
+========================================================= */
+
+.history-values-section {
+    padding: 90px 0;
+
+    background: #f3f8f5;
+}
+
+.values-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.value-card {
+    padding: 35px 28px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e3ebe6;
+    border-radius: 14px;
+
+    box-shadow: 0 8px 25px rgba(23, 107, 69, 0.06);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow: 0 15px 35px rgba(23, 107, 69, 0.12);
+}
+
+.value-icon {
+    width: 62px;
+    height: 62px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #176B45;
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.value-card h3 {
+    margin-bottom: 12px;
+
+    color: #1b3025;
+
+    font-size: 22px;
+}
+
+.value-card p {
+    color: #66746d;
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.history-footer {
+    padding: 45px 20px;
+
+    text-align: center;
+
+    background: #123d2b;
+    color: #ffffff;
+}
+
+.footer-content h3 {
+    margin-bottom: 8px;
+
+    font-size: 20px;
+}
+
+.footer-content p {
+    color: rgba(255, 255, 255, 0.8);
+
+    font-size: 14px;
+}
+
+.footer-content .copyright {
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .history-navbar {
+        padding: 0 3%;
+    }
+
+    .history-nav-links {
+        gap: 17px;
+    }
+
+    .history-nav-links a {
+        font-size: 13px;
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .history-navbar {
+        flex-direction: column;
+
+        padding: 18px 5%;
+    }
+
+    .history-nav-links {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px 20px;
+    }
+
+    .history-hero {
+        min-height: 380px;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .history-navbar {
+        position: relative;
+    }
+
+    .school-name h2 {
+        font-size: 16px;
+    }
+
+    .history-nav-links {
+        gap: 8px 15px;
+    }
+
+    .history-nav-links a {
+        font-size: 12px;
+    }
+
+    .history-hero {
+        min-height: 330px;
+    }
+
+    .history-hero-content h1 {
+        font-size: 38px;
+    }
+
+    .history-hero-content p {
+        font-size: 14px;
+    }
+
+    .history-content-section,
+    .history-values-section {
+        padding: 65px 0;
+    }
+
+    .history-content {
+        padding: 25px 20px;
+    }
+
+    .history-content p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+}

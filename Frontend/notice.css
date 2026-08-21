@@ -1,0 +1,423 @@
+/* =========================================================
+   NOTICE PAGE
+========================================================= */
+
+.notice-page {
+    min-height: 100vh;
+    padding: 150px 6% 90px;
+    background: #f7faf8;
+}
+
+.notice-page-header {
+    max-width: 850px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.notice-page-header h1 {
+    margin: 10px 0 18px;
+    font-size: 48px;
+    color: #176B45;
+}
+
+.notice-page-header p {
+    margin: 0;
+    color: #666;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   NOTICE LIST
+========================================================= */
+
+.notice-page-list {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(300px, 1fr)
+    );
+
+    gap: 25px;
+}
+
+
+.notice-page-card {
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    border: 1px solid #e4ebe7;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.notice-page-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 16px 35px rgba(0, 0, 0, 0.10);
+
+    border-color: #176B45;
+}
+
+
+.notice-page-card .notice-date {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #176B45;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+.notice-page-card h2 {
+    margin: 0 0 14px;
+
+    color: #1d2923;
+
+    font-size: 24px;
+
+    line-height: 1.35;
+}
+
+
+.notice-page-card p {
+    margin: 0;
+
+    color: #666;
+
+    font-size: 15px;
+
+    line-height: 1.75;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 4;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+.notice-category {
+    display: inline-block;
+
+    margin-top: 18px;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #e8f4ee;
+
+    color: #176B45;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.notice-view-text {
+    margin-top: 20px;
+
+    color: #176B45;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   EMPTY / ERROR
+========================================================= */
+
+.notice-page-list > p {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #777;
+}
+
+
+/* =========================================================
+   NOTICE MODAL
+========================================================= */
+
+.notice-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+}
+
+
+.notice-modal.show {
+    display: flex;
+}
+
+
+.notice-modal-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(5px);
+}
+
+
+.notice-modal-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: min(850px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    padding: 40px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.25);
+
+    animation:
+        noticeModalOpen 0.25s ease;
+}
+
+
+@keyframes noticeModalOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+.notice-modal-close {
+    position: absolute;
+
+    top: 15px;
+    right: 18px;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #176B45;
+
+    color: #ffffff;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.notice-modal-close:hover {
+    transform: rotate(90deg);
+
+    background: #0f5033;
+}
+
+
+.notice-modal-date {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #176B45;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.notice-modal-content h2 {
+    margin: 0 50px 20px 0;
+
+    color: #176B45;
+
+    font-size: 32px;
+
+    line-height: 1.35;
+}
+
+
+.notice-modal-description {
+    color: #555;
+
+    font-size: 16px;
+
+    line-height: 1.9;
+
+    white-space: pre-line;
+}
+
+
+.notice-modal-category {
+    display: inline-block;
+
+    margin-bottom: 20px;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+
+    background: #e8f4ee;
+
+    color: #176B45;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.notice-attachment-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 25px;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    background: #176B45;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.notice-attachment-button:hover {
+    background: #0f5033;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .notice-page {
+        padding: 120px 20px 60px;
+    }
+
+
+    .notice-page-header h1 {
+        font-size: 36px;
+    }
+
+
+    .notice-page-header p {
+        font-size: 15px;
+    }
+
+
+    .notice-page-list {
+        grid-template-columns: 1fr;
+    }
+
+
+    .notice-modal {
+        padding: 15px;
+    }
+
+
+    .notice-modal-content {
+        padding: 30px 22px;
+
+        border-radius: 16px;
+    }
+
+
+    .notice-modal-content h2 {
+        font-size: 25px;
+
+        margin-right: 35px;
+    }
+
+
+    .notice-modal-description {
+        font-size: 15px;
+    }
+
+}
