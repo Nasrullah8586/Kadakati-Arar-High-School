@@ -6,6 +6,11 @@
 const API_BASE_URL =
     "https://kadakati-arar-high-school-api.onrender.com/api";
 
+
+// ======================================================
+// GET TOKEN
+// ======================================================
+
 const token =
     localStorage.getItem("teacherToken");
 
@@ -84,21 +89,20 @@ const photoInput =
 const browsePhotoBtn =
     document.getElementById("browsePhotoBtn");
 
-const previewPhotoBtn =
-    document.getElementById("previewPhotoBtn");
-
 const removePhotoBtn =
     document.getElementById("removePhotoBtn");
 
 const photoPreview =
     document.getElementById("photoPreview");
 
-const photoDefault =
-    document.getElementById("photoDefault");
+const photoPreviewPlaceholder =
+    document.getElementById(
+        "photoPreviewPlaceholder"
+    );
 
 
 // ======================================================
-// PROFILE HEADER
+// PROFILE HEADER ELEMENTS
 // ======================================================
 
 const profileName =
@@ -121,20 +125,23 @@ const defaultAvatar =
 
 
 // ======================================================
-// VARIABLES
+// ORIGINAL PROFILE DATA
 // ======================================================
 
 let originalProfile = null;
 
-let selectedPhotoFile = null;
 
-let selectedPhotoPreviewURL = null;
+// ======================================================
+// NEW PHOTO DATA
+// ======================================================
 
-let photoRemoved = false;
+let selectedPhoto = null;
+
+let removePhoto = false;
 
 
 // ======================================================
-// AUTH CHECK
+// PAGE AUTH CHECK
 // ======================================================
 
 if (!token) {
@@ -168,7 +175,133 @@ function showStatus(message, type) {
 
 
 // ======================================================
-// LOAD PROFILE
+// PHOTO PREVIEW
+// ======================================================
+
+function showPhotoPreview(
+    photoSource
+) {
+
+    if (!photoPreview) {
+        return;
+    }
+
+    if (photoSource) {
+
+        photoPreview.src =
+            photoSource;
+
+        photoPreview.style.display =
+            "block";
+
+        if (photoPreviewPlaceholder) {
+
+            photoPreviewPlaceholder.style.display =
+                "none";
+
+        }
+
+    } else {
+
+        photoPreview.src = "";
+
+        photoPreview.style.display =
+            "none";
+
+        if (photoPreviewPlaceholder) {
+
+            photoPreviewPlaceholder.style.display =
+                "flex";
+
+        }
+
+    }
+
+}
+
+
+// ======================================================
+// UPDATE PROFILE HEADER PHOTO
+// ======================================================
+
+function updateProfilePhoto(
+    photoSource,
+    teacherName
+) {
+
+    const firstLetter =
+        (teacherName || "Teacher")
+            .charAt(0)
+            .toUpperCase();
+
+
+    topbarAvatar.innerHTML = "";
+
+
+    if (photoSource) {
+
+        const avatarImage =
+            document.createElement("img");
+
+        avatarImage.src =
+            photoSource;
+
+        avatarImage.alt =
+            "Teacher Photo";
+
+        avatarImage.onerror = () => {
+
+            topbarAvatar.textContent =
+                firstLetter;
+
+        };
+
+        topbarAvatar.appendChild(
+            avatarImage
+        );
+
+        profilePhoto.src =
+            photoSource;
+
+        profilePhoto.style.display =
+            "block";
+
+        defaultAvatar.style.display =
+            "none";
+
+        profilePhoto.onerror = () => {
+
+            profilePhoto.style.display =
+                "none";
+
+            defaultAvatar.style.display =
+                "flex";
+
+        };
+
+    } else {
+
+        topbarAvatar.textContent =
+            firstLetter;
+
+        profilePhoto.src = "";
+
+        profilePhoto.style.display =
+            "none";
+
+        defaultAvatar.style.display =
+            "flex";
+
+    }
+
+
+    defaultAvatar.textContent =
+        firstLetter;
+}
+
+
+// ======================================================
+// LOAD TEACHER PROFILE
 // ======================================================
 
 async function loadProfile() {
@@ -206,7 +339,6 @@ async function loadProfile() {
                 "../teacher-login/teacher-login.html";
 
             return;
-
         }
 
 
@@ -315,97 +447,26 @@ function populateProfile(teacher) {
         `${teacher.division || ""} • ${teacher.department || ""}`;
 
 
-    const firstLetter =
+    updateProfilePhoto(
+        teacher.photo || "",
         teacherName
-            .charAt(0)
-            .toUpperCase();
+    );
 
 
-    topbarAvatar.textContent =
-        firstLetter;
-
-    defaultAvatar.textContent =
-        firstLetter;
-
-    photoDefault.textContent =
-        firstLetter;
+    showPhotoPreview(
+        teacher.photo || ""
+    );
 
 
-    if (teacher.photo) {
+    selectedPhoto = null;
 
-        profilePhoto.src =
-            teacher.photo;
-
-        profilePhoto.style.display =
-            "block";
-
-        defaultAvatar.style.display =
-            "none";
-
-
-        photoPreview.src =
-            teacher.photo;
-
-        photoPreview.style.display =
-            "block";
-
-        photoDefault.style.display =
-            "none";
-
-
-        profilePhoto.onerror = () => {
-
-            profilePhoto.style.display =
-                "none";
-
-            defaultAvatar.style.display =
-                "flex";
-
-        };
-
-
-        photoPreview.onerror = () => {
-
-            photoPreview.style.display =
-                "none";
-
-            photoDefault.style.display =
-                "flex";
-
-        };
-
-    } else {
-
-        profilePhoto.style.display =
-            "none";
-
-        defaultAvatar.style.display =
-            "flex";
-
-        photoPreview.style.display =
-            "none";
-
-        photoDefault.style.display =
-            "flex";
-
-    }
-
-
-    selectedPhotoFile =
-        null;
-
-    photoRemoved =
-        false;
-
-    if (photoInput) {
-        photoInput.value = "";
-    }
+    removePhoto = false;
 
 }
 
 
 // ======================================================
-// EDIT MODE
+// SET EDIT MODE
 // ======================================================
 
 function setEditMode(enabled) {
@@ -445,14 +506,6 @@ function setEditMode(enabled) {
         true;
 
 
-    if (photoInput) {
-
-        photoInput.disabled =
-            !enabled;
-
-    }
-
-
     if (enabled) {
 
         formActions.style.display =
@@ -471,6 +524,27 @@ function setEditMode(enabled) {
 
     }
 
+
+    if (browsePhotoBtn) {
+
+        browsePhotoBtn.style.pointerEvents =
+            enabled ? "auto" : "none";
+
+        browsePhotoBtn.style.opacity =
+            enabled ? "1" : "0.55";
+
+    }
+
+    if (removePhotoBtn) {
+
+        removePhotoBtn.style.pointerEvents =
+            enabled ? "auto" : "none";
+
+        removePhotoBtn.style.opacity =
+            enabled ? "1" : "0.55";
+
+    }
+
 }
 
 
@@ -478,271 +552,155 @@ function setEditMode(enabled) {
 // BROWSE PHOTO
 // ======================================================
 
-browsePhotoBtn.addEventListener(
-    "click",
-    () => {
+if (browsePhotoBtn && photoInput) {
 
-        if (photoInput.disabled) {
+    browsePhotoBtn.addEventListener(
+        "click",
+        () => {
 
-            showStatus(
-                "Please click Edit Profile first.",
-                "error"
-            );
+            if (photoInput.disabled) {
+                return;
+            }
 
-            return;
+            photoInput.click();
 
         }
+    );
 
-        photoInput.click();
-
-    }
-);
+}
 
 
 // ======================================================
-// SELECT PHOTO
+// PHOTO SELECT
 // ======================================================
 
-photoInput.addEventListener(
-    "change",
-    () => {
+if (photoInput) {
 
-        const file =
-            photoInput.files[0];
+    photoInput.addEventListener(
+        "change",
+        (event) => {
 
-
-        if (!file) {
-            return;
-        }
+            const file =
+                event.target.files[0];
 
 
-        // ----------------------------------------------
-        // FILE TYPE
-        // ----------------------------------------------
-
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
+            if (!file) {
+                return;
+            }
 
 
-        if (
-            !allowedTypes.includes(
-                file.type
-            )
-        ) {
+            // ------------------------------------------
+            // FILE TYPE CHECK
+            // ------------------------------------------
 
-            photoInput.value = "";
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
-            showStatus(
-                "Please select a JPG, PNG or WebP image.",
-                "error"
+                showStatus(
+                    "Please select a valid image file.",
+                    "error"
+                );
+
+                photoInput.value = "";
+
+                return;
+            }
+
+
+            // ------------------------------------------
+            // FILE SIZE CHECK
+            // Maximum 5 MB
+            // ------------------------------------------
+
+            if (
+                file.size >
+                5 * 1024 * 1024
+            ) {
+
+                showStatus(
+                    "Image size must be less than 5 MB.",
+                    "error"
+                );
+
+                photoInput.value = "";
+
+                return;
+            }
+
+
+            selectedPhoto =
+                file;
+
+            removePhoto =
+                false;
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function () {
+
+                    showPhotoPreview(
+                        reader.result
+                    );
+
+                };
+
+
+            reader.readAsDataURL(
+                file
             );
 
-            return;
-
         }
+    );
 
-
-        // ----------------------------------------------
-        // FILE SIZE - 5MB
-        // ----------------------------------------------
-
-        if (
-            file.size >
-            5 * 1024 * 1024
-        ) {
-
-            photoInput.value = "";
-
-            showStatus(
-                "Photo size must be less than 5MB.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        selectedPhotoFile =
-            file;
-
-        photoRemoved =
-            false;
-
-
-        // ----------------------------------------------
-        // LOCAL PREVIEW
-        // ----------------------------------------------
-
-        if (selectedPhotoPreviewURL) {
-
-            URL.revokeObjectURL(
-                selectedPhotoPreviewURL
-            );
-
-        }
-
-
-        selectedPhotoPreviewURL =
-            URL.createObjectURL(file);
-
-
-        photoPreview.src =
-            selectedPhotoPreviewURL;
-
-        photoPreview.style.display =
-            "block";
-
-        photoDefault.style.display =
-            "none";
-
-
-        // Header preview
-
-        profilePhoto.src =
-            selectedPhotoPreviewURL;
-
-        profilePhoto.style.display =
-            "block";
-
-        defaultAvatar.style.display =
-            "none";
-
-
-        showStatus(
-            "Photo selected. Click Save Changes to save it.",
-            "success"
-        );
-
-    }
-);
-
-
-// ======================================================
-// PREVIEW PHOTO
-// ======================================================
-
-previewPhotoBtn.addEventListener(
-    "click",
-    () => {
-
-        if (
-            !photoPreview.src ||
-            photoPreview.style.display === "none"
-        ) {
-
-            showStatus(
-                "Please select a photo first.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        window.open(
-            photoPreview.src,
-            "_blank"
-        );
-
-    }
-);
+}
 
 
 // ======================================================
 // REMOVE PHOTO
 // ======================================================
 
-removePhotoBtn.addEventListener(
-    "click",
-    () => {
+if (removePhotoBtn) {
 
-        if (photoInput.disabled) {
+    removePhotoBtn.addEventListener(
+        "click",
+        () => {
 
-            showStatus(
-                "Please click Edit Profile first.",
-                "error"
+            if (
+                browsePhotoBtn &&
+                browsePhotoBtn.style.pointerEvents ===
+                "none"
+            ) {
+                return;
+            }
+
+
+            selectedPhoto = null;
+
+            removePhoto = true;
+
+
+            if (photoInput) {
+
+                photoInput.value = "";
+
+            }
+
+
+            showPhotoPreview(
+                ""
             );
 
-            return;
-
         }
+    );
 
-
-        selectedPhotoFile =
-            null;
-
-        photoRemoved =
-            true;
-
-
-        photoInput.value =
-            "";
-
-
-        if (selectedPhotoPreviewURL) {
-
-            URL.revokeObjectURL(
-                selectedPhotoPreviewURL
-            );
-
-            selectedPhotoPreviewURL =
-                null;
-
-        }
-
-
-        const teacherName =
-            nameInput.value ||
-            "Teacher";
-
-
-        const firstLetter =
-            teacherName
-                .charAt(0)
-                .toUpperCase();
-
-
-        photoDefault.textContent =
-            firstLetter;
-
-
-        photoPreview.removeAttribute(
-            "src"
-        );
-
-        photoPreview.style.display =
-            "none";
-
-        photoDefault.style.display =
-            "flex";
-
-
-        profilePhoto.removeAttribute(
-            "src"
-        );
-
-        profilePhoto.style.display =
-            "none";
-
-        defaultAvatar.textContent =
-            firstLetter;
-
-        defaultAvatar.style.display =
-            "flex";
-
-
-        showStatus(
-            "Photo removed. Click Save Changes to confirm.",
-            "success"
-        );
-
-    }
-);
+}
 
 
 // ======================================================
@@ -760,7 +718,7 @@ editBtn.addEventListener(
 
 
 // ======================================================
-// CANCEL
+// CANCEL EDIT
 // ======================================================
 
 cancelBtn.addEventListener(
@@ -812,176 +770,106 @@ profileForm.addEventListener(
         try {
 
             /*
-             * IMPORTANT
+             * IMPORTANT:
              *
-             * If a new photo is selected,
-             * send multipart/form-data.
+             * Current backend accepts JSON.
              *
-             * If no new photo is selected,
-             * send normal JSON.
+             * Therefore selected image is temporarily
+             * converted to Base64 and sent as "photo".
+             *
+             * Backend upload/storage support will be
+             * connected in the next step.
              */
 
 
-            let response;
+            let photoValue =
+                originalProfile?.photo || "";
 
 
-            if (selectedPhotoFile) {
+            if (removePhoto) {
 
-                const formData =
-                    new FormData();
+                photoValue = "";
 
-
-                formData.append(
-                    "name",
-                    nameInput.value.trim()
-                );
-
-                formData.append(
-                    "phone",
-                    phoneInput.value.trim()
-                );
-
-                formData.append(
-                    "division",
-                    divisionInput.value
-                );
-
-                formData.append(
-                    "department",
-                    departmentInput.value.trim()
-                );
-
-                formData.append(
-                    "subject",
-                    subjectInput.value.trim()
-                );
-
-                formData.append(
-                    "about",
-                    aboutInput.value.trim()
-                );
+            }
 
 
-                formData.append(
-                    "facebook",
-                    facebookInput.value.trim()
-                );
+            if (selectedPhoto) {
 
-                formData.append(
-                    "linkedin",
-                    linkedinInput.value.trim()
-                );
-
-                formData.append(
-                    "instagram",
-                    instagramInput.value.trim()
-                );
-
-
-                formData.append(
-                    "photo",
-                    selectedPhotoFile
-                );
-
-
-                response =
-                    await fetch(
-                        `${API_BASE_URL}/teachers/me`,
-                        {
-                            method: "PUT",
-
-                            headers: {
-                                "Authorization":
-                                    `Bearer ${token}`
-                            },
-
-                            body: formData
-                        }
-                    );
-
-            } else {
-
-                const updatedData = {
-
-                    name:
-                        nameInput.value.trim(),
-
-                    phone:
-                        phoneInput.value.trim(),
-
-                    division:
-                        divisionInput.value,
-
-                    department:
-                        departmentInput.value.trim(),
-
-                    subject:
-                        subjectInput.value.trim(),
-
-                    about:
-                        aboutInput.value.trim(),
-
-                    socialLinks: {
-
-                        facebook:
-                            facebookInput.value.trim(),
-
-                        linkedin:
-                            linkedinInput.value.trim(),
-
-                        instagram:
-                            instagramInput.value.trim()
-
-                    }
-
-                };
-
-
-                /*
-                 * Empty photo means remove photo.
-                 */
-
-                if (photoRemoved) {
-
-                    updatedData.photo = "";
-
-                }
-
-
-                response =
-                    await fetch(
-                        `${API_BASE_URL}/teachers/me`,
-                        {
-                            method: "PUT",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "Authorization":
-                                    `Bearer ${token}`
-
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    updatedData
-                                )
-
-                        }
+                photoValue =
+                    await convertImageToBase64(
+                        selectedPhoto
                     );
 
             }
 
 
+            const updatedData = {
+
+                name:
+                    nameInput.value.trim(),
+
+                photo:
+                    photoValue,
+
+                phone:
+                    phoneInput.value.trim(),
+
+                division:
+                    divisionInput.value,
+
+                department:
+                    departmentInput.value.trim(),
+
+                subject:
+                    subjectInput.value.trim(),
+
+                about:
+                    aboutInput.value.trim(),
+
+                socialLinks: {
+
+                    facebook:
+                        facebookInput.value.trim(),
+
+                    linkedin:
+                        linkedinInput.value.trim(),
+
+                    instagram:
+                        instagramInput.value.trim()
+
+                }
+
+            };
+
+
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/teachers/me`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Authorization":
+                                `Bearer ${token}`
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                updatedData
+                            )
+
+                    }
+                );
+
+
             const data =
                 await response.json();
 
-
-            // ------------------------------------------
-            // AUTH ERROR
-            // ------------------------------------------
 
             if (
                 response.status === 401 ||
@@ -996,7 +884,6 @@ profileForm.addEventListener(
                     "../teacher-login/teacher-login.html";
 
                 return;
-
             }
 
 
@@ -1012,10 +899,6 @@ profileForm.addEventListener(
 
             }
 
-
-            // ------------------------------------------
-            // UPDATE LOCAL PROFILE
-            // ------------------------------------------
 
             originalProfile =
                 JSON.parse(
@@ -1046,7 +929,6 @@ profileForm.addEventListener(
                 error
             );
 
-
             showStatus(
                 error.message ||
                 "Failed to update profile.",
@@ -1065,6 +947,51 @@ profileForm.addEventListener(
 
     }
 );
+
+
+// ======================================================
+// CONVERT IMAGE TO BASE64
+// ======================================================
+
+function convertImageToBase64(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                () => {
+
+                    resolve(
+                        reader.result
+                    );
+
+                };
+
+
+            reader.onerror =
+                () => {
+
+                    reject(
+                        new Error(
+                            "Could not read selected image."
+                        )
+                    );
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
 
 
 // ======================================================
