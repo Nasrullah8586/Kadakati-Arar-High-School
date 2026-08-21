@@ -3,19 +3,15 @@
 // Kadakati Arar High School
 // ======================================================
 
-
-// ======================================================
-// API BASE URL
-// ======================================================
-
-const API_BASE_URL = "https://kadakati-arar-high-school-api.onrender.com/api";
+const API_BASE_URL =
+    "https://kadakati-arar-high-school-api.onrender.com/api";
 
 
 // ======================================================
-// GET TOKEN
+// TOKEN
 // ======================================================
 
-const token =
+let token =
     localStorage.getItem("teacherToken");
 
 
@@ -84,7 +80,7 @@ const instagramInput =
 
 
 // ======================================================
-// PROFILE HEADER ELEMENTS
+// PROFILE HEADER
 // ======================================================
 
 const profileName =
@@ -107,27 +103,27 @@ const defaultAvatar =
 
 
 // ======================================================
-// ORIGINAL PROFILE DATA
-// Used for Cancel
+// ORIGINAL PROFILE
 // ======================================================
 
 let originalProfile = null;
 
 
 // ======================================================
-// PAGE AUTH CHECK
+// AUTH CHECK
 // ======================================================
 
 if (!token) {
 
-    window.location.href =
+    window.location.replace(
         "../teacher-login/teacher-login.html"
+    );
 
 }
 
 
 // ======================================================
-// SHOW STATUS
+// STATUS MESSAGE
 // ======================================================
 
 function showStatus(message, type) {
@@ -137,62 +133,90 @@ function showStatus(message, type) {
     statusMessage.className =
         `status-message ${type}`;
 
-    setTimeout(() => {
+    clearTimeout(showStatus.timeout);
 
-        statusMessage.className =
-            "status-message";
+    showStatus.timeout =
+        setTimeout(() => {
 
-    }, 4000);
+            statusMessage.textContent = "";
+
+            statusMessage.className =
+                "status-message";
+
+        }, 4000);
 
 }
 
 
 // ======================================================
-// LOAD TEACHER PROFILE
+// HANDLE AUTH FAILURE
+// ======================================================
+
+function handleAuthFailure() {
+
+    localStorage.removeItem("teacherToken");
+
+    token = null;
+
+    window.location.replace(
+        "../teacher-login/teacher-login.html"
+    );
+
+}
+
+
+// ======================================================
+// LOAD PROFILE
 // ======================================================
 
 async function loadProfile() {
 
+    if (!token) {
+        handleAuthFailure();
+        return;
+    }
+
     try {
 
-        const response = await fetch(
-            `${API_BASE_URL}/teachers/me`,
-            {
-                method: "GET",
+        const response =
+            await fetch(
+                `${API_BASE_URL}/teachers/me`,
+                {
+                    method: "GET",
 
-                headers: {
-                    "Authorization":
-                        `Bearer ${token}`
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
                 }
-            }
-        );
+            );
 
 
-        const data =
-            await response.json();
+        let data = {};
 
+        try {
+            data = await response.json();
+        } catch {
+            data = {};
+        }
 
-        // ----------------------------------------------
-        // TOKEN INVALID / EXPIRED
-        // ----------------------------------------------
 
         if (
             response.status === 401 ||
             response.status === 403
         ) {
 
-            localStorage.removeItem(
-                "teacherToken"
-            );
-
-            window.location.href =
-                "../teacher-login/teacher-login.html";
-
+            handleAuthFailure();
             return;
+
         }
 
 
-        if (!response.ok || !data.success) {
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.teacher
+        ) {
 
             throw new Error(
                 data.message ||
@@ -242,10 +266,6 @@ async function loadProfile() {
 
 function populateProfile(teacher) {
 
-    // ----------------------------------------------
-    // Form
-    // ----------------------------------------------
-
     nameInput.value =
         teacher.name || "";
 
@@ -271,10 +291,6 @@ function populateProfile(teacher) {
         teacher.about || "";
 
 
-    // ----------------------------------------------
-    // Social Links
-    // ----------------------------------------------
-
     facebookInput.value =
         teacher.socialLinks?.facebook || "";
 
@@ -285,12 +301,9 @@ function populateProfile(teacher) {
         teacher.socialLinks?.instagram || "";
 
 
-    // ----------------------------------------------
-    // Header
-    // ----------------------------------------------
-
     const teacherName =
-        teacher.name || "Teacher";
+        teacher.name?.trim() || "Teacher";
+
 
     profileName.textContent =
         teacherName;
@@ -299,13 +312,25 @@ function populateProfile(teacher) {
         teacherName;
 
 
-    profileDepartment.textContent =
-        `${teacher.division || ""} • ${teacher.department || ""}`;
+    const division =
+        teacher.division || "";
+
+    const department =
+        teacher.department || "";
 
 
-    // ----------------------------------------------
-    // Avatar
-    // ----------------------------------------------
+    if (division && department) {
+
+        profileDepartment.textContent =
+            `${division} • ${department}`;
+
+    } else {
+
+        profileDepartment.textContent =
+            division || department || "Teacher";
+
+    }
+
 
     const firstLetter =
         teacherName
@@ -320,7 +345,10 @@ function populateProfile(teacher) {
         firstLetter;
 
 
-    if (teacher.photo) {
+    if (
+        teacher.photo &&
+        teacher.photo.trim()
+    ) {
 
         profilePhoto.src =
             teacher.photo;
@@ -331,17 +359,21 @@ function populateProfile(teacher) {
         defaultAvatar.style.display =
             "none";
 
-        profilePhoto.onerror = () => {
 
-            profilePhoto.style.display =
-                "none";
+        profilePhoto.onerror =
+            () => {
 
-            defaultAvatar.style.display =
-                "flex";
+                profilePhoto.style.display =
+                    "none";
 
-        };
+                defaultAvatar.style.display =
+                    "flex";
+
+            };
 
     } else {
+
+        profilePhoto.removeAttribute("src");
 
         profilePhoto.style.display =
             "none";
@@ -355,12 +387,11 @@ function populateProfile(teacher) {
 
 
 // ======================================================
-// SET EDIT MODE
+// EDIT MODE
 // ======================================================
 
 function setEditMode(enabled) {
 
-    // These fields are editable
     nameInput.disabled =
         !enabled;
 
@@ -389,7 +420,6 @@ function setEditMode(enabled) {
         !enabled;
 
 
-    // Username and email stay disabled
     usernameInput.disabled =
         true;
 
@@ -433,7 +463,7 @@ editBtn.addEventListener(
 
 
 // ======================================================
-// CANCEL EDIT
+// CANCEL
 // ======================================================
 
 cancelBtn.addEventListener(
@@ -463,6 +493,14 @@ profileForm.addEventListener(
     async (event) => {
 
         event.preventDefault();
+
+
+        if (!token) {
+
+            handleAuthFailure();
+            return;
+
+        }
 
 
         const updatedData = {
@@ -501,17 +539,51 @@ profileForm.addEventListener(
         };
 
 
-        // ----------------------------------------------
-        // Disable Save Button During Request
-        // ----------------------------------------------
+        if (!updatedData.name) {
+
+            showStatus(
+                "Name is required.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!updatedData.division) {
+
+            showStatus(
+                "Please select a division.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!updatedData.department) {
+
+            showStatus(
+                "Department is required.",
+                "error"
+            );
+
+            return;
+
+        }
+
 
         const saveBtn =
             profileForm.querySelector(
                 ".save-btn"
             );
 
+
         const originalButtonText =
             saveBtn.textContent;
+
 
         saveBtn.disabled = true;
 
@@ -546,33 +618,30 @@ profileForm.addEventListener(
                 );
 
 
-            const data =
-                await response.json();
+            let data = {};
 
+            try {
+                data = await response.json();
+            } catch {
+                data = {};
+            }
 
-            // ------------------------------------------
-            // AUTH ERROR
-            // ------------------------------------------
 
             if (
                 response.status === 401 ||
                 response.status === 403
             ) {
 
-                localStorage.removeItem(
-                    "teacherToken"
-                );
-
-                window.location.href =
-                    "../teacher-login/teacher-login.html";
-
+                handleAuthFailure();
                 return;
+
             }
 
 
             if (
                 !response.ok ||
-                !data.success
+                !data.success ||
+                !data.teacher
             ) {
 
                 throw new Error(
@@ -582,10 +651,6 @@ profileForm.addEventListener(
 
             }
 
-
-            // ------------------------------------------
-            // Update Local Profile
-            // ------------------------------------------
 
             originalProfile =
                 JSON.parse(
@@ -645,7 +710,7 @@ logoutBtn.addEventListener(
     () => {
 
         const confirmLogout =
-            confirm(
+            window.confirm(
                 "Are you sure you want to logout?"
             );
 
@@ -660,14 +725,18 @@ logoutBtn.addEventListener(
         );
 
 
-        window.location.href =
-            "../teacher-login/teacher-login.html";
+        window.location.replace(
+            "../teacher-login/teacher-login.html"
+        );
+
     }
 );
 
 
 // ======================================================
-// START
+// START DASHBOARD
 // ======================================================
+
+setEditMode(false);
 
 loadProfile();

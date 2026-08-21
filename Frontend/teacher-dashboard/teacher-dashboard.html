@@ -2,108 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard | Kadakati Arar High School</title>
-
-    <link
-        rel="stylesheet"
-        href="teacher-dashboard.css"
-    >
+    <link rel="stylesheet" href="teacher-dashboard.css">
 </head>
 
 <body>
 
-    <!-- =========================================
-         SIDEBAR
-    ========================================== -->
-
     <aside class="sidebar">
 
         <div class="sidebar-header">
-
-            <div class="school-logo">
-                KA
-            </div>
+            <div class="school-logo">KA</div>
 
             <div>
                 <h2>Kadakati Arar</h2>
                 <span>Teacher Panel</span>
             </div>
-
         </div>
 
-
         <nav class="sidebar-nav">
-
-            <button
-                class="nav-item active"
-                id="profileNav"
-            >
+            <button class="nav-item active" id="profileNav">
                 <span>👤</span>
                 <span>My Profile</span>
             </button>
-
         </nav>
 
-
         <div class="sidebar-bottom">
-
-            <button
-                class="logout-btn"
-                id="logoutBtn"
-            >
+            <button class="logout-btn" id="logoutBtn">
                 <span>🚪</span>
                 Logout
             </button>
-
         </div>
 
     </aside>
 
 
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================== -->
-
     <main class="main-content">
-
-        <!-- TOPBAR -->
 
         <header class="topbar">
 
             <div>
                 <h1>Teacher Dashboard</h1>
-
-                <p>
-                    Manage your teacher profile
-                </p>
+                <p>Manage your teacher profile</p>
             </div>
-
 
             <div class="topbar-user">
 
-                <div
-                    class="topbar-avatar"
-                    id="topbarAvatar"
-                >
+                <div class="topbar-avatar" id="topbarAvatar">
                     T
                 </div>
 
                 <div class="topbar-user-info">
-
-                    <strong id="topbarName">
-                        Teacher
-                    </strong>
-
-                    <span>
-                        Teacher
-                    </span>
-
+                    <strong id="topbarName">Teacher</strong>
+                    <span>Teacher</span>
                 </div>
 
             </div>
@@ -111,14 +62,7 @@
         </header>
 
 
-        <!-- =====================================
-             DASHBOARD
-        ====================================== -->
-
         <section class="dashboard-container">
-
-
-            <!-- PROFILE HEADER CARD -->
 
             <div class="profile-header-card">
 
@@ -139,7 +83,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="profile-header-info">
 
@@ -163,23 +106,17 @@
             </div>
 
 
-            <!-- =================================
-                 PROFILE FORM
-            ================================== -->
-
             <div class="profile-card">
 
                 <div class="card-header">
 
                     <div>
                         <h2>My Profile</h2>
-
-                        <p>
-                            Update your professional information
-                        </p>
+                        <p>Update your professional information</p>
                     </div>
 
                     <button
+                        type="button"
                         class="edit-btn"
                         id="editBtn"
                     >
@@ -191,71 +128,54 @@
 
                 <form id="profileForm">
 
-
-                    <!-- BASIC INFORMATION -->
-
                     <div class="section-title">
                         <span>👤</span>
                         Basic Information
                     </div>
 
-
                     <div class="form-grid">
 
-
                         <div class="form-group">
-
-                            <label for="name">
-                                Full Name
-                            </label>
+                            <label for="name">Full Name</label>
 
                             <input
                                 type="text"
                                 id="name"
                                 name="name"
                                 disabled
+                                autocomplete="name"
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
-                            <label for="username">
-                                Username
-                            </label>
+                            <label for="username">Username</label>
 
                             <input
                                 type="text"
                                 id="username"
                                 name="username"
                                 disabled
+                                autocomplete="username"
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
-                            <label for="email">
-                                Email
-                            </label>
+                            <label for="email">Email</label>
 
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                                 disabled
+                                autocomplete="email"
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
-                            <label for="phone">
-                                Phone
-                            </label>
+                            <label for="phone">Phone</label>
 
                             <input
                                 type="text"
@@ -263,39 +183,28 @@
                                 name="phone"
                                 disabled
                                 placeholder="Enter phone number"
+                                autocomplete="tel"
                             >
-
                         </div>
 
                     </div>
 
 
-                    <!-- ACADEMIC INFORMATION -->
-
                     <div class="section-title">
-
                         <span>🎓</span>
-
                         Academic Information
-
                     </div>
-
 
                     <div class="form-grid">
 
-
                         <div class="form-group">
-
-                            <label for="division">
-                                Division
-                            </label>
+                            <label for="division">Division</label>
 
                             <select
                                 id="division"
                                 name="division"
                                 disabled
                             >
-
                                 <option value="">
                                     Select Division
                                 </option>
@@ -311,14 +220,11 @@
                                 <option value="Commerce">
                                     Commerce
                                 </option>
-
                             </select>
-
                         </div>
 
 
                         <div class="form-group">
-
                             <label for="department">
                                 Department
                             </label>
@@ -329,15 +235,11 @@
                                 name="department"
                                 disabled
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
-                            <label for="subject">
-                                Subject
-                            </label>
+                            <label for="subject">Subject</label>
 
                             <input
                                 type="text"
@@ -346,22 +248,15 @@
                                 disabled
                                 placeholder="Enter subject"
                             >
-
                         </div>
 
                     </div>
 
 
-                    <!-- ABOUT -->
-
                     <div class="section-title">
-
                         <span>📝</span>
-
                         About Me
-
                     </div>
-
 
                     <div class="form-group full-width">
 
@@ -376,22 +271,14 @@
                     </div>
 
 
-                    <!-- SOCIAL LINKS -->
-
                     <div class="section-title">
-
                         <span>🔗</span>
-
                         Social Links
-
                     </div>
-
 
                     <div class="form-grid">
 
-
                         <div class="form-group">
-
                             <label for="facebook">
                                 Facebook
                             </label>
@@ -402,12 +289,10 @@
                                 disabled
                                 placeholder="Facebook URL"
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
                             <label for="linkedin">
                                 LinkedIn
                             </label>
@@ -418,12 +303,10 @@
                                 disabled
                                 placeholder="LinkedIn URL"
                             >
-
                         </div>
 
 
                         <div class="form-group">
-
                             <label for="instagram">
                                 Instagram
                             </label>
@@ -434,13 +317,10 @@
                                 disabled
                                 placeholder="Instagram URL"
                             >
-
                         </div>
 
                     </div>
 
-
-                    <!-- ACTION BUTTONS -->
 
                     <div
                         class="form-actions"
@@ -469,21 +349,16 @@
             </div>
 
 
-            <!-- STATUS MESSAGE -->
-
             <div
                 id="statusMessage"
                 class="status-message"
+                role="alert"
             ></div>
 
         </section>
 
     </main>
 
-
-    <!-- =========================================
-         LOADING SCREEN
-    ========================================== -->
 
     <div
         id="loadingScreen"
@@ -492,9 +367,7 @@
 
         <div class="loader"></div>
 
-        <p>
-            Loading your profile...
-        </p>
+        <p>Loading your profile...</p>
 
     </div>
 

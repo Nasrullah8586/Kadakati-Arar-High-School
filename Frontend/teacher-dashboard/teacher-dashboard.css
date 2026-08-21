@@ -1,6 +1,7 @@
-/* =====================================================
-   RESET
-===================================================== */
+/* ======================================================
+   TEACHER DASHBOARD
+   Kadakati Arar High School
+====================================================== */
 
 * {
     margin: 0;
@@ -9,737 +10,561 @@
 }
 
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f4f7f6;
-
-    color: #1f2933;
-
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7f6;
+    color: #1f2937;
     min-height: 100vh;
 }
 
-
-/* =====================================================
+/* ======================================================
    SIDEBAR
-===================================================== */
+====================================================== */
 
 .sidebar {
     position: fixed;
-
     left: 0;
     top: 0;
-
-    width: 250px;
+    width: 260px;
     height: 100vh;
-
-    background: #176B45;
-
-    color: white;
-
+    background: #176b45;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
-
     z-index: 1000;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
 }
-
-
-/* Sidebar Header */
 
 .sidebar-header {
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
-    padding: 24px 18px;
-
-    border-bottom: 1px solid
-        rgba(255,255,255,0.15);
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .school-logo {
-    width: 45px;
-    height: 45px;
-
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
-
-    background: rgba(255,255,255,0.15);
-
+    background: #ffffff;
+    color: #176b45;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
 }
 
 .sidebar-header h2 {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 4px;
 }
 
 .sidebar-header span {
     font-size: 12px;
-
-    color:
-        rgba(255,255,255,0.75);
+    opacity: 0.8;
 }
 
-
-/* Navigation */
-
 .sidebar-nav {
-    padding: 20px 12px;
+    padding: 22px 14px;
 }
 
 .nav-item {
     width: 100%;
-
     border: none;
-
-    background: transparent;
-
-    color: white;
-
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    padding: 13px 16px;
+    border-radius: 10px;
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
-    padding: 13px 15px;
-
-    border-radius: 9px;
-
-    cursor: pointer;
-
     font-size: 14px;
-
+    font-weight: 600;
+    cursor: pointer;
     text-align: left;
-
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
-.nav-item:hover,
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
 .nav-item.active {
-    background:
-        rgba(255,255,255,0.15);
+    background: #ffffff;
+    color: #176b45;
 }
-
-
-/* Sidebar Bottom */
 
 .sidebar-bottom {
     margin-top: auto;
-
-    padding: 15px;
+    padding: 20px 14px;
 }
 
 .logout-btn {
     width: 100%;
-
-    border: 1px solid
-        rgba(255,255,255,0.2);
-
+    border: 1px solid rgba(255, 255, 255, 0.25);
     background: transparent;
-
-    color: white;
-
-    padding: 12px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 10px;
     display: flex;
-
     align-items: center;
-
-    justify-content: center;
-
-    gap: 8px;
-
-    transition: 0.2s;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .logout-btn:hover {
-    background:
-        rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.12);
 }
 
-
-/* =====================================================
+/* ======================================================
    MAIN CONTENT
-===================================================== */
+====================================================== */
 
 .main-content {
-    margin-left: 250px;
-
+    margin-left: 260px;
     min-height: 100vh;
 }
 
-
-/* =====================================================
+/* ======================================================
    TOPBAR
-===================================================== */
+====================================================== */
 
 .topbar {
     height: 82px;
-
-    background: white;
-
+    background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     padding: 0 35px;
 }
 
 .topbar h1 {
-    font-size: 22px;
-
-    color: #17202a;
+    font-size: 23px;
+    color: #17201b;
+    margin-bottom: 4px;
 }
 
 .topbar p {
-    margin-top: 5px;
-
-    color: #7b8794;
-
     font-size: 13px;
+    color: #6b7280;
 }
-
 
 .topbar-user {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 }
 
 .topbar-avatar {
     width: 42px;
     height: 42px;
-
     border-radius: 50%;
-
-    background: #176B45;
-
-    color: white;
-
+    background: #176b45;
+    color: #ffffff;
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 17px;
 }
 
 .topbar-user-info {
     display: flex;
-
     flex-direction: column;
-
     gap: 3px;
 }
 
 .topbar-user-info strong {
     font-size: 14px;
+    color: #1f2937;
 }
 
 .topbar-user-info span {
     font-size: 12px;
-
-    color: #7b8794;
+    color: #6b7280;
 }
 
-
-/* =====================================================
+/* ======================================================
    DASHBOARD CONTAINER
-===================================================== */
+====================================================== */
 
 .dashboard-container {
-    max-width: 1100px;
-
-    margin: 0 auto;
-
-    padding: 30px;
+    width: min(1100px, calc(100% - 50px));
+    margin: 30px auto 50px;
 }
 
-
-/* =====================================================
+/* ======================================================
    PROFILE HEADER
-===================================================== */
+====================================================== */
 
 .profile-header-card {
-    background: white;
-
-    border-radius: 14px;
-
-    padding: 25px;
-
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
     display: flex;
-
     align-items: center;
-
     gap: 22px;
-
-    margin-bottom: 22px;
-
     border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+    margin-bottom: 22px;
 }
 
-
 .profile-avatar-wrapper {
-    width: 90px;
-    height: 90px;
-
+    width: 105px;
+    height: 105px;
+    flex-shrink: 0;
     position: relative;
 }
 
-
-.profile-avatar,
-.default-avatar {
-    width: 90px;
-    height: 90px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-}
-
-
 .profile-avatar {
-    display: none;
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e7f3ed;
 }
 
-
 .default-avatar {
-    background: #176B45;
-
-    color: white;
-
-    display: flex;
-
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    background: #176b45;
+    color: #ffffff;
     align-items: center;
     justify-content: center;
-
-    font-size: 30px;
-
-    font-weight: bold;
+    font-size: 40px;
+    font-weight: 700;
+    border: 4px solid #e7f3ed;
 }
 
-
 .profile-header-info h2 {
-    font-size: 24px;
-
+    font-size: 26px;
+    color: #17201b;
     margin-bottom: 7px;
 }
 
 .profile-header-info p {
     color: #667085;
-
     font-size: 14px;
-
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
-
 
 .verified-badge {
-    display: inline-block;
-
-    padding: 5px 10px;
-
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e9f7ef;
+    color: #176b45;
     border-radius: 20px;
-
-    background: #e7f6ee;
-
-    color: #176B45;
-
+    padding: 7px 12px;
     font-size: 12px;
-
-    font-weight: 600;
+    font-weight: 700;
 }
 
-
-/* =====================================================
+/* ======================================================
    PROFILE CARD
-===================================================== */
+====================================================== */
 
 .profile-card {
-    background: white;
-
-    border-radius: 14px;
-
+    background: #ffffff;
     border: 1px solid #e5e7eb;
-
-    overflow: hidden;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
 }
 
-
-/* Card Header */
-
 .card-header {
-    padding: 22px 25px;
-
-    border-bottom: 1px solid #e5e7eb;
-
     display: flex;
-
-    align-items: center;
-
     justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #edf0ee;
+    margin-bottom: 25px;
 }
 
 .card-header h2 {
-    font-size: 18px;
-
+    font-size: 21px;
+    color: #17201b;
     margin-bottom: 5px;
 }
 
 .card-header p {
-    color: #7b8794;
-
+    color: #737b76;
     font-size: 13px;
 }
-
 
 .edit-btn {
     border: none;
-
-    background: #176B45;
-
-    color: white;
-
-    padding: 10px 16px;
-
-    border-radius: 7px;
-
-    cursor: pointer;
-
+    background: #176b45;
+    color: #ffffff;
+    padding: 11px 18px;
+    border-radius: 9px;
     font-size: 13px;
-
     font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
 }
 
 .edit-btn:hover {
-    opacity: 0.9;
+    background: #125738;
 }
 
-
-/* =====================================================
-   FORM
-===================================================== */
-
-#profileForm {
-    padding: 25px;
-}
-
+/* ======================================================
+   SECTION TITLE
+====================================================== */
 
 .section-title {
     display: flex;
-
     align-items: center;
-
-    gap: 8px;
-
+    gap: 9px;
+    color: #176b45;
     font-size: 15px;
-
     font-weight: 700;
-
-    color: #176B45;
-
-    margin: 5px 0 18px;
+    margin: 26px 0 16px;
 }
 
+.section-title:first-child {
+    margin-top: 0;
+}
+
+/* ======================================================
+   FORM
+====================================================== */
 
 .form-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
-
-    margin-bottom: 30px;
 }
-
 
 .form-group {
     display: flex;
-
     flex-direction: column;
-
     gap: 7px;
 }
 
-.full-width {
-    margin-bottom: 30px;
+.form-group.full-width {
+    width: 100%;
 }
 
 .form-group label {
     font-size: 13px;
-
     font-weight: 600;
-
-    color: #344054;
+    color: #374151;
 }
-
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-
-    border: 1px solid #d0d5dd;
-
-    border-radius: 7px;
-
-    padding: 11px 12px;
-
-    font-family: inherit;
-
+    border: 1px solid #d9dfdc;
+    background: #ffffff;
+    color: #1f2937;
+    border-radius: 9px;
+    padding: 11px 13px;
     font-size: 14px;
-
+    font-family: inherit;
     outline: none;
-
-    background: white;
-
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
+.form-group input,
+.form-group select {
+    height: 44px;
+}
 
 .form-group textarea {
     resize: vertical;
-
-    min-height: 110px;
+    min-height: 120px;
+    line-height: 1.5;
 }
-
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #176B45;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(23,107,69,0.08);
+    border-color: #176b45;
+    box-shadow: 0 0 0 3px rgba(23, 107, 69, 0.08);
 }
-
-
-/* Disabled */
 
 .form-group input:disabled,
 .form-group select:disabled,
 .form-group textarea:disabled {
-    background: #f8faf9;
-
-    color: #667085;
-
+    background: #f7f9f8;
+    color: #4b5563;
     cursor: not-allowed;
 }
 
-
-/* =====================================================
+/* ======================================================
    FORM ACTIONS
-===================================================== */
+====================================================== */
 
 .form-actions {
     display: none;
-
     justify-content: flex-end;
-
-    gap: 10px;
-
-    padding-top: 20px;
-
-    border-top: 1px solid #e5e7eb;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid #edf0ee;
 }
-
 
 .cancel-btn,
 .save-btn {
-    padding: 11px 18px;
-
-    border-radius: 7px;
-
-    cursor: pointer;
-
+    border: none;
+    border-radius: 9px;
+    padding: 11px 20px;
     font-size: 13px;
-
     font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
-
 
 .cancel-btn {
-    background: white;
-
-    border: 1px solid #d0d5dd;
-
-    color: #344054;
+    background: #f1f3f2;
+    color: #374151;
 }
 
+.cancel-btn:hover {
+    background: #e5e8e6;
+}
 
 .save-btn {
-    background: #176B45;
-
-    color: white;
-
-    border: none;
+    background: #176b45;
+    color: #ffffff;
 }
-
 
 .save-btn:hover {
-    opacity: 0.9;
+    background: #125738;
 }
 
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-/* =====================================================
+/* ======================================================
    STATUS MESSAGE
-===================================================== */
+====================================================== */
 
 .status-message {
     display: none;
-
     margin-top: 18px;
-
     padding: 13px 16px;
-
-    border-radius: 8px;
-
+    border-radius: 9px;
     font-size: 13px;
+    font-weight: 600;
 }
-
 
 .status-message.success {
     display: block;
-
-    background: #e8f7ef;
-
-    color: #176B45;
+    background: #e9f7ef;
+    color: #176b45;
+    border: 1px solid #c9ead7;
 }
-
 
 .status-message.error {
     display: block;
-
     background: #fff0f0;
-
-    color: #c62828;
+    color: #b42318;
+    border: 1px solid #f5caca;
 }
 
-
-/* =====================================================
+/* ======================================================
    LOADING SCREEN
-===================================================== */
+====================================================== */
 
 .loading-screen {
     position: fixed;
-
     inset: 0;
-
-    background: rgba(255,255,255,0.97);
-
+    background: rgba(255, 255, 255, 0.97);
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
+    z-index: 9999;
+}
 
-    z-index: 5000;
+.loading-screen p {
+    margin-top: 15px;
+    color: #667085;
+    font-size: 14px;
 }
 
 .loader {
     width: 42px;
     height: 42px;
-
-    border: 4px solid #e4eee9;
-
-    border-top-color: #176B45;
-
+    border: 4px solid #dcebe3;
+    border-top-color: #176b45;
     border-radius: 50%;
-
-    animation:
-        spin 0.8s linear infinite;
-
-    margin-bottom: 12px;
+    animation: teacherDashboardSpin 0.8s linear infinite;
 }
 
-.loading-screen p {
-    color: #667085;
-
-    font-size: 14px;
-}
-
-
-@keyframes spin {
-
-    from {
-        transform: rotate(0deg);
-    }
-
+@keyframes teacherDashboardSpin {
     to {
         transform: rotate(360deg);
     }
-
 }
 
-
-/* =====================================================
+/* ======================================================
    RESPONSIVE
-===================================================== */
+====================================================== */
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
     .sidebar {
-        width: 210px;
+        width: 220px;
     }
 
     .main-content {
-        margin-left: 210px;
+        margin-left: 220px;
+    }
+
+    .dashboard-container {
+        width: calc(100% - 30px);
     }
 
     .topbar {
         padding: 0 20px;
     }
 
-    .dashboard-container {
-        padding: 20px;
+    .profile-card {
+        padding: 22px;
     }
 
 }
 
 
-@media (max-width: 650px) {
+/* ======================================================
+   TABLET / MOBILE
+====================================================== */
+
+@media (max-width: 700px) {
 
     .sidebar {
         position: relative;
-
         width: 100%;
-
         height: auto;
+        min-height: auto;
     }
 
     .sidebar-header {
-        padding: 15px;
+        padding: 16px 18px;
     }
 
     .sidebar-nav {
-        display: none;
+        padding: 10px 14px;
     }
 
     .sidebar-bottom {
-        padding: 10px 15px 15px;
+        padding: 10px 14px 16px;
     }
 
     .main-content {
@@ -748,12 +573,13 @@ body {
 
     .topbar {
         height: auto;
-
-        padding: 18px;
-
+        min-height: 75px;
+        padding: 16px 18px;
         gap: 15px;
+    }
 
-        align-items: flex-start;
+    .topbar h1 {
+        font-size: 19px;
     }
 
     .topbar-user-info {
@@ -761,11 +587,27 @@ body {
     }
 
     .dashboard-container {
-        padding: 15px;
+        width: calc(100% - 24px);
+        margin: 18px auto 35px;
     }
 
     .profile-header-card {
-        padding: 18px;
+        padding: 22px;
+    }
+
+    .profile-avatar-wrapper,
+    .profile-avatar,
+    .default-avatar {
+        width: 82px;
+        height: 82px;
+    }
+
+    .default-avatar {
+        font-size: 31px;
+    }
+
+    .profile-header-info h2 {
+        font-size: 21px;
     }
 
     .form-grid {
@@ -774,13 +616,45 @@ body {
 
     .card-header {
         align-items: flex-start;
-
-        gap: 15px;
-
         flex-direction: column;
     }
 
     .edit-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 450px) {
+
+    .sidebar-header h2 {
+        font-size: 16px;
+    }
+
+    .profile-header-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-header-info {
+        width: 100%;
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-btn,
+    .save-btn {
         width: 100%;
     }
 
