@@ -14,14 +14,31 @@ const siteContentRoutes = require("./routes/siteContentRoutes");
 
 const app = express();
 
-// Connect MongoDB
+// ======================================================
+// CONNECT MONGODB
+// ======================================================
+
 connectDB();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// ======================================================
+// MIDDLEWARE
+// ======================================================
 
-// Public Test Route
+app.use(cors());
+
+// Increased JSON limit for Base64 teacher profile photos
+app.use(express.json({ limit: "10mb" }));
+
+// Also support URL-encoded requests
+app.use(express.urlencoded({
+    extended: true,
+    limit: "10mb"
+}));
+
+// ======================================================
+// PUBLIC TEST ROUTE
+// ======================================================
+
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -30,27 +47,80 @@ app.get("/", (req, res) => {
     });
 });
 
-// Authentication Routes
+// ======================================================
+// AUTHENTICATION ROUTES
+// ======================================================
+
 app.use("/api/auth", authRoutes);
 
-// Teacher Routes
+// ======================================================
+// TEACHER ROUTES
+// ======================================================
+
 app.use("/api/teachers", teacherRoutes);
 
-// Notice Routes
+// ======================================================
+// NOTICE ROUTES
+// ======================================================
+
 app.use("/api/notices", noticeRoutes);
 
-// News & Event Routes
+// ======================================================
+// NEWS & EVENT ROUTES
+// ======================================================
+
 app.use("/api/news-events", newsEventRoutes);
 
-// Gallery Routes
+// ======================================================
+// GALLERY ROUTES
+// ======================================================
+
 app.use("/api/gallery", galleryRoutes);
 
-// Site Content Routes
+// ======================================================
+// SITE CONTENT ROUTES
+// ======================================================
+
 app.use("/api/site-content", siteContentRoutes);
 
-// Server
-const PORT = process.env.PORT || 5000;
+// ======================================================
+// JSON ERROR HANDLER
+// Prevent HTML error response for oversized JSON requests
+// ======================================================
+
+app.use((err, req, res, next) => {
+
+    if (
+        err &&
+        err.type === "entity.too.large"
+    ) {
+
+        return res.status(413).json({
+            success: false,
+            message: "Uploaded image is too large. Please select an image under 7 MB."
+        });
+
+    }
+
+    console.error("Server Error:", err);
+
+    return res.status(500).json({
+        success: false,
+        message: "Server error"
+    });
+});
+
+// ======================================================
+// SERVER
+// ======================================================
+
+const PORT =
+    process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
+
+    console.log(
+        `✅ Server running on port ${PORT}`
+    );
+
 });
