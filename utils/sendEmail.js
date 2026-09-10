@@ -1,50 +1,64 @@
-const { Resend } = require("resend");
-
 // ======================================================
-// RESEND EMAIL CLIENT
-// ======================================================
-
-const resend = new Resend(
-    process.env.RESEND_API_KEY
-);
-
-
-// ======================================================
-// SEND EMAIL
+// BREVO EMAIL API
 // ======================================================
 
 const sendEmail = async (to, subject, html) => {
     try {
 
-        const { data, error } = await resend.emails.send({
+        const response = await fetch(
+            "https://api.brevo.com/v3/smtp/email",
+            {
+                method: "POST",
 
-            from:
-                "Kadakati Arar High School <onboarding@resend.dev>",
+                headers: {
+                    "accept": "application/json",
+                    "api-key": process.env.BREVO_API_KEY,
+                    "content-type": "application/json"
+                },
 
-            to: [to],
+                body: JSON.stringify({
 
-            subject: subject,
+                    sender: {
+                        name: "Kadakati Arar High School",
+                        email: "ferdausk571@gmail.com"
+                    },
 
-            html: html
+                    to: [
+                        {
+                            email: to
+                        }
+                    ],
 
-        });
+                    subject: subject,
+
+                    htmlContent: html
+                })
+            }
+        );
 
 
         // ==================================================
-        // RESEND ERROR
+        // BREVO RESPONSE
         // ==================================================
 
-        if (error) {
+        const data = await response.json();
+
+
+        // ==================================================
+        // ERROR
+        // ==================================================
+
+        if (!response.ok) {
 
             console.error(
-                "❌ Resend email error:",
-                error
+                "❌ Brevo email error:",
+                data
             );
 
             return {
                 success: false,
                 error:
-                    error.message ||
+                    data.message ||
                     "Email sending failed"
             };
         }
@@ -56,7 +70,7 @@ const sendEmail = async (to, subject, html) => {
 
         console.log(
             "✅ Email sent successfully:",
-            data.id
+            data.messageId
         );
 
 
@@ -65,7 +79,7 @@ const sendEmail = async (to, subject, html) => {
             success: true,
 
             messageId:
-                data.id
+                data.messageId
 
         };
 
@@ -86,7 +100,6 @@ const sendEmail = async (to, subject, html) => {
                 error.message
 
         };
-
     }
 };
 
