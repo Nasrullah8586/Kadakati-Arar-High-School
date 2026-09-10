@@ -1,25 +1,13 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 // ======================================================
-// EMAIL TRANSPORTER
+// RESEND EMAIL CLIENT
 // ======================================================
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    family: 4,
+const resend = new Resend(
+    process.env.RESEND_API_KEY
+);
 
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000
-});
 
 // ======================================================
 // SEND EMAIL
@@ -27,30 +15,80 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (to, subject, html) => {
     try {
-        const mailOptions = {
-            from: `"Kadakati Arar High School" <${process.env.EMAIL_USER}>`,
-            to: to,
+
+        const { data, error } = await resend.emails.send({
+
+            from:
+                "Kadakati Arar High School <onboarding@resend.dev>",
+
+            to: [to],
+
             subject: subject,
+
             html: html
-        };
 
-        const info = await transporter.sendMail(mailOptions);
+        });
 
-        console.log("✅ Email sent successfully:", info.messageId);
+
+        // ==================================================
+        // RESEND ERROR
+        // ==================================================
+
+        if (error) {
+
+            console.error(
+                "❌ Resend email error:",
+                error
+            );
+
+            return {
+                success: false,
+                error:
+                    error.message ||
+                    "Email sending failed"
+            };
+        }
+
+
+        // ==================================================
+        // SUCCESS
+        // ==================================================
+
+        console.log(
+            "✅ Email sent successfully:",
+            data.id
+        );
+
 
         return {
+
             success: true,
-            messageId: info.messageId
+
+            messageId:
+                data.id
+
         };
+
 
     } catch (error) {
-        console.error("❌ Email sending error:", error.message);
+
+        console.error(
+            "❌ Email sending error:",
+            error.message
+        );
+
 
         return {
+
             success: false,
-            error: error.message
+
+            error:
+                error.message
+
         };
+
     }
 };
+
 
 module.exports = sendEmail;
