@@ -462,14 +462,16 @@ body.lightbox-open {
 .gallery-caption {
     min-height: 65px;
 
-    padding: 17px 18px;
+    padding: 17px 24px;
 
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 
     color: #34483d;
 
-    background: #ffffff;
+    background: #f3f8f5;
 
     font-size: 14px;
     font-weight: 600;
