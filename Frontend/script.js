@@ -2085,10 +2085,21 @@ async function fetchGallery() {
 
 async function loadHomepageGallery() {
 
-    if (!galleryList) {
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
+
+    if (
+        !galleryList ||
+        (
+            currentPage !== "" &&
+            currentPage !== "index.html"
+        )
+    ) {
         return;
     }
-
 
     showLoading(
         galleryList,
