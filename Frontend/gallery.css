@@ -389,6 +389,8 @@ body.lightbox-open {
     overflow: hidden;
 
     background: #e9f0ec;
+
+    aspect-ratio: 4 / 3;
 }
 
 .gallery-image {
@@ -399,7 +401,11 @@ body.lightbox-open {
 
     object-fit: cover;
 
+    object-position: center;
+
     transition: transform 0.5s ease;
+
+    aspect-ratio: 4 / 3;
 }
 
 .gallery-card:hover .gallery-image {
@@ -761,10 +767,6 @@ body.lightbox-open {
         grid-template-columns: 1fr;
 
         gap: 22px;
-    }
-
-    .gallery-image-wrapper {
-        height: 280px;
     }
 
     .image-lightbox {
