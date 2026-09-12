@@ -467,11 +467,12 @@ body.lightbox-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
 
     color: #34483d;
 
     background: #f3f8f5;
+
+    text-align: center;
 
     font-size: 14px;
     font-weight: 600;
