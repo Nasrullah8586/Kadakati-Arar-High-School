@@ -587,7 +587,7 @@ async function loadSiteContent() {
 
         /* =========================
            GOOGLE MAPS
-         ========================= */
+        ========================= */
 
         const mapsUrl =
             content?.googleMapUrl ||
@@ -755,6 +755,7 @@ async function loadSiteContent() {
             }
 
         }
+
 
         /* =========================
            SOCIAL LINKS
@@ -1078,10 +1079,10 @@ async function loadNotices() {
 
                             ${date
                             ? `
-                                        <span class="notice-date">
-                                            ${formatDate(date)}
-                                        </span>
-                                    `
+                                <span class="notice-date">
+                                    ${formatDate(date)}
+                                </span>
+                            `
                             : ""
                         }
 
@@ -1101,17 +1102,17 @@ async function loadNotices() {
 
                             ${attachment
                             ? `
-                                        <a
-                                            href="${escapeHTML(
+                                <a
+                                    href="${escapeHTML(
                                 attachment
                             )}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="notice-attachment"
-                                        >
-                                            View Attachment
-                                        </a>
-                                    `
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="notice-attachment"
+                                >
+                                    View Attachment
+                                </a>
+                            `
                             : ""
                         }
 
@@ -1193,10 +1194,10 @@ async function loadNoticePage() {
 
                             ${date
                             ? `
-                                        <span class="notice-date">
-                                            ${formatDate(date)}
-                                        </span>
-                                    `
+                                <span class="notice-date">
+                                    ${formatDate(date)}
+                                </span>
+                            `
                             : ""
                         }
 
@@ -1216,12 +1217,12 @@ async function loadNoticePage() {
 
                             ${category
                             ? `
-                                        <span class="notice-category">
-                                            ${escapeHTML(
+                                <span class="notice-category">
+                                    ${escapeHTML(
                                 category
                             )}
-                                        </span>
-                                    `
+                                </span>
+                            `
                             : ""
                         }
 
@@ -1341,21 +1342,21 @@ function setupNoticeModal(
 
                         ${date
                             ? `
-                                    <span class="notice-modal-date">
-                                        ${formatDate(date)}
-                                    </span>
-                                `
+                                <span class="notice-modal-date">
+                                    ${formatDate(date)}
+                                </span>
+                            `
                             : ""
                         }
 
                         ${category
                             ? `
-                                    <span class="notice-modal-category">
-                                        ${escapeHTML(
+                                <span class="notice-modal-category">
+                                    ${escapeHTML(
                                 category
                             )}
-                                    </span>
-                                `
+                                </span>
+                            `
                             : ""
                         }
 
@@ -1375,17 +1376,17 @@ function setupNoticeModal(
 
                         ${attachment
                             ? `
-                                    <a
-                                        href="${escapeHTML(
+                                <a
+                                    href="${escapeHTML(
                                 attachment
                             )}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="notice-attachment-button"
-                                    >
-                                        View Attachment
-                                    </a>
-                                `
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="notice-attachment-button"
+                                >
+                                    View Attachment
+                                </a>
+                            `
                             : ""
                         }
 
@@ -1580,18 +1581,18 @@ async function loadNewsEvents() {
 
                             ${image
                             ? `
-                                        <img
-                                            src="${escapeHTML(
+                                <img
+                                    src="${escapeHTML(
                                 image
                             )}"
-                                            alt="${escapeHTML(
+                                    alt="${escapeHTML(
                                 item.title ||
                                 "School News"
                             )}"
-                                            class="news-card-image"
-                                            loading="lazy"
-                                        >
-                                    `
+                                    class="news-card-image"
+                                    loading="lazy"
+                                >
+                            `
                             : ""
                         }
 
@@ -1599,10 +1600,10 @@ async function loadNewsEvents() {
 
                                 ${date
                             ? `
-                                            <span class="notice-date">
-                                                ${formatDate(date)}
-                                            </span>
-                                        `
+                                    <span class="notice-date">
+                                        ${formatDate(date)}
+                                    </span>
+                                `
                             : ""
                         }
 
@@ -1761,29 +1762,29 @@ async function loadNewsEventsPage() {
 
                             ${image
                             ? `
-                                        <div
-                                            class="news-event-image-wrapper"
-                                            data-image-index="${index}"
-                                        >
+                                <div
+                                    class="news-event-image-wrapper"
+                                    data-image-index="${index}"
+                                >
 
-                                            <img
-                                                src="${escapeHTML(
+                                    <img
+                                        src="${escapeHTML(
                                 image
                             )}"
-                                                alt="${escapeHTML(
+                                        alt="${escapeHTML(
                                 item.title ||
                                 "School News"
                             )}"
-                                                class="news-event-image"
-                                                loading="lazy"
-                                            >
+                                        class="news-event-image"
+                                        loading="lazy"
+                                    >
 
-                                            <span class="news-image-hint">
-                                                View Full Image
-                                            </span>
+                                    <span class="news-image-hint">
+                                        View Full Image
+                                    </span>
 
-                                        </div>
-                                    `
+                                </div>
+                            `
                             : ""
                         }
 
@@ -1791,10 +1792,10 @@ async function loadNewsEventsPage() {
 
                                 ${date
                             ? `
-                                            <span class="news-event-date">
-                                                ${formatDate(date)}
-                                            </span>
-                                        `
+                                    <span class="news-event-date">
+                                        ${formatDate(date)}
+                                    </span>
+                                `
                             : ""
                         }
 
@@ -1814,12 +1815,12 @@ async function loadNewsEventsPage() {
 
                                 ${category
                             ? `
-                                            <span class="news-event-category">
-                                                ${escapeHTML(
+                                    <span class="news-event-category">
+                                        ${escapeHTML(
                                 category
                             )}
-                                            </span>
-                                        `
+                                    </span>
+                                `
                             : ""
                         }
 
@@ -2165,12 +2166,12 @@ async function loadHomepageGallery() {
 
                             ${caption
                             ? `
-                                        <p class="gallery-caption">
-                                            ${escapeHTML(
+                                <p class="gallery-caption">
+                                    ${escapeHTML(
                                 caption
                             )}
-                                        </p>
-                                    `
+                                </p>
+                            `
                             : ""
                         }
 
@@ -2203,6 +2204,154 @@ async function loadHomepageGallery() {
 
 
 /* =========================================================
+   FULL GALLERY CAPTION STYLES
+========================================================= */
+
+function addGalleryCaptionStyles() {
+
+    if (
+        document.getElementById(
+            "gallery-caption-dynamic-style"
+        )
+    ) {
+        return;
+    }
+
+
+    const style =
+        document.createElement("style");
+
+    style.id =
+        "gallery-caption-dynamic-style";
+
+
+    style.textContent = `
+
+        .gallery-page-caption {
+            width: 100%;
+            min-height: 120px;
+            height: 120px;
+            padding: 16px 20px 15px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+
+            background: #f3f8f5;
+
+            color: #34483d;
+
+            text-align: center;
+
+            font-size: 14px;
+            line-height: 1.6;
+
+            overflow: hidden;
+        }
+
+
+        .gallery-caption-text {
+            width: 100%;
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+
+            overflow: hidden;
+
+            text-align: center;
+
+            word-break: break-word;
+        }
+
+
+        .gallery-see-more {
+            margin-top: 6px;
+            padding: 0;
+
+            border: none;
+
+            background: transparent;
+
+            color: #176B45;
+
+            font-family: inherit;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            line-height: 1.4;
+
+            cursor: pointer;
+
+            flex-shrink: 0;
+
+            transition:
+                color 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+
+        .gallery-see-more:hover {
+            color: #0d462d;
+            text-decoration: underline;
+        }
+
+
+        .gallery-page-caption.expanded {
+            height: auto;
+            min-height: 120px;
+
+            overflow: visible;
+        }
+
+
+        .gallery-page-caption.expanded
+        .gallery-caption-text {
+
+            display: block;
+
+            -webkit-line-clamp: unset;
+
+            overflow: visible;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .gallery-page-caption {
+                min-height: 120px;
+                height: 120px;
+
+                padding:
+                    15px
+                    16px
+                    14px;
+            }
+
+            .gallery-caption-text {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .gallery-see-more {
+                font-size: 13px;
+            }
+
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
+
+}
+
+
+/* =========================================================
    FULL GALLERY PAGE
 ========================================================= */
 
@@ -2226,6 +2375,9 @@ async function loadGalleryPage() {
     if (!pageGallery) {
         return;
     }
+
+
+    addGalleryCaptionStyles();
 
 
     showLoading(
@@ -2293,14 +2445,27 @@ async function loadGalleryPage() {
 
                             </div>
 
+
                             ${caption
                             ? `
-                                        <div class="gallery-page-caption">
-                                            ${escapeHTML(
+                                <div class="gallery-page-caption">
+
+                                    <span class="gallery-caption-text">
+                                        ${escapeHTML(
                                 caption
                             )}
-                                        </div>
-                                    `
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        class="gallery-see-more"
+                                        aria-expanded="false"
+                                    >
+                                        See more...
+                                    </button>
+
+                                </div>
+                            `
                             : ""
                         }
 
@@ -2309,6 +2474,99 @@ async function loadGalleryPage() {
 
                 }
             ).join("");
+
+
+        /* =====================================================
+           SEE MORE / SEE LESS
+        ===================================================== */
+
+        const captionButtons =
+            pageGallery.querySelectorAll(
+                ".gallery-see-more"
+            );
+
+
+        captionButtons.forEach(
+            button => {
+
+                const captionBox =
+                    button.closest(
+                        ".gallery-page-caption"
+                    );
+
+
+                if (!captionBox) {
+                    return;
+                }
+
+
+                const text =
+                    captionBox.querySelector(
+                        ".gallery-caption-text"
+                    );
+
+
+                if (!text) {
+                    return;
+                }
+
+
+                /* =============================================
+                   CHECK WHETHER TEXT NEEDS SEE MORE
+                ============================================= */
+
+                requestAnimationFrame(
+                    function () {
+
+                        if (
+                            text.scrollHeight <=
+                            text.clientHeight + 2
+                        ) {
+
+                            button.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+
+                /* =============================================
+                   SEE MORE / SEE LESS CLICK
+                ============================================= */
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        const expanded =
+                            captionBox.classList.toggle(
+                                "expanded"
+                            );
+
+
+                        this.setAttribute(
+                            "aria-expanded",
+                            String(expanded)
+                        );
+
+
+                        this.textContent =
+                            expanded
+                                ? "See less"
+                                : "See more...";
+
+                    }
+                );
+
+            }
+        );
 
 
         setupFullGalleryLightbox(
@@ -2580,7 +2838,21 @@ function setupFullGalleryLightbox(
 
             item.addEventListener(
                 "click",
-                function () {
+                function (event) {
+
+                    /*
+                       If See More / See Less was clicked,
+                       do NOT open lightbox.
+                    */
+
+                    if (
+                        event.target.closest(
+                            ".gallery-see-more"
+                        )
+                    ) {
+                        return;
+                    }
+
 
                     const index =
                         Number(
@@ -3112,12 +3384,12 @@ function showTeacherProfile(
 
                 ${teacher.designation
             ? `
-                            <p class="teacher-profile-designation">
-                                ${escapeHTML(
+                <p class="teacher-profile-designation">
+                    ${escapeHTML(
                 teacher.designation
             )}
-                            </p>
-                        `
+                </p>
+            `
             : ""
         }
 
@@ -3150,13 +3422,13 @@ function showTeacherProfile(
 
                     ${phone
             ? `
-                                <div>
-                                    <strong>Phone:</strong>
-                                    ${escapeHTML(
+                        <div>
+                            <strong>Phone:</strong>
+                            ${escapeHTML(
                 phone
             )}
-                                </div>
-                            `
+                        </div>
+                    `
             : ""
         }
 
@@ -3167,46 +3439,46 @@ function showTeacherProfile(
 
                     ${socialLinks.facebook
             ? `
-                                <a
-                                    href="${escapeHTML(
+                <a
+                    href="${escapeHTML(
                 socialLinks.facebook
             )}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Facebook
-                                </a>
-                            `
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Facebook
+                </a>
+            `
             : ""
         }
 
                     ${socialLinks.instagram
             ? `
-                                <a
-                                    href="${escapeHTML(
+                <a
+                    href="${escapeHTML(
                 socialLinks.instagram
             )}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Instagram
-                                </a>
-                            `
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Instagram
+                </a>
+            `
             : ""
         }
 
                     ${socialLinks.linkedin
             ? `
-                                <a
-                                    href="${escapeHTML(
+                <a
+                    href="${escapeHTML(
                 socialLinks.linkedin
             )}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    LinkedIn
-                                </a>
-                            `
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    LinkedIn
+                </a>
+            `
             : ""
         }
 
@@ -3335,12 +3607,12 @@ function renderTeachers(
 
                             ${teacher.designation
                         ? `
-                                        <p class="teacher-designation">
-                                            ${escapeHTML(
+                            <p class="teacher-designation">
+                                ${escapeHTML(
                             teacher.designation
                         )}
-                                        </p>
-                                    `
+                            </p>
+                        `
                         : ""
                     }
 
@@ -3511,6 +3783,7 @@ navLinks.forEach(
 
     }
 );
+
 
 /* =========================================================
    CONTACT NAVIGATION
