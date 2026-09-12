@@ -233,6 +233,9 @@ body {
     justify-content: space-between;
 }
 
+.page-heading {
+    flex: 1;
+}
 
 .page-heading h1 {
     font-size: 23px;
