@@ -587,59 +587,48 @@ async function loadSiteContent() {
 
         /* =========================
            GOOGLE MAPS
-        ========================= */
+         ========================= */
 
         const mapsUrl =
+            content?.googleMapUrl ||
             content?.googleMapsLink ||
             content?.googleMapLink ||
             content?.mapsLink ||
             "";
 
 
-        if (googleMapsLink) {
-
-            if (mapsUrl) {
-
-                googleMapsLink.href =
-                    mapsUrl;
-
-                googleMapsLink.target =
-                    "_blank";
-
-                googleMapsLink.rel =
-                    "noopener noreferrer";
-
-                googleMapsLink.style.display =
-                    "inline-flex";
-
-            } else {
-
-                googleMapsLink.style.display =
-                    "none";
-
-            }
-
-        }
-
+        /* =========================
+           SCHOOL LOCATION BUTTON
+        ========================= */
 
         if (schoolLocationBtn) {
 
             if (mapsUrl) {
 
-                schoolLocationBtn.href =
-                    mapsUrl;
+                schoolLocationBtn.setAttribute(
+                    "href",
+                    mapsUrl
+                );
 
-                schoolLocationBtn.target =
-                    "_blank";
+                schoolLocationBtn.setAttribute(
+                    "target",
+                    "_blank"
+                );
 
-                schoolLocationBtn.rel =
-                    "noopener noreferrer";
+                schoolLocationBtn.setAttribute(
+                    "rel",
+                    "noopener noreferrer"
+                );
 
                 schoolLocationBtn.style.display =
                     "inline-block";
 
             } else {
 
+                schoolLocationBtn.removeAttribute(
+                    "href"
+                );
+
                 schoolLocationBtn.style.display =
                     "none";
 
@@ -647,6 +636,125 @@ async function loadSiteContent() {
 
         }
 
+
+        /* =========================
+           GOOGLE MAPS LINK
+        ========================= */
+
+        if (googleMapsLink) {
+
+            if (mapsUrl) {
+
+                googleMapsLink.setAttribute(
+                    "href",
+                    mapsUrl
+                );
+
+                googleMapsLink.setAttribute(
+                    "target",
+                    "_blank"
+                );
+
+                googleMapsLink.setAttribute(
+                    "rel",
+                    "noopener noreferrer"
+                );
+
+                googleMapsLink.style.display =
+                    "inline-flex";
+
+            } else {
+
+                googleMapsLink.removeAttribute(
+                    "href"
+                );
+
+                googleMapsLink.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* =========================
+           CONTACT GOOGLE MAPS
+        ========================= */
+
+        if (contactGoogleMaps) {
+
+            if (mapsUrl) {
+
+                contactGoogleMaps.setAttribute(
+                    "href",
+                    mapsUrl
+                );
+
+                contactGoogleMaps.setAttribute(
+                    "target",
+                    "_blank"
+                );
+
+                contactGoogleMaps.setAttribute(
+                    "rel",
+                    "noopener noreferrer"
+                );
+
+                contactGoogleMaps.style.display =
+                    "inline-flex";
+
+            } else {
+
+                contactGoogleMaps.removeAttribute(
+                    "href"
+                );
+
+                contactGoogleMaps.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* =========================
+           CONTACT LOCATION BUTTON
+        ========================= */
+
+        if (contactLocationBtn) {
+
+            if (mapsUrl) {
+
+                contactLocationBtn.setAttribute(
+                    "href",
+                    mapsUrl
+                );
+
+                contactLocationBtn.setAttribute(
+                    "target",
+                    "_blank"
+                );
+
+                contactLocationBtn.setAttribute(
+                    "rel",
+                    "noopener noreferrer"
+                );
+
+                contactLocationBtn.style.display =
+                    "inline-flex";
+
+            } else {
+
+                contactLocationBtn.removeAttribute(
+                    "href"
+                );
+
+                contactLocationBtn.style.display =
+                    "none";
+
+            }
+
+        }
 
         /* =========================
            SOCIAL LINKS
@@ -968,37 +1076,35 @@ async function loadNotices() {
                     return `
                         <article class="notice-card">
 
-                            ${
-                                date
-                                    ? `
+                            ${date
+                            ? `
                                         <span class="notice-date">
                                             ${formatDate(date)}
                                         </span>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                             <h3>
                                 ${escapeHTML(
-                                    notice.title ||
-                                    "School Notice"
-                                )}
+                            notice.title ||
+                            "School Notice"
+                        )}
                             </h3>
 
                             <p>
                                 ${escapeHTML(
-                                    notice.description ||
-                                    ""
-                                )}
+                            notice.description ||
+                            ""
+                        )}
                             </p>
 
-                            ${
-                                attachment
-                                    ? `
+                            ${attachment
+                            ? `
                                         <a
                                             href="${escapeHTML(
-                                                attachment
-                                            )}"
+                                attachment
+                            )}"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             class="notice-attachment"
@@ -1006,8 +1112,8 @@ async function loadNotices() {
                                             View Attachment
                                         </a>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                         </article>
                     `;
@@ -1085,41 +1191,39 @@ async function loadNoticePage() {
                             data-notice-index="${index}"
                         >
 
-                            ${
-                                date
-                                    ? `
+                            ${date
+                            ? `
                                         <span class="notice-date">
                                             ${formatDate(date)}
                                         </span>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                             <h2>
                                 ${escapeHTML(
-                                    notice.title ||
-                                    "School Notice"
-                                )}
+                            notice.title ||
+                            "School Notice"
+                        )}
                             </h2>
 
                             <p>
                                 ${escapeHTML(
-                                    notice.description ||
-                                    ""
-                                )}
+                            notice.description ||
+                            ""
+                        )}
                             </p>
 
-                            ${
-                                category
-                                    ? `
+                            ${category
+                            ? `
                                         <span class="notice-category">
                                             ${escapeHTML(
-                                                category
-                                            )}
+                                category
+                            )}
                                         </span>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                             <div class="notice-view-text">
                                 Click to view full notice →
@@ -1235,49 +1339,46 @@ function setupNoticeModal(
 
                     modalBody.innerHTML = `
 
-                        ${
-                            date
-                                ? `
+                        ${date
+                            ? `
                                     <span class="notice-modal-date">
                                         ${formatDate(date)}
                                     </span>
                                 `
-                                : ""
+                            : ""
                         }
 
-                        ${
-                            category
-                                ? `
+                        ${category
+                            ? `
                                     <span class="notice-modal-category">
                                         ${escapeHTML(
-                                            category
-                                        )}
+                                category
+                            )}
                                     </span>
                                 `
-                                : ""
+                            : ""
                         }
 
                         <h2>
                             ${escapeHTML(
-                                notice.title ||
-                                "School Notice"
-                            )}
+                            notice.title ||
+                            "School Notice"
+                        )}
                         </h2>
 
                         <div class="notice-modal-description">
                             ${escapeHTML(
-                                notice.description ||
-                                "No description available."
-                            )}
+                            notice.description ||
+                            "No description available."
+                        )}
                         </div>
 
-                        ${
-                            attachment
-                                ? `
+                        ${attachment
+                            ? `
                                     <a
                                         href="${escapeHTML(
-                                            attachment
-                                        )}"
+                                attachment
+                            )}"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         class="notice-attachment-button"
@@ -1285,7 +1386,7 @@ function setupNoticeModal(
                                         View Attachment
                                     </a>
                                 `
-                                : ""
+                            : ""
                         }
 
                     `;
@@ -1477,48 +1578,46 @@ async function loadNewsEvents() {
                             tabindex="0"
                         >
 
-                            ${
-                                image
-                                    ? `
+                            ${image
+                            ? `
                                         <img
                                             src="${escapeHTML(
-                                                image
-                                            )}"
+                                image
+                            )}"
                                             alt="${escapeHTML(
-                                                item.title ||
-                                                "School News"
-                                            )}"
+                                item.title ||
+                                "School News"
+                            )}"
                                             class="news-card-image"
                                             loading="lazy"
                                         >
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                             <div class="news-card-content">
 
-                                ${
-                                    date
-                                        ? `
+                                ${date
+                            ? `
                                             <span class="notice-date">
                                                 ${formatDate(date)}
                                             </span>
                                         `
-                                        : ""
-                                }
+                            : ""
+                        }
 
                                 <h3>
                                     ${escapeHTML(
-                                        item.title ||
-                                        "School News"
-                                    )}
+                            item.title ||
+                            "School News"
+                        )}
                                 </h3>
 
                                 <p>
                                     ${escapeHTML(
-                                        item.description ||
-                                        ""
-                                    )}
+                            item.description ||
+                            ""
+                        )}
                                 </p>
 
                                 <span class="news-card-view">
@@ -1660,9 +1759,8 @@ async function loadNewsEventsPage() {
                             class="news-event-page-card"
                         >
 
-                            ${
-                                image
-                                    ? `
+                            ${image
+                            ? `
                                         <div
                                             class="news-event-image-wrapper"
                                             data-image-index="${index}"
@@ -1670,12 +1768,12 @@ async function loadNewsEventsPage() {
 
                                             <img
                                                 src="${escapeHTML(
-                                                    image
-                                                )}"
+                                image
+                            )}"
                                                 alt="${escapeHTML(
-                                                    item.title ||
-                                                    "School News"
-                                                )}"
+                                item.title ||
+                                "School News"
+                            )}"
                                                 class="news-event-image"
                                                 loading="lazy"
                                             >
@@ -1686,46 +1784,44 @@ async function loadNewsEventsPage() {
 
                                         </div>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                             <div class="news-event-page-content">
 
-                                ${
-                                    date
-                                        ? `
+                                ${date
+                            ? `
                                             <span class="news-event-date">
                                                 ${formatDate(date)}
                                             </span>
                                         `
-                                        : ""
-                                }
+                            : ""
+                        }
 
                                 <h2>
                                     ${escapeHTML(
-                                        item.title ||
-                                        "School News"
-                                    )}
+                            item.title ||
+                            "School News"
+                        )}
                                 </h2>
 
                                 <p>
                                     ${escapeHTML(
-                                        item.description ||
-                                        ""
-                                    )}
+                            item.description ||
+                            ""
+                        )}
                                 </p>
 
-                                ${
-                                    category
-                                        ? `
+                                ${category
+                            ? `
                                             <span class="news-event-category">
                                                 ${escapeHTML(
-                                                    category
-                                                )}
+                                category
+                            )}
                                             </span>
                                         `
-                                        : ""
-                                }
+                            : ""
+                        }
 
                             </div>
 
@@ -2038,35 +2134,34 @@ async function loadHomepageGallery() {
                         <div
                             class="gallery-item"
                             data-gallery-image="${escapeHTML(
-                                imageUrl
-                            )}"
+                        imageUrl
+                    )}"
                             data-gallery-caption="${escapeHTML(
-                                caption
-                            )}"
+                        caption
+                    )}"
                         >
 
                             <img
                                 src="${escapeHTML(
-                                    imageUrl
-                                )}"
+                        imageUrl
+                    )}"
                                 alt="${escapeHTML(
-                                    caption ||
-                                    "School Gallery"
-                                )}"
+                        caption ||
+                        "School Gallery"
+                    )}"
                                 loading="lazy"
                             >
 
-                            ${
-                                caption
-                                    ? `
+                            ${caption
+                            ? `
                                         <p class="gallery-caption">
                                             ${escapeHTML(
-                                                caption
-                                            )}
+                                caption
+                            )}
                                         </p>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                         </div>
                     `;
@@ -2172,12 +2267,12 @@ async function loadGalleryPage() {
 
                                 <img
                                     src="${escapeHTML(
-                                        imageUrl
-                                    )}"
+                        imageUrl
+                    )}"
                                     alt="${escapeHTML(
-                                        caption ||
-                                        "School Gallery"
-                                    )}"
+                        caption ||
+                        "School Gallery"
+                    )}"
                                     loading="lazy"
                                 >
 
@@ -2187,17 +2282,16 @@ async function loadGalleryPage() {
 
                             </div>
 
-                            ${
-                                caption
-                                    ? `
+                            ${caption
+                            ? `
                                         <div class="gallery-page-caption">
                                             ${escapeHTML(
-                                                caption
-                                            )}
+                                caption
+                            )}
                                         </div>
                                     `
-                                    : ""
-                            }
+                            : ""
+                        }
 
                         </article>
                     `;
@@ -2985,12 +3079,12 @@ function showTeacherProfile(
 
                 <img
                     src="${escapeHTML(
-                        photo
-                    )}"
+        photo
+    )}"
                     alt="${escapeHTML(
-                        teacher.name ||
-                        "Teacher"
-                    )}"
+        teacher.name ||
+        "Teacher"
+    )}"
                 >
 
             </div>
@@ -3000,22 +3094,21 @@ function showTeacherProfile(
 
                 <h2>
                     ${escapeHTML(
-                        teacher.name ||
-                        "Teacher"
-                    )}
+        teacher.name ||
+        "Teacher"
+    )}
                 </h2>
 
-                ${
-                    teacher.designation
-                        ? `
+                ${teacher.designation
+            ? `
                             <p class="teacher-profile-designation">
                                 ${escapeHTML(
-                                    teacher.designation
-                                )}
+                teacher.designation
+            )}
                             </p>
                         `
-                        : ""
-                }
+            : ""
+        }
 
 
                 <div class="teacher-profile-meta">
@@ -3023,92 +3116,88 @@ function showTeacherProfile(
                     <div>
                         <strong>Division:</strong>
                         ${escapeHTML(
-                            teacher.division ||
-                            "N/A"
-                        )}
+            teacher.division ||
+            "N/A"
+        )}
                     </div>
 
                     <div>
                         <strong>Department:</strong>
                         ${escapeHTML(
-                            teacher.department ||
-                            "N/A"
-                        )}
+            teacher.department ||
+            "N/A"
+        )}
                     </div>
 
                     <div>
                         <strong>Subject:</strong>
                         ${escapeHTML(
-                            teacher.subject ||
-                            "N/A"
-                        )}
+            teacher.subject ||
+            "N/A"
+        )}
                     </div>
 
-                    ${
-                        phone
-                            ? `
+                    ${phone
+            ? `
                                 <div>
                                     <strong>Phone:</strong>
                                     ${escapeHTML(
-                                        phone
-                                    )}
+                phone
+            )}
                                 </div>
                             `
-                            : ""
-                    }
+            : ""
+        }
 
                 </div>
 
 
                 <div class="teacher-profile-social">
 
-                    ${
-                        socialLinks.facebook
-                            ? `
+                    ${socialLinks.facebook
+            ? `
                                 <a
                                     href="${escapeHTML(
-                                        socialLinks.facebook
-                                    )}"
+                socialLinks.facebook
+            )}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
                                     Facebook
                                 </a>
                             `
-                            : ""
-                    }
+            : ""
+        }
 
-                    ${
-                        socialLinks.instagram
-                            ? `
+                    ${socialLinks.instagram
+            ? `
                                 <a
                                     href="${escapeHTML(
-                                        socialLinks.instagram
-                                    )}"
+                socialLinks.instagram
+            )}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
                                     Instagram
                                 </a>
                             `
-                            : ""
-                    }
+            : ""
+        }
 
-                    ${
-                        socialLinks.linkedin
-                            ? `
+                    ${socialLinks.linkedin
+            ? `
                                 <a
                                     href="${escapeHTML(
-                                        socialLinks.linkedin
-                                    )}"
+                socialLinks.linkedin
+            )}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
                                     LinkedIn
                                 </a>
                             `
-                            : ""
-                    }
+            : ""
+        }
 
                 </div>
 
@@ -3125,8 +3214,8 @@ function showTeacherProfile(
 
             <p>
                 ${escapeHTML(
-                    about
-                )}
+            about
+        )}
             </p>
 
         </div>
@@ -3212,12 +3301,12 @@ function renderTeachers(
 
                             <img
                                 src="${escapeHTML(
-                                    photo
-                                )}"
+                    photo
+                )}"
                                 alt="${escapeHTML(
-                                    teacher.name ||
-                                    "Teacher"
-                                )}"
+                    teacher.name ||
+                    "Teacher"
+                )}"
                                 loading="lazy"
                                 onerror="this.onerror=null;this.src='images/teacher-placeholder.jpg';"
                             >
@@ -3228,45 +3317,44 @@ function renderTeachers(
 
                             <h3>
                                 ${escapeHTML(
-                                    teacher.name ||
-                                    "Teacher"
-                                )}
+                    teacher.name ||
+                    "Teacher"
+                )}
                             </h3>
 
-                            ${
-                                teacher.designation
-                                    ? `
+                            ${teacher.designation
+                        ? `
                                         <p class="teacher-designation">
                                             ${escapeHTML(
-                                                teacher.designation
-                                            )}
+                            teacher.designation
+                        )}
                                         </p>
                                     `
-                                    : ""
-                            }
+                        : ""
+                    }
 
                             <p>
                                 <strong>Division:</strong>
                                 ${escapeHTML(
-                                    teacher.division ||
-                                    "N/A"
-                                )}
+                        teacher.division ||
+                        "N/A"
+                    )}
                             </p>
 
                             <p>
                                 <strong>Department:</strong>
                                 ${escapeHTML(
-                                    teacher.department ||
-                                    "N/A"
-                                )}
+                        teacher.department ||
+                        "N/A"
+                    )}
                             </p>
 
                             <p>
                                 <strong>Subject:</strong>
                                 ${escapeHTML(
-                                    teacher.subject ||
-                                    "N/A"
-                                )}
+                        teacher.subject ||
+                        "N/A"
+                    )}
                             </p>
 
                         </div>
