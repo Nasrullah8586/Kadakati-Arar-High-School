@@ -426,11 +426,16 @@ body.lightbox-open {
 .gallery-info {
     width: 100%;
 
+    min-height: 125px;
+    height: 125px;
+
     padding: 18px 20px 20px;
 
     background: #f3f8f5;
 
     text-align: center;
+
+    overflow: hidden;
 }
 
 .gallery-title {
@@ -460,8 +465,12 @@ body.lightbox-open {
     line-height: 1.6;
 
     text-align: center;
-}
 
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
 
 /* =========================================================
    ZOOM ICON
