@@ -247,99 +247,169 @@
 
 
 <script src="script.js"></script>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const galleryList = document.getElementById("galleryList");
-    const galleryLoading = document.getElementById("galleryLoading");
-    const galleryEmpty = document.getElementById("galleryEmpty");
+    const galleryList =
+        document.getElementById("galleryList");
 
-    const imageLightbox = document.getElementById("imageLightbox");
-    const lightboxImage = document.getElementById("lightboxImage");
-    const lightboxCaption = document.getElementById("lightboxCaption");
-    const lightboxClose = document.getElementById("lightboxClose");
+    const galleryLoading =
+        document.getElementById("galleryLoading");
+
+    const galleryEmpty =
+        document.getElementById("galleryEmpty");
+
+    const imageLightbox =
+        document.getElementById("imageLightbox");
+
+    const lightboxImage =
+        document.getElementById("lightboxImage");
+
+    const lightboxCaption =
+        document.getElementById("lightboxCaption");
+
+    const lightboxClose =
+        document.getElementById("lightboxClose");
 
 
-    /*
-     * Gallery API
-     */
-    const GALLERY_API = "https://kadakati-arar-high-school-api.onrender.com/api/gallery";
+    /* =====================================================
+       GALLERY API
+    ===================================================== */
 
-    /*
-     * Open full image
-     */
-    function openLightbox(imageUrl, caption) {
+    const GALLERY_API =
+        "https://kadakati-arar-high-school-api.onrender.com/api/gallery";
 
-        lightboxImage.src = imageUrl;
 
-        lightboxCaption.textContent =
-            caption || "Kadakati Arar High School";
+    /* =====================================================
+       OPEN LIGHTBOX
+    ===================================================== */
 
-        imageLightbox.classList.add("show");
+    function openLightbox(
+        imageUrl,
+        title,
+        description
+    ) {
 
-        imageLightbox.setAttribute("aria-hidden", "false");
+        lightboxImage.src =
+            imageUrl;
 
-        document.body.classList.add("lightbox-open");
+
+        lightboxCaption.innerHTML = "";
+
+
+        if (title) {
+
+            const titleElement =
+                document.createElement("h3");
+
+            titleElement.textContent =
+                title;
+
+            lightboxCaption.appendChild(
+                titleElement
+            );
+
+        }
+
+
+        if (description) {
+
+            const descriptionElement =
+                document.createElement("p");
+
+            descriptionElement.textContent =
+                description;
+
+            lightboxCaption.appendChild(
+                descriptionElement
+            );
+
+        }
+
+
+        if (
+            !title &&
+            !description
+        ) {
+
+            lightboxCaption.textContent =
+                "Kadakati Arar High School";
+
+        }
+
+
+        imageLightbox.classList.add(
+            "show"
+        );
+
+        imageLightbox.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "lightbox-open"
+        );
+
     }
 
 
-    /*
-     * Close full image
-     */
+    /* =====================================================
+       CLOSE LIGHTBOX
+    ===================================================== */
+
     function closeLightbox() {
 
-        imageLightbox.classList.remove("show");
+        imageLightbox.classList.remove(
+            "show"
+        );
 
-        imageLightbox.setAttribute("aria-hidden", "true");
+        imageLightbox.setAttribute(
+            "aria-hidden",
+            "true"
+        );
 
-        document.body.classList.remove("lightbox-open");
+        document.body.classList.remove(
+            "lightbox-open"
+        );
 
-        setTimeout(function () {
 
-            lightboxImage.src = "";
+        setTimeout(
+            function () {
 
-        }, 250);
+                lightboxImage.src = "";
+
+                lightboxCaption.innerHTML = "";
+
+            },
+            250
+        );
+
     }
 
 
-    /*
-     * Close button
-     */
+    /* =====================================================
+       CLOSE BUTTON
+    ===================================================== */
+
     lightboxClose.addEventListener(
         "click",
         closeLightbox
     );
 
 
-    /*
-     * Click outside image
-     */
+    /* =====================================================
+       CLICK OUTSIDE IMAGE
+    ===================================================== */
+
     imageLightbox.addEventListener(
         "click",
         function (event) {
 
-            if (event.target === imageLightbox) {
-
-                closeLightbox();
-
-            }
-
-        }
-    );
-
-
-    /*
-     * ESC key
-     */
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
             if (
-                event.key === "Escape" &&
-                imageLightbox.classList.contains("show")
+                event.target ===
+                imageLightbox
             ) {
 
                 closeLightbox();
@@ -350,33 +420,66 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /*
-     * Create gallery card
-     */
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                imageLightbox.classList.contains(
+                    "show"
+                )
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       CREATE GALLERY CARD
+    ===================================================== */
+
     function createGalleryCard(item) {
 
-        const card = document.createElement("article");
+        const card =
+            document.createElement(
+                "article"
+            );
 
-        card.className = "gallery-card";
+        card.className =
+            "gallery-card";
 
 
         const imageWrapper =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         imageWrapper.className =
             "gallery-image-wrapper";
 
 
         const image =
-            document.createElement("img");
+            document.createElement(
+                "img"
+            );
 
         image.className =
             "gallery-image";
 
 
-        /*
-         * Support common backend field names
-         */
+        /* =================================================
+           IMAGE URL
+        ================================================= */
+
         const imageUrl =
             item.imageUrl ||
             item.image ||
@@ -389,80 +492,190 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!imageUrl) {
+
             return null;
+
         }
 
 
-        image.src = imageUrl;
+        /* =================================================
+           TITLE
+        ================================================= */
+
+        const title =
+            item.title ||
+            "";
+
+
+        /* =================================================
+           DESCRIPTION
+        ================================================= */
+
+        const description =
+            item.description ||
+            "";
+
+
+        /* =================================================
+           IMAGE
+        ================================================= */
+
+        image.src =
+            imageUrl;
 
         image.alt =
-            item.caption ||
+            title ||
             "Kadakati Arar High School Gallery";
 
-
-        image.loading = "lazy";
+        image.loading =
+            "lazy";
 
 
         image.addEventListener(
             "error",
             function () {
 
-                card.style.display = "none";
+                card.style.display =
+                    "none";
 
             }
         );
 
 
-        imageWrapper.appendChild(image);
+        imageWrapper.appendChild(
+            image
+        );
 
 
-        /*
-         * Zoom icon
-         */
+        /* =================================================
+           ZOOM ICON
+        ================================================= */
+
         const zoomIcon =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
 
         zoomIcon.className =
             "gallery-zoom-icon";
 
-        zoomIcon.innerHTML = "↗";
+        zoomIcon.innerHTML =
+            "↗";
 
-        imageWrapper.appendChild(zoomIcon);
-
-
-        /*
-         * Caption
-         */
-        const caption =
-            document.createElement("div");
-
-        caption.className =
-            "gallery-caption";
+        imageWrapper.appendChild(
+            zoomIcon
+        );
 
 
-        const captionText =
-            item.caption ||
-            "Kadakati Arar High School";
+        /* =================================================
+           INFO AREA
+        ================================================= */
+
+        const info =
+            document.createElement(
+                "div"
+            );
+
+        info.className =
+            "gallery-info";
 
 
-        caption.textContent = captionText;
+        /* =================================================
+           TITLE
+        ================================================= */
+
+        if (title) {
+
+            const titleElement =
+                document.createElement(
+                    "h3"
+                );
+
+            titleElement.className =
+                "gallery-title";
+
+            titleElement.textContent =
+                title;
+
+            info.appendChild(
+                titleElement
+            );
+
+        }
 
 
-        card.appendChild(imageWrapper);
+        /* =================================================
+           DESCRIPTION
+        ================================================= */
 
-        card.appendChild(caption);
+        if (description) {
+
+            const descriptionElement =
+                document.createElement(
+                    "p"
+                );
+
+            descriptionElement.className =
+                "gallery-description";
+
+            descriptionElement.textContent =
+                description;
+
+            info.appendChild(
+                descriptionElement
+            );
+
+        }
 
 
-        /*
-         * Open image
-         */
+        /* =================================================
+           FALLBACK
+        ================================================= */
+
+        if (
+            !title &&
+            !description
+        ) {
+
+            const fallback =
+                document.createElement(
+                    "p"
+                );
+
+            fallback.className =
+                "gallery-description";
+
+            fallback.textContent =
+                "Kadakati Arar High School";
+
+            info.appendChild(
+                fallback
+            );
+
+        }
+
+
+        card.appendChild(
+            imageWrapper
+        );
+
+        card.appendChild(
+            info
+        );
+
+
+        /* =================================================
+           OPEN IMAGE
+        ================================================= */
+
         card.addEventListener(
             "click",
             function () {
 
                 openLightbox(
                     imageUrl,
-                    captionText
+                    title,
+                    description
                 );
 
             }
@@ -470,23 +683,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return card;
+
     }
 
 
-    /*
-     * Load gallery
-     */
+    /* =====================================================
+       LOAD GALLERY
+    ===================================================== */
+
     async function loadGallery() {
 
         try {
 
-            galleryLoading.hidden = false;
+            galleryLoading.hidden =
+                false;
 
-            galleryEmpty.hidden = true;
+            galleryEmpty.hidden =
+                true;
 
 
             const response =
-                await fetch(GALLERY_API);
+                await fetch(
+                    GALLERY_API,
+                    {
+                        cache: "no-store"
+                    }
+                );
 
 
             if (!response.ok) {
@@ -502,76 +724,108 @@ document.addEventListener("DOMContentLoaded", function () {
                 await response.json();
 
 
-            /*
-             * Support different API response structures
-             */
-            let galleryData = [];
+            /* =================================================
+               API RESPONSE
+            ================================================= */
 
-            if (Array.isArray(result)) {
+            let galleryData =
+                [];
 
-                galleryData = result;
 
-            } else if (
-                Array.isArray(result.data)
+            if (
+                Array.isArray(result)
             ) {
 
-                galleryData = result.data;
+                galleryData =
+                    result;
 
             } else if (
-                Array.isArray(result.gallery)
+                Array.isArray(
+                    result.data
+                )
             ) {
 
-                galleryData = result.gallery;
+                galleryData =
+                    result.data;
 
             } else if (
-                Array.isArray(result.galleries)
+                Array.isArray(
+                    result.gallery
+                )
             ) {
 
-                galleryData = result.galleries;
+                galleryData =
+                    result.gallery;
+
+            } else if (
+                Array.isArray(
+                    result.galleries
+                )
+            ) {
+
+                galleryData =
+                    result.galleries;
 
             }
 
 
-            galleryList.innerHTML = "";
+            galleryList.innerHTML =
+                "";
 
 
-            if (galleryData.length === 0) {
+            if (
+                galleryData.length === 0
+            ) {
 
-                galleryLoading.hidden = true;
+                galleryLoading.hidden =
+                    true;
 
-                galleryEmpty.hidden = false;
+                galleryEmpty.hidden =
+                    false;
 
                 return;
 
             }
 
 
-            galleryData.forEach(function (item) {
+            /* =================================================
+               CREATE CARDS
+            ================================================= */
 
-                const card =
-                    createGalleryCard(item);
+            galleryData.forEach(
+                function (item) {
+
+                    const card =
+                        createGalleryCard(
+                            item
+                        );
 
 
-                if (card) {
+                    if (card) {
 
-                    galleryList.appendChild(card);
+                        galleryList.appendChild(
+                            card
+                        );
+
+                    }
 
                 }
+            );
 
-            });
 
-
-            galleryLoading.hidden = true;
+            galleryLoading.hidden =
+                true;
 
 
             if (
-                galleryList.children.length === 0
+                galleryList.children.length ===
+                0
             ) {
 
-                galleryEmpty.hidden = false;
+                galleryEmpty.hidden =
+                    false;
 
             }
-
 
         } catch (error) {
 
@@ -581,9 +835,11 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-            galleryLoading.hidden = true;
+            galleryLoading.hidden =
+                true;
 
-            galleryEmpty.hidden = false;
+            galleryEmpty.hidden =
+                false;
 
             galleryEmpty.textContent =
                 "Unable to load gallery photos.";
@@ -593,9 +849,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /*
-     * Start
-     */
+    /* =====================================================
+       START
+    ===================================================== */
+
     loadGallery();
 
 });
