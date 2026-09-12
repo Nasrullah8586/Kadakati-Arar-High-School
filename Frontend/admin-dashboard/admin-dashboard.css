@@ -1256,3 +1256,36 @@ body {
     }
 
 }
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-btn {
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--green);
+
+    padding: 9px 14px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: var(--green-light);
+
+    border-color: var(--green);
+
+    color: var(--green-dark);
+}
