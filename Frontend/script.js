@@ -3458,7 +3458,11 @@ navLinks.forEach(
 
         link.addEventListener(
             "click",
-            function () {
+            function (event) {
+
+                const href =
+                    this.getAttribute("href");
+
 
                 navLinks.forEach(
                     item =>
@@ -3472,12 +3476,30 @@ navLinks.forEach(
                     "active"
                 );
 
+
+                /* =========================
+                   NOTICE PAGE
+                ========================= */
+
+                if (
+                    href === "notice.html" ||
+                    href === "./notice.html"
+                ) {
+
+                    event.preventDefault();
+
+                    window.location.href =
+                        "notice.html";
+
+                    return;
+
+                }
+
             }
         );
 
     }
 );
-
 
 /* =========================================================
    CONTACT NAVIGATION
