@@ -5260,14 +5260,19 @@ document.addEventListener(
 
     }
 );
-const backBtn = document.getElementById("backBtn");
+const backBtn =
+    document.getElementById("backBtn");
 
 if (backBtn) {
 
-    backBtn.addEventListener("click", () => {
+    backBtn.addEventListener(
+        "click",
+        () => {
 
-        window.history.back();
+            window.location.href =
+                "./admin-dashboard.html";
 
-    });
+        }
+    );
 
 }
