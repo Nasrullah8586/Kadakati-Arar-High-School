@@ -136,9 +136,9 @@
 
             <div class="history-content">
 
-                <p id="schoolHistory">
+                <div id="schoolHistory">
                     Loading school history...
-                </p>
+                </div>
 
             </div>
 
@@ -261,7 +261,174 @@
 </footer>
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script src="script.js"></script>
+
+
+<script>
+
+const HISTORY_API =
+    "https://kadakati-arar-high-school-api.onrender.com/api/history";
+
+
+async function loadHistory() {
+
+    const historyContainer =
+        document.getElementById("schoolHistory");
+
+
+    if (!historyContainer) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(HISTORY_API);
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Failed to load history."
+            );
+
+        }
+
+
+        if (
+            !data.history ||
+            data.history.length === 0
+        ) {
+
+            historyContainer.innerHTML = `
+                <p>
+                    No school history available.
+                </p>
+            `;
+
+            return;
+
+        }
+
+
+        historyContainer.innerHTML =
+            data.history
+                .map(item => {
+
+                    return `
+
+                        <article class="history-item">
+
+                            ${
+                                item.year
+                                    ? `
+                                        <h3>
+                                            ${escapeHistoryHtml(item.year)}
+                                        </h3>
+                                    `
+                                    : ""
+                            }
+
+
+                            <h2>
+                                ${escapeHistoryHtml(item.title)}
+                            </h2>
+
+
+                            ${
+                                item.imageUrl
+                                    ? `
+                                        <img
+                                            src="${escapeHistoryAttribute(item.imageUrl)}"
+                                            alt="${escapeHistoryAttribute(item.title)}"
+                                            style="
+                                                display: block;
+                                                width: 100%;
+                                                max-width: 700px;
+                                                height: auto;
+                                                margin: 25px auto;
+                                                border-radius: 12px;
+                                            "
+                                        >
+                                    `
+                                    : ""
+                            }
+
+
+                            <p>
+                                ${escapeHistoryHtml(item.description)}
+                            </p>
+
+                        </article>
+
+                    `;
+
+                })
+                .join("");
+
+    } catch (error) {
+
+        console.error(
+            "History loading error:",
+            error
+        );
+
+
+        historyContainer.innerHTML = `
+            <p>
+                Unable to load school history.
+            </p>
+        `;
+
+    }
+
+}
+
+
+function escapeHistoryHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function escapeHistoryAttribute(value) {
+
+    return escapeHistoryHtml(value);
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadHistory
+);
+
+</script>
+
 
 </body>
 
