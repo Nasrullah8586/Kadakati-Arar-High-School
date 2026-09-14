@@ -46,7 +46,8 @@
                 <span>News & Events</span>
             </button>
 
-            <button class="nav-item" data-section="history" onclick="switchSection('history')">
+            <button type="button" class="nav-item" data-section="history"
+                onclick="document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active')); document.getElementById('historySection').classList.add('active'); document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active')); this.classList.add('active'); document.getElementById('pageTitle').textContent = 'History'; document.getElementById('pageSubtitle').textContent = 'Manage the historical information of the school.'; loadHistory();">
                 <span class="nav-icon">📜</span>
                 <span>History</span>
             </button>
