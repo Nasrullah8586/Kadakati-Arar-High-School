@@ -105,6 +105,9 @@ const sections = {
     "news-events":
         document.getElementById("newsEventsSection"),
 
+    history:
+        document.getElementById("historySection"),
+
     gallery:
         document.getElementById("gallerySection"),
 
@@ -136,6 +139,11 @@ const pageTitles = {
         "Manage school news and events."
     ],
 
+    history: [
+        "History",
+        "Manage the historical information of the school."
+    ],
+
     gallery: [
         "Gallery",
         "Manage school gallery images."
@@ -162,22 +170,31 @@ const pageTitles = {
 /* =========================================================
    NAVIGATION
 ========================================================= */
+document.addEventListener("click", function (event) {
 
-navItems.forEach(item => {
+    const navItem =
+        event.target.closest(".nav-item");
 
-    item.addEventListener("click", () => {
+    if (!navItem) {
+        return;
+    }
 
-        const section =
-            item.dataset.section;
+    event.preventDefault();
 
-        switchSection(section);
+    const section =
+        navItem.dataset.section;
 
+    if (!section) {
+        return;
+    }
+
+    switchSection(section);
+
+    if (typeof closeMobileSidebar === "function") {
         closeMobileSidebar();
-
-    });
+    }
 
 });
-
 
 function switchSection(sectionName) {
 
@@ -235,6 +252,10 @@ function switchSection(sectionName) {
 
     if (sectionName === "news-events") {
         loadNewsEvents();
+    }
+
+    if (sectionName === "history") {
+        loadHistory();
     }
 
     if (sectionName === "gallery") {
@@ -480,8 +501,8 @@ async function loadAdminProfile() {
                     admin.name ||
                     "A"
                 )
-                .charAt(0)
-                .toUpperCase();
+                    .charAt(0)
+                    .toUpperCase();
 
         }
 
@@ -508,6 +529,7 @@ async function loadDashboardStats() {
         const [
             notices,
             newsEvents,
+            history,
             gallery,
             teachers
         ] = await Promise.all([
@@ -518,6 +540,10 @@ async function loadDashboardStats() {
 
             apiRequest(
                 "/news-events/admin/all"
+            ),
+
+            apiRequest(
+                "/history/admin/all"
             ),
 
             apiRequest(
@@ -537,6 +563,9 @@ async function loadDashboardStats() {
         const newsEventCount =
             document.getElementById("newsEventCount");
 
+        const historyCount =
+            document.getElementById("historyCount");
+
         const galleryCount =
             document.getElementById("galleryCount");
 
@@ -555,6 +584,11 @@ async function loadDashboardStats() {
         if (newsEventCount) {
             newsEventCount.textContent =
                 newsEvents?.count || 0;
+        }
+
+        if (historyCount) {
+            historyCount.textContent =
+                history?.count || 0;
         }
 
         if (galleryCount) {
@@ -652,37 +686,36 @@ async function loadNotices() {
 
                             <h3>
                                 ${escapeHtml(
-                                    notice.title
-                                )}
+                    notice.title
+                )}
                             </h3>
 
                             <p>
                                 ${escapeHtml(
-                                    notice.description
-                                )}
+                    notice.description
+                )}
                             </p>
 
                             <div class="data-meta">
 
                                 <span class="badge">
                                     ${escapeHtml(
-                                        notice.category ||
-                                        "General"
-                                    )}
+                    notice.category ||
+                    "General"
+                )}
                                 </span>
 
                                 <span class="badge">
-                                    ${
-                                        notice.isPublished
-                                            ? "Published"
-                                            : "Draft"
-                                    }
+                                    ${notice.isPublished
+                        ? "Published"
+                        : "Draft"
+                    }
                                 </span>
 
                                 <span class="badge">
                                     ${formatDate(
-                                        notice.noticeDate
-                                    )}
+                        notice.noticeDate
+                    )}
                                 </span>
 
                             </div>
@@ -974,8 +1007,8 @@ async function editNotice(id) {
                         type="text"
                         id="editNoticeTitle"
                         value="${escapeAttribute(
-                            notice.title
-                        )}"
+                notice.title
+            )}"
                         required
                     >
 
@@ -990,8 +1023,8 @@ async function editNotice(id) {
                         rows="5"
                         required
                     >${escapeHtml(
-                        notice.description
-                    )}</textarea>
+                notice.description
+            )}</textarea>
 
                 </div>
 
@@ -1002,22 +1035,21 @@ async function editNotice(id) {
                     <select id="editNoticeCategory">
 
                         ${[
-                            "General",
-                            "Academic",
-                            "Exam",
-                            "Admission",
-                            "Event",
-                            "Holiday"
-                        ].map(category => `
+                "General",
+                "Academic",
+                "Exam",
+                "Admission",
+                "Event",
+                "Holiday"
+            ].map(category => `
 
                             <option
                                 value="${category}"
-                                ${
-                                    notice.category ===
-                                    category
-                                        ? "selected"
-                                        : ""
-                                }
+                                ${notice.category ===
+                    category
+                    ? "selected"
+                    : ""
+                }
                             >
                                 ${category}
                             </option>
@@ -1036,8 +1068,8 @@ async function editNotice(id) {
                         type="date"
                         id="editNoticeDate"
                         value="${toInputDate(
-                            notice.noticeDate
-                        )}"
+                    notice.noticeDate
+                )}"
                     >
 
                 </div>
@@ -1052,8 +1084,8 @@ async function editNotice(id) {
                         type="url"
                         id="editNoticeAttachment"
                         value="${escapeAttribute(
-                            notice.attachment || ""
-                        )}"
+                    notice.attachment || ""
+                )}"
                     >
 
                 </div>
@@ -1066,22 +1098,20 @@ async function editNotice(id) {
 
                         <option
                             value="true"
-                            ${
-                                notice.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${notice.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             Yes
                         </option>
 
                         <option
                             value="false"
-                            ${
-                                !notice.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${!notice.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             No
                         </option>
@@ -1291,36 +1321,35 @@ async function loadNewsEvents() {
 
                             <h3>
                                 ${escapeHtml(
-                                    item.title
-                                )}
+                    item.title
+                )}
                             </h3>
 
                             <p>
                                 ${escapeHtml(
-                                    item.description
-                                )}
+                    item.description
+                )}
                             </p>
 
                             <div class="data-meta">
 
                                 <span class="badge">
                                     ${escapeHtml(
-                                        item.type
-                                    )}
+                    item.type
+                )}
                                 </span>
 
                                 <span class="badge">
-                                    ${
-                                        item.isPublished
-                                            ? "Published"
-                                            : "Draft"
-                                    }
+                                    ${item.isPublished
+                        ? "Published"
+                        : "Draft"
+                    }
                                 </span>
 
                                 <span class="badge">
                                     ${formatDate(
-                                        item.date
-                                    )}
+                        item.date
+                    )}
                                 </span>
 
                             </div>
@@ -1612,8 +1641,8 @@ async function editNewsEvent(id) {
                         type="text"
                         id="editNewsTitle"
                         value="${escapeAttribute(
-                            item.title
-                        )}"
+                item.title
+            )}"
                         required
                     >
 
@@ -1628,8 +1657,8 @@ async function editNewsEvent(id) {
                         rows="5"
                         required
                     >${escapeHtml(
-                        item.description
-                    )}</textarea>
+                item.description
+            )}</textarea>
 
                 </div>
 
@@ -1641,22 +1670,20 @@ async function editNewsEvent(id) {
 
                         <option
                             value="News"
-                            ${
-                                item.type === "News"
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${item.type === "News"
+                ? "selected"
+                : ""
+            }
                         >
                             News
                         </option>
 
                         <option
                             value="Event"
-                            ${
-                                item.type === "Event"
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${item.type === "Event"
+                ? "selected"
+                : ""
+            }
                         >
                             Event
                         </option>
@@ -1673,8 +1700,8 @@ async function editNewsEvent(id) {
                         type="date"
                         id="editNewsDate"
                         value="${toInputDate(
-                            item.date
-                        )}"
+                item.date
+            )}"
                         required
                     >
 
@@ -1702,22 +1729,20 @@ async function editNewsEvent(id) {
 
                         <option
                             value="true"
-                            ${
-                                item.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${item.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             Yes
                         </option>
 
                         <option
                             value="false"
-                            ${
-                                !item.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${!item.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             No
                         </option>
@@ -1886,6 +1911,770 @@ async function deleteNewsEvent(id) {
 
 }
 
+/* =========================================================
+   HISTORY
+========================================================= */
+
+async function loadHistory() {
+
+    const container =
+        document.getElementById(
+            "historyList"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML =
+        `<div class="loading">
+            Loading history...
+        </div>`;
+
+
+    try {
+
+        const data =
+            await apiRequest(
+                "/history/admin/all"
+            );
+
+        const historyItems =
+            data?.history ||
+            data?.histories ||
+            [];
+
+
+        if (!historyItems.length) {
+
+            container.innerHTML =
+                `<div class="empty">
+                    No history items found.
+                </div>`;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            historyItems.map(item => {
+
+                return `
+                    <div class="data-row">
+
+                        ${item.imageUrl
+                        ? `
+                                <div class="data-image">
+                                    <img
+                                        src="${escapeAttribute(
+                            item.imageUrl
+                        )}"
+                                        alt="${escapeAttribute(
+                            item.title ||
+                            "History image"
+                        )}"
+                                        style="
+                                            width:100px;
+                                            height:75px;
+                                            object-fit:cover;
+                                            border-radius:8px;
+                                        "
+                                    >
+                                </div>
+                                `
+                        : ""
+                    }
+
+                        <div class="data-main">
+
+                            <h3>
+                                ${escapeHtml(
+                        item.title ||
+                        "Untitled History"
+                    )}
+                            </h3>
+
+                            <p>
+                                ${escapeHtml(
+                        item.description ||
+                        ""
+                    )}
+                            </p>
+
+                            <div class="data-meta">
+
+                                ${item.year
+                        ? `
+                                        <span class="badge">
+                                            ${escapeHtml(
+                            String(
+                                item.year
+                            )
+                        )}
+                                        </span>
+                                        `
+                        : ""
+                    }
+
+                                <span class="badge">
+                                    ${item.isPublished
+                        ? "Published"
+                        : "Draft"
+                    }
+                                </span>
+
+                                <span class="badge">
+                                    ${formatDate(
+                        item.createdAt
+                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="data-actions">
+
+                            <button
+                                class="small-btn"
+                                onclick="editHistory('${item._id}')"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                class="small-btn delete"
+                                onclick="deleteHistory('${item._id}')"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "History Load Error:",
+            error
+        );
+
+        container.innerHTML =
+            `<div class="empty">
+                Failed to load history.
+            </div>`;
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ADD HISTORY
+========================================================= */
+
+const addHistoryBtn =
+    document.getElementById(
+        "addHistoryBtn"
+    );
+
+
+if (addHistoryBtn) {
+
+    addHistoryBtn.addEventListener(
+        "click",
+        showHistoryForm
+    );
+
+}
+
+
+function showHistoryForm() {
+
+    openModal(
+        "Add History",
+        `
+        <form
+            id="historyForm"
+            class="modal-form"
+        >
+
+            <div class="form-group">
+
+                <label>Title *</label>
+
+                <input
+                    type="text"
+                    id="historyTitleInput"
+                    placeholder="e.g. Establishment of the School"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Year</label>
+
+                <input
+                    type="text"
+                    id="historyYear"
+                    placeholder="e.g. 1965"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Description *</label>
+
+                <textarea
+                    id="historyDescriptionInput"
+                    rows="7"
+                    placeholder="Write the historical information..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Image</label>
+
+                <input
+                    type="file"
+                    id="historyImage"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Published</label>
+
+                <select id="historyPublished">
+
+                    <option value="true">
+                        Yes
+                    </option>
+
+                    <option value="false">
+                        No
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="modal-submit"
+            >
+                Add History
+            </button>
+
+        </form>
+        `
+    );
+
+
+    document.getElementById(
+        "historyForm"
+    ).addEventListener(
+        "submit",
+        createHistory
+    );
+
+}
+
+
+/* =========================================================
+   CREATE HISTORY
+========================================================= */
+
+async function createHistory(event) {
+
+    event.preventDefault();
+
+
+    const title =
+        document.getElementById(
+            "historyTitleInput"
+        ).value.trim();
+
+
+    const year =
+        document.getElementById(
+            "historyYear"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "historyDescriptionInput"
+        ).value.trim();
+
+
+    const image =
+        document.getElementById(
+            "historyImage"
+        ).files[0];
+
+
+    const isPublished =
+        document.getElementById(
+            "historyPublished"
+        ).value === "true";
+
+
+    if (!title || !description) {
+
+        showToast(
+            "Title and description are required.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "title",
+        title
+    );
+
+
+    formData.append(
+        "year",
+        year
+    );
+
+
+    formData.append(
+        "description",
+        description
+    );
+
+
+    formData.append(
+        "isPublished",
+        isPublished
+    );
+
+
+    if (image) {
+
+        formData.append(
+            "image",
+            image
+        );
+
+    }
+
+
+    try {
+
+        await apiRequest(
+            "/history",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        closeModal();
+
+
+        showToast(
+            "History added successfully."
+        );
+
+
+        loadHistory();
+        loadDashboardStats();
+
+
+    } catch (error) {
+
+        console.error(
+            "Create History Error:",
+            error
+        );
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT HISTORY
+========================================================= */
+
+async function editHistory(id) {
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/history/${id}`
+            );
+
+
+        const item =
+            data?.history ||
+            data?.item;
+
+
+        if (!item) {
+
+            throw new Error(
+                "History item not found."
+            );
+
+        }
+
+
+        openModal(
+            "Edit History",
+            `
+            <form
+                id="editHistoryForm"
+                class="modal-form"
+            >
+
+                <div class="form-group">
+
+                    <label>Title *</label>
+
+                    <input
+                        type="text"
+                        id="editHistoryTitle"
+                        value="${escapeAttribute(
+                item.title || ""
+            )}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Year</label>
+
+                    <input
+                        type="text"
+                        id="editHistoryYear"
+                        value="${escapeAttribute(
+                item.year || ""
+            )}"
+                        placeholder="e.g. 1965"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Description *</label>
+
+                    <textarea
+                        id="editHistoryDescription"
+                        rows="7"
+                        required
+                    >${escapeHtml(
+                item.description || ""
+            )}</textarea>
+
+                </div>
+
+
+                ${item.imageUrl
+                ? `
+                        <div class="form-group">
+
+                            <label>
+                                Current Image
+                            </label>
+
+                            <div>
+                                <img
+                                    src="${escapeAttribute(
+                    item.imageUrl
+                )}"
+                                    alt="Current history image"
+                                    style="
+                                        width:160px;
+                                        height:110px;
+                                        object-fit:cover;
+                                        border-radius:8px;
+                                        display:block;
+                                        margin-bottom:10px;
+                                    "
+                                >
+                            </div>
+
+                        </div>
+                        `
+                : ""
+            }
+
+
+                <div class="form-group">
+
+                    <label>
+                        Replace Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="editHistoryImage"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Published</label>
+
+                    <select id="editHistoryPublished">
+
+                        <option
+                            value="true"
+                            ${item.isPublished
+                ? "selected"
+                : ""
+            }
+                        >
+                            Yes
+                        </option>
+
+                        <option
+                            value="false"
+                            ${!item.isPublished
+                ? "selected"
+                : ""
+            }
+                        >
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="modal-submit"
+                >
+                    Save Changes
+                </button>
+
+            </form>
+            `
+        );
+
+
+        document.getElementById(
+            "editHistoryForm"
+        ).addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "title",
+                    document.getElementById(
+                        "editHistoryTitle"
+                    ).value.trim()
+                );
+
+
+                formData.append(
+                    "year",
+                    document.getElementById(
+                        "editHistoryYear"
+                    ).value.trim()
+                );
+
+
+                formData.append(
+                    "description",
+                    document.getElementById(
+                        "editHistoryDescription"
+                    ).value.trim()
+                );
+
+
+                formData.append(
+                    "isPublished",
+                    document.getElementById(
+                        "editHistoryPublished"
+                    ).value === "true"
+                );
+
+
+                const newImage =
+                    document.getElementById(
+                        "editHistoryImage"
+                    ).files[0];
+
+
+                if (newImage) {
+
+                    formData.append(
+                        "image",
+                        newImage
+                    );
+
+                }
+
+
+                try {
+
+                    await apiRequest(
+                        `/history/${id}`,
+                        {
+                            method: "PUT",
+                            body: formData
+                        }
+                    );
+
+
+                    closeModal();
+
+
+                    showToast(
+                        "History updated successfully."
+                    );
+
+
+                    loadHistory();
+                    loadDashboardStats();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Update History Error:",
+                        error
+                    );
+
+                    showToast(
+                        error.message,
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Edit History Error:",
+            error
+        );
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE HISTORY
+========================================================= */
+
+async function deleteHistory(id) {
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this history item?"
+        )
+    ) {
+        return;
+    }
+
+
+    try {
+
+        await apiRequest(
+            `/history/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        showToast(
+            "History deleted successfully."
+        );
+
+
+        loadHistory();
+        loadDashboardStats();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete History Error:",
+            error
+        );
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
 
 /* =========================================================
    GALLERY
@@ -1941,28 +2730,28 @@ async function loadGallery() {
 
                         <img
                             src="${escapeAttribute(
-                                image.imageUrl
-                            )}"
+                    image.imageUrl
+                )}"
                             alt="${escapeAttribute(
-                                image.title ||
-                                "Gallery image"
-                            )}"
+                    image.title ||
+                    "Gallery image"
+                )}"
                         >
 
                         <div class="gallery-info">
 
                             <h3>
                                 ${escapeHtml(
-                                    image.title ||
-                                    "Untitled"
-                                )}
+                    image.title ||
+                    "Untitled"
+                )}
                             </h3>
 
                             <p>
                                 ${escapeHtml(
-                                    image.description ||
-                                    ""
-                                )}
+                    image.description ||
+                    ""
+                )}
                             </p>
 
                             <div class="gallery-actions">
@@ -2230,8 +3019,8 @@ async function editGallery(id) {
                         type="text"
                         id="editGalleryTitle"
                         value="${escapeAttribute(
-                            image.title || ""
-                        )}"
+                image.title || ""
+            )}"
                     >
 
                 </div>
@@ -2244,8 +3033,8 @@ async function editGallery(id) {
                         id="editGalleryDescription"
                         rows="4"
                     >${escapeHtml(
-                        image.description || ""
-                    )}</textarea>
+                image.description || ""
+            )}</textarea>
 
                 </div>
 
@@ -2271,22 +3060,20 @@ async function editGallery(id) {
 
                         <option
                             value="true"
-                            ${
-                                image.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${image.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             Yes
                         </option>
 
                         <option
                             value="false"
-                            ${
-                                !image.isPublished
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${!image.isPublished
+                ? "selected"
+                : ""
+            }
                         >
                             No
                         </option>
@@ -2498,38 +3285,37 @@ async function loadTeachers() {
 
                             <h3>
                                 ${escapeHtml(
-                                    teacher.name
-                                )}
+                    teacher.name
+                )}
                             </h3>
 
                             <p>
                                 ${escapeHtml(
-                                    teacher.email
-                                )}
+                    teacher.email
+                )}
                             </p>
 
                             <div class="data-meta">
 
                                 <span class="badge">
                                     ${escapeHtml(
-                                        teacher.division ||
-                                        ""
-                                    )}
+                    teacher.division ||
+                    ""
+                )}
                                 </span>
 
                                 <span class="badge">
                                     ${escapeHtml(
-                                        teacher.department ||
-                                        ""
-                                    )}
+                    teacher.department ||
+                    ""
+                )}
                                 </span>
 
                                 <span class="badge">
-                                    ${
-                                        teacher.isVerified
-                                            ? "Verified"
-                                            : "Unverified"
-                                    }
+                                    ${teacher.isVerified
+                        ? "Verified"
+                        : "Unverified"
+                    }
                                 </span>
 
                             </div>
@@ -3078,8 +3864,8 @@ async function editTeacher(id) {
                         type="text"
                         id="editTeacherName"
                         value="${escapeAttribute(
-                            teacher.name
-                        )}"
+                teacher.name
+            )}"
                         required
                     >
 
@@ -3093,8 +3879,8 @@ async function editTeacher(id) {
                         type="url"
                         id="editTeacherPhoto"
                         value="${escapeAttribute(
-                            teacher.photo || ""
-                        )}"
+                teacher.photo || ""
+            )}"
                     >
 
                 </div>
@@ -3107,8 +3893,8 @@ async function editTeacher(id) {
                         type="text"
                         id="editTeacherPhone"
                         value="${escapeAttribute(
-                            teacher.phone || ""
-                        )}"
+                teacher.phone || ""
+            )}"
                     >
 
                 </div>
@@ -3121,36 +3907,33 @@ async function editTeacher(id) {
 
                         <option
                             value="Science"
-                            ${
-                                teacher.division ===
-                                "Science"
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${teacher.division ===
+                "Science"
+                ? "selected"
+                : ""
+            }
                         >
                             Science
                         </option>
 
                         <option
                             value="Arts"
-                            ${
-                                teacher.division ===
-                                "Arts"
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${teacher.division ===
+                "Arts"
+                ? "selected"
+                : ""
+            }
                         >
                             Arts
                         </option>
 
                         <option
                             value="Commerce"
-                            ${
-                                teacher.division ===
-                                "Commerce"
-                                    ? "selected"
-                                    : ""
-                            }
+                            ${teacher.division ===
+                "Commerce"
+                ? "selected"
+                : ""
+            }
                         >
                             Commerce
                         </option>
@@ -3167,8 +3950,8 @@ async function editTeacher(id) {
                         type="text"
                         id="editTeacherDepartment"
                         value="${escapeAttribute(
-                            teacher.department || ""
-                        )}"
+                teacher.department || ""
+            )}"
                         required
                     >
 
@@ -3182,8 +3965,8 @@ async function editTeacher(id) {
                         type="text"
                         id="editTeacherSubject"
                         value="${escapeAttribute(
-                            teacher.subject || ""
-                        )}"
+                teacher.subject || ""
+            )}"
                     >
 
                 </div>
@@ -3196,8 +3979,8 @@ async function editTeacher(id) {
                         id="editTeacherAbout"
                         rows="4"
                     >${escapeHtml(
-                        teacher.about || ""
-                    )}</textarea>
+                teacher.about || ""
+            )}</textarea>
 
                 </div>
 
@@ -3409,33 +4192,32 @@ async function loadAdmins() {
 
                             <h3>
                                 ${escapeHtml(
-                                    admin.name
-                                )}
+                    admin.name
+                )}
                             </h3>
 
                             <p>
                                 ${escapeHtml(
-                                    admin.email
-                                )}
+                    admin.email
+                )}
                             </p>
 
                             <p>
                                 Username:
                                 <strong>
                                     ${escapeHtml(
-                                        admin.username
-                                    )}
+                    admin.username
+                )}
                                 </strong>
                             </p>
 
                             <div class="data-meta">
 
                                 <span class="badge">
-                                    ${
-                                        admin.isVerified
-                                            ? "Verified"
-                                            : "Unverified"
-                                    }
+                                    ${admin.isVerified
+                        ? "Verified"
+                        : "Unverified"
+                    }
                                 </span>
 
                                 <span class="badge">
@@ -3448,20 +4230,19 @@ async function loadAdmins() {
 
                         <div class="data-actions">
 
-                            ${
-                                !admin.isVerified
-                                    ? `
+                            ${!admin.isVerified
+                        ? `
                                     <button
                                         class="small-btn"
                                         onclick="openAdminVerificationModal('${escapeAttribute(
-                                            admin.email
-                                        )}')"
+                            admin.email
+                        )}')"
                                     >
                                         Verify
                                     </button>
                                     `
-                                    : ""
-                            }
+                        : ""
+                    }
 
                             <button
                                 class="small-btn delete"
@@ -4050,12 +4831,6 @@ async function loadSiteContent() {
             aboutDescription:
                 content.aboutDescription,
 
-            historyTitle:
-                content.historyTitle,
-
-            historyDescription:
-                content.historyDescription,
-
             mission:
                 content.mission,
 
@@ -4148,8 +4923,6 @@ async function saveSiteContent() {
         "heroSubtitle",
         "aboutTitle",
         "aboutDescription",
-        "historyTitle",
-        "historyDescription",
         "mission",
         "vision",
         "phone",
@@ -4279,6 +5052,16 @@ document.querySelectorAll(
                 );
 
                 showNewsEventForm();
+
+            }
+
+            if (action === "history") {
+
+                switchSection(
+                    "history"
+                );
+
+                showHistoryForm();
 
             }
 
