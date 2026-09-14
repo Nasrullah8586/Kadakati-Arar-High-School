@@ -11,6 +11,7 @@ const noticeRoutes = require("./routes/noticeRoutes");
 const newsEventRoutes = require("./routes/newsEventRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
 const siteContentRoutes = require("./routes/siteContentRoutes");
+const historyRoutes = require("./routes/historyRoutes");
 
 const app = express();
 
@@ -84,6 +85,12 @@ app.use("/api/gallery", galleryRoutes);
 app.use("/api/site-content", siteContentRoutes);
 
 // ======================================================
+// HISTORY ROUTES
+// ======================================================
+
+app.use("/api/history", historyRoutes);
+
+// ======================================================
 // JSON ERROR HANDLER
 // Prevent HTML error response for oversized JSON requests
 // ======================================================
@@ -108,6 +115,7 @@ app.use((err, req, res, next) => {
         success: false,
         message: "Server error"
     });
+
 });
 
 // ======================================================

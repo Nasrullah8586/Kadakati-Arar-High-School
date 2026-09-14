@@ -56,22 +56,6 @@ const siteContentSchema = new mongoose.Schema(
         },
 
         // ==========================================
-        // HISTORY
-        // ==========================================
-
-        historyTitle: {
-            type: String,
-            trim: true,
-            default: "Our History"
-        },
-
-        historyDescription: {
-            type: String,
-            trim: true,
-            default: ""
-        },
-
-        // ==========================================
         // MISSION & VISION
         // ==========================================
 

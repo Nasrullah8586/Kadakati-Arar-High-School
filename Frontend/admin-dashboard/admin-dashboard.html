@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +43,11 @@
             <button class="nav-item" data-section="news-events">
                 <span class="nav-icon">◉</span>
                 <span>News & Events</span>
+            </button>
+
+            <button class="nav-item" data-section="history">
+                <span class="nav-icon">📜</span>
+                <span>History</span>
             </button>
 
             <button class="nav-item" data-section="gallery">
@@ -92,9 +98,15 @@
 
     <main class="main-content">
 
-        <!-- TOPBAR -->
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
         <header class="topbar">
+
+            <button id="backBtn" class="back-btn" onclick="history.back()">
+                ← Back
+            </button>
 
             <button id="mobileMenuBtn" class="mobile-menu-btn">
                 ☰
@@ -156,30 +168,47 @@
 
                 <div class="stat-card">
                     <div class="stat-icon">▣</div>
+
                     <div>
                         <span>Notices</span>
                         <strong id="noticeCount">0</strong>
                     </div>
                 </div>
 
+
                 <div class="stat-card">
                     <div class="stat-icon">◉</div>
+
                     <div>
                         <span>News & Events</span>
                         <strong id="newsEventCount">0</strong>
                     </div>
                 </div>
 
+
+                <div class="stat-card">
+                    <div class="stat-icon">📜</div>
+
+                    <div>
+                        <span>History</span>
+                        <strong id="historyCount">0</strong>
+                    </div>
+                </div>
+
+
                 <div class="stat-card">
                     <div class="stat-icon">▧</div>
+
                     <div>
                         <span>Gallery</span>
                         <strong id="galleryCount">0</strong>
                     </div>
                 </div>
 
+
                 <div class="stat-card">
                     <div class="stat-icon">♙</div>
+
                     <div>
                         <span>Teachers</span>
                         <strong id="teacherCount">0</strong>
@@ -194,11 +223,14 @@
                 <div class="panel">
 
                     <div class="panel-header">
+
                         <div>
                             <h3>Quick Actions</h3>
                             <p>Frequently used management tools.</p>
                         </div>
+
                     </div>
+
 
                     <div class="quick-actions">
 
@@ -207,15 +239,24 @@
                             <strong>Create Notice</strong>
                         </button>
 
+
                         <button class="quick-btn" data-action="news">
                             <span>◉</span>
                             <strong>Add News/Event</strong>
                         </button>
 
+
+                        <button class="quick-btn" data-action="history">
+                            <span>📜</span>
+                            <strong>Add History</strong>
+                        </button>
+
+
                         <button class="quick-btn" data-action="gallery">
                             <span>▧</span>
                             <strong>Upload Gallery</strong>
                         </button>
+
 
                         <button class="quick-btn" data-action="teacher">
                             <span>♙</span>
@@ -230,23 +271,29 @@
                 <div class="panel">
 
                     <div class="panel-header">
+
                         <div>
                             <h3>System Status</h3>
                             <p>Current dashboard connection.</p>
                         </div>
+
                     </div>
+
 
                     <div class="system-status">
 
                         <div class="status-row">
                             <span>Backend API</span>
+
                             <strong id="apiStatus" class="status pending">
                                 Checking...
                             </strong>
                         </div>
 
+
                         <div class="status-row">
                             <span>Authentication</span>
+
                             <strong id="authStatus" class="status success">
                                 Active
                             </strong>
@@ -274,16 +321,22 @@
                     <p>Manage school notices.</p>
                 </div>
 
+
                 <button id="addNoticeBtn" class="primary-btn">
                     + Add Notice
                 </button>
 
             </div>
 
+
             <div class="panel">
 
                 <div id="noticeList" class="data-list">
-                    <div class="loading">Loading notices...</div>
+
+                    <div class="loading">
+                        Loading notices...
+                    </div>
+
                 </div>
 
             </div>
@@ -304,18 +357,58 @@
                     <p>Manage school news and upcoming events.</p>
                 </div>
 
+
                 <button id="addNewsEventBtn" class="primary-btn">
                     + Add News / Event
                 </button>
 
             </div>
 
+
             <div class="panel">
 
                 <div id="newsEventList" class="data-list">
+
                     <div class="loading">
                         Loading news & events...
                     </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HISTORY
+        ================================================== -->
+
+        <section id="historySection" class="content-section">
+
+            <div class="section-toolbar">
+
+                <div>
+                    <h2>History</h2>
+                    <p>Manage the historical information of the school.</p>
+                </div>
+
+
+                <button id="addHistoryBtn" class="primary-btn">
+                    + Add History
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div id="historyList" class="data-list">
+
+                    <div class="loading">
+                        Loading history...
+                    </div>
+
                 </div>
 
             </div>
@@ -336,14 +429,20 @@
                     <p>Manage school gallery images.</p>
                 </div>
 
+
                 <button id="addGalleryBtn" class="primary-btn">
                     + Upload Image
                 </button>
 
             </div>
 
+
             <div id="galleryGrid" class="gallery-grid">
-                <div class="loading">Loading gallery...</div>
+
+                <div class="loading">
+                    Loading gallery...
+                </div>
+
             </div>
 
         </section>
@@ -362,16 +461,22 @@
                     <p>Manage teacher profiles.</p>
                 </div>
 
+
                 <button id="addTeacherBtn" class="primary-btn">
                     + Register Teacher
                 </button>
 
             </div>
 
+
             <div class="panel">
 
                 <div id="teacherList" class="data-list">
-                    <div class="loading">Loading teachers...</div>
+
+                    <div class="loading">
+                        Loading teachers...
+                    </div>
+
                 </div>
 
             </div>
@@ -392,16 +497,22 @@
                     <p>Manage normal administrator accounts.</p>
                 </div>
 
+
                 <button id="addAdminBtn" class="primary-btn">
                     + Register Admin
                 </button>
 
             </div>
 
+
             <div class="panel">
 
                 <div id="adminList" class="data-list">
-                    <div class="loading">Loading admins...</div>
+
+                    <div class="loading">
+                        Loading admins...
+                    </div>
+
                 </div>
 
             </div>
@@ -419,11 +530,13 @@
 
                 <div>
                     <h2>Site Content</h2>
+
                     <p>
                         Update the information displayed on
                         the school website.
                     </p>
                 </div>
+
 
                 <button id="saveSiteContentBtn" class="primary-btn">
                     Save Changes
@@ -434,28 +547,38 @@
 
             <form id="siteContentForm" class="content-form">
 
+                <!-- SCHOOL INFORMATION -->
+
                 <div class="form-card">
 
                     <h3>School Information</h3>
 
+
                     <div class="form-grid">
 
                         <div class="form-group">
+
                             <label>School Name</label>
+
                             <input
                                 type="text"
                                 id="schoolName"
                                 name="schoolName"
                             >
+
                         </div>
 
+
                         <div class="form-group">
+
                             <label>School Name (Bangla)</label>
+
                             <input
                                 type="text"
                                 id="schoolNameBangla"
                                 name="schoolNameBangla"
                             >
+
                         </div>
 
                     </div>
@@ -463,195 +586,236 @@
                 </div>
 
 
+                <!-- HERO SECTION -->
+
                 <div class="form-card">
 
                     <h3>Hero Section</h3>
 
+
                     <div class="form-group">
+
                         <label>Hero Title</label>
+
                         <input
                             type="text"
                             id="heroTitle"
                             name="heroTitle"
                         >
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label>Hero Subtitle</label>
+
                         <textarea
                             id="heroSubtitle"
                             name="heroSubtitle"
                             rows="3"
                         ></textarea>
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label>Hero Image</label>
+
                         <input
                             type="file"
                             id="heroImage"
                             name="heroImage"
                             accept="image/*"
                         >
+
                     </div>
 
                 </div>
 
+
+                <!-- ABOUT SECTION -->
 
                 <div class="form-card">
 
                     <h3>About Section</h3>
 
+
                     <div class="form-group">
+
                         <label>About Title</label>
+
                         <input
                             type="text"
                             id="aboutTitle"
                             name="aboutTitle"
                         >
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label>About Description</label>
+
                         <textarea
                             id="aboutDescription"
                             name="aboutDescription"
                             rows="5"
                         ></textarea>
+
                     </div>
 
                 </div>
 
 
-                <div class="form-card">
-
-                    <h3>History</h3>
-
-                    <div class="form-group">
-                        <label>History Title</label>
-                        <input
-                            type="text"
-                            id="historyTitle"
-                            name="historyTitle"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>History Description</label>
-                        <textarea
-                            id="historyDescription"
-                            name="historyDescription"
-                            rows="5"
-                        ></textarea>
-                    </div>
-
-                </div>
-
+                <!-- MISSION & VISION -->
 
                 <div class="form-card">
 
                     <h3>Mission & Vision</h3>
 
+
                     <div class="form-grid">
 
                         <div class="form-group">
+
                             <label>Mission</label>
+
                             <textarea
                                 id="mission"
                                 name="mission"
                                 rows="4"
                             ></textarea>
+
                         </div>
 
+
                         <div class="form-group">
+
                             <label>Vision</label>
+
                             <textarea
                                 id="vision"
                                 name="vision"
                                 rows="4"
                             ></textarea>
+
                         </div>
 
                     </div>
 
                 </div>
 
+
+                <!-- CONTACT INFORMATION -->
 
                 <div class="form-card">
 
                     <h3>Contact Information</h3>
 
+
                     <div class="form-grid">
 
                         <div class="form-group">
+
                             <label>Phone</label>
+
                             <input
                                 type="text"
                                 id="phone"
                                 name="phone"
                             >
+
                         </div>
 
+
                         <div class="form-group">
+
                             <label>Email</label>
+
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                             >
+
                         </div>
 
                     </div>
 
+
                     <div class="form-group">
+
                         <label>Address</label>
+
                         <textarea
                             id="address"
                             name="address"
                             rows="3"
                         ></textarea>
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label>Google Map URL</label>
+
                         <input
                             type="url"
                             id="googleMapUrl"
                             name="googleMapUrl"
                         >
+
                     </div>
 
                 </div>
 
 
+                <!-- SOCIAL LINKS -->
+
                 <div class="form-card">
 
                     <h3>Social Links</h3>
 
+
                     <div class="form-grid">
 
                         <div class="form-group">
+
                             <label>Facebook</label>
+
                             <input
                                 type="url"
                                 id="facebook"
                             >
+
                         </div>
 
+
                         <div class="form-group">
+
                             <label>YouTube</label>
+
                             <input
                                 type="url"
                                 id="youtube"
                             >
+
                         </div>
 
+
                         <div class="form-group">
+
                             <label>Instagram</label>
+
                             <input
                                 type="url"
                                 id="instagram"
                             >
+
                         </div>
 
                     </div>
@@ -677,11 +841,13 @@
 
                 <h2 id="modalTitle">Add</h2>
 
+
                 <button id="closeModalBtn" class="close-btn">
                     ×
                 </button>
 
             </div>
+
 
             <div id="modalBody"></div>
 
@@ -690,7 +856,9 @@
     </div>
 
 
-    <!-- TOAST -->
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
 
     <div id="toast" class="toast"></div>
 
@@ -699,3 +867,4 @@
 
 </body>
 </html>
+```
