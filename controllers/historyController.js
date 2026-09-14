@@ -17,7 +17,7 @@ const createHistory = async (req, res) => {
         const {
             title,
             description,
-            date,
+            year,
             isPublished
         } = req.body;
 
@@ -37,21 +37,29 @@ const createHistory = async (req, res) => {
 
         let imageUrl = "";
 
-        // Optional image upload
         if (req.file) {
-            const uploadResult = await uploadToCloudinary(
-                req.file.buffer,
-                "kadakati-school/history"
-            );
+            const uploadResult =
+                await uploadToCloudinary(
+                    req.file.buffer,
+                    "kadakati-school/history"
+                );
 
             imageUrl = uploadResult.secure_url;
         }
 
         const history = await History.create({
             title: title.trim(),
-            description: description.trim(),
-            date: date ? date.trim() : "",
+
+            description:
+                description.trim(),
+
+            year:
+                year
+                    ? year.trim()
+                    : "",
+
             imageUrl,
+
             isPublished:
                 isPublished === undefined
                     ? true
@@ -76,7 +84,11 @@ const createHistory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Create History Error:", error);
+
+        console.error(
+            "Create History Error:",
+            error
+        );
 
         res.status(500).json({
             success: false,
@@ -93,12 +105,14 @@ const createHistory = async (req, res) => {
 
 const getAllHistory = async (req, res) => {
     try {
-        const history = await History.find({
-            isPublished: true
-        }).sort({
-            date: 1,
-            createdAt: 1
-        });
+
+        const history =
+            await History.find({
+                isPublished: true
+            }).sort({
+                year: 1,
+                createdAt: 1
+            });
 
         res.status(200).json({
             success: true,
@@ -107,7 +121,11 @@ const getAllHistory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Get History Error:", error);
+
+        console.error(
+            "Get History Error:",
+            error
+        );
 
         res.status(500).json({
             success: false,
@@ -124,10 +142,12 @@ const getAllHistory = async (req, res) => {
 
 const getHistoryById = async (req, res) => {
     try {
-        const history = await History.findOne({
-            _id: req.params.id,
-            isPublished: true
-        });
+
+        const history =
+            await History.findOne({
+                _id: req.params.id,
+                isPublished: true
+            });
 
         if (!history) {
             return res.status(404).json({
@@ -142,7 +162,11 @@ const getHistoryById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Get History By ID Error:", error);
+
+        console.error(
+            "Get History By ID Error:",
+            error
+        );
 
         if (error.name === "CastError") {
             return res.status(400).json({
@@ -166,6 +190,7 @@ const getHistoryById = async (req, res) => {
 
 const getAllHistoryForAdmin = async (req, res) => {
     try {
+
         if (!req.admin) {
             return res.status(401).json({
                 success: false,
@@ -173,9 +198,10 @@ const getAllHistoryForAdmin = async (req, res) => {
             });
         }
 
-        const history = await History.find().sort({
-            createdAt: -1
-        });
+        const history =
+            await History.find().sort({
+                createdAt: -1
+            });
 
         res.status(200).json({
             success: true,
@@ -184,7 +210,11 @@ const getAllHistoryForAdmin = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Get Admin History Error:", error);
+
+        console.error(
+            "Get Admin History Error:",
+            error
+        );
 
         res.status(500).json({
             success: false,
@@ -201,6 +231,7 @@ const getAllHistoryForAdmin = async (req, res) => {
 
 const updateHistory = async (req, res) => {
     try {
+
         if (!req.admin) {
             return res.status(401).json({
                 success: false,
@@ -208,9 +239,10 @@ const updateHistory = async (req, res) => {
             });
         }
 
-        const history = await History.findById(
-            req.params.id
-        );
+        const history =
+            await History.findById(
+                req.params.id
+            );
 
         if (!history) {
             return res.status(404).json({
@@ -222,11 +254,13 @@ const updateHistory = async (req, res) => {
         const {
             title,
             description,
-            date,
+            year,
             isPublished
         } = req.body;
 
+
         if (title !== undefined) {
+
             if (!title.trim()) {
                 return res.status(400).json({
                     success: false,
@@ -234,10 +268,13 @@ const updateHistory = async (req, res) => {
                 });
             }
 
-            history.title = title.trim();
+            history.title =
+                title.trim();
         }
 
+
         if (description !== undefined) {
+
             if (!description.trim()) {
                 return res.status(400).json({
                     success: false,
@@ -245,30 +282,41 @@ const updateHistory = async (req, res) => {
                 });
             }
 
-            history.description = description.trim();
+            history.description =
+                description.trim();
         }
 
-        if (date !== undefined) {
-            history.date = date.trim();
+
+        if (year !== undefined) {
+
+            history.year =
+                year.trim();
         }
+
 
         if (isPublished !== undefined) {
+
             history.isPublished =
                 isPublished === "true" ||
                 isPublished === true;
         }
 
-        // Optional replacement image
-        if (req.file) {
-            const uploadResult = await uploadToCloudinary(
-                req.file.buffer,
-                "kadakati-school/history"
-            );
 
-            history.imageUrl = uploadResult.secure_url;
+        if (req.file) {
+
+            const uploadResult =
+                await uploadToCloudinary(
+                    req.file.buffer,
+                    "kadakati-school/history"
+                );
+
+            history.imageUrl =
+                uploadResult.secure_url;
         }
 
+
         await history.save();
+
 
         res.status(200).json({
             success: true,
@@ -277,7 +325,11 @@ const updateHistory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Update History Error:", error);
+
+        console.error(
+            "Update History Error:",
+            error
+        );
 
         if (error.name === "CastError") {
             return res.status(400).json({
@@ -301,6 +353,7 @@ const updateHistory = async (req, res) => {
 
 const deleteHistory = async (req, res) => {
     try {
+
         if (!req.admin) {
             return res.status(401).json({
                 success: false,
@@ -308,9 +361,10 @@ const deleteHistory = async (req, res) => {
             });
         }
 
-        const history = await History.findById(
-            req.params.id
-        );
+        const history =
+            await History.findById(
+                req.params.id
+            );
 
         if (!history) {
             return res.status(404).json({
@@ -329,7 +383,11 @@ const deleteHistory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Delete History Error:", error);
+
+        console.error(
+            "Delete History Error:",
+            error
+        );
 
         if (error.name === "CastError") {
             return res.status(400).json({
@@ -346,6 +404,10 @@ const deleteHistory = async (req, res) => {
     }
 };
 
+
+// ======================================================
+// EXPORTS
+// ======================================================
 
 module.exports = {
     createHistory,

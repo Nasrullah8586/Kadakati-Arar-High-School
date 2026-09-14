@@ -2,19 +2,11 @@ const mongoose = require("mongoose");
 
 const historySchema = new mongoose.Schema(
     {
-        // ==========================================
-        // HISTORY TITLE
-        // ==========================================
-
         title: {
             type: String,
             required: true,
             trim: true
         },
-
-        // ==========================================
-        // HISTORY DESCRIPTION
-        // ==========================================
 
         description: {
             type: String,
@@ -22,37 +14,21 @@ const historySchema = new mongoose.Schema(
             trim: true
         },
 
-        // ==========================================
-        // HISTORY DATE / YEAR
-        // ==========================================
-
-        date: {
+        year: {
             type: String,
             trim: true,
             default: ""
         },
-
-        // ==========================================
-        // HISTORY IMAGE
-        // ==========================================
 
         imageUrl: {
             type: String,
             default: ""
         },
 
-        // ==========================================
-        // PUBLISHED STATUS
-        // ==========================================
-
         isPublished: {
             type: Boolean,
             default: true
         },
-
-        // ==========================================
-        // CREATED BY
-        // ==========================================
 
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
@@ -66,14 +42,17 @@ const historySchema = new mongoose.Schema(
             default: null
         }
     },
+
     {
         timestamps: true
     }
 );
 
+
 const History = mongoose.model(
     "History",
     historySchema
 );
+
 
 module.exports = History;
