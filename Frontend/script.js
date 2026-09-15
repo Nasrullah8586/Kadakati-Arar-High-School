@@ -55,8 +55,8 @@ const facebookLink =
 const instagramLink =
     document.getElementById("instagramLink");
 
-const linkedinLink =
-    document.getElementById("linkedinLink");
+const contactYoutube =
+    document.getElementById("contactYoutube");
 
 const noticeList =
     document.getElementById("noticeList");
@@ -99,8 +99,8 @@ const contactFacebook =
 const contactInstagram =
     document.getElementById("contactInstagram");
 
-const contactLinkedin =
-    document.getElementById("contactLinkedin");
+const contactYoutube =
+    document.getElementById("contactYoutube");
 
 const contactGoogleMaps =
     document.getElementById("contactGoogleMaps");
@@ -446,7 +446,6 @@ aboutLinks.forEach(
     }
 );
 
-
 /* =========================================================
    SITE CONTENT
 ========================================================= */
@@ -463,13 +462,12 @@ async function loadSiteContent() {
         !schoolLocationBtn &&
         !facebookLink &&
         !instagramLink &&
-        !linkedinLink &&
+        !contactYoutube &&
         !contactAddress &&
         !contactPhone &&
         !contactEmail &&
         !contactFacebook &&
         !contactInstagram &&
-        !contactLinkedin &&
         !contactGoogleMaps &&
         !contactLocationBtn
     ) {
@@ -510,8 +508,8 @@ async function loadSiteContent() {
 
 
         /* =========================
-         ABOUT
-      ========================= */
+           ABOUT
+        ========================= */
 
         if (schoolAbout) {
 
@@ -534,6 +532,7 @@ async function loadSiteContent() {
                 content?.historyText ||
                 content?.school_history ||
                 "";
+
 
             if (
                 historyText &&
@@ -771,14 +770,16 @@ async function loadSiteContent() {
             socialLinks?.facebook
         );
 
+
         setupSocialLink(
             instagramLink,
             socialLinks?.instagram
         );
 
+
         setupSocialLink(
-            linkedinLink,
-            socialLinks?.linkedin
+            contactYoutube,
+            socialLinks?.youtube
         );
 
 
@@ -798,12 +799,15 @@ async function loadSiteContent() {
         if (contactPhone) {
 
             const phone =
-                content?.phone || "";
+                content?.phone ||
+                "";
+
 
             if (phone) {
 
                 contactPhone.textContent =
                     phone;
+
 
                 if (
                     contactPhone.tagName === "A"
@@ -830,12 +834,15 @@ async function loadSiteContent() {
         if (contactEmail) {
 
             const email =
-                content?.email || "";
+                content?.email ||
+                "";
+
 
             if (email) {
 
                 contactEmail.textContent =
                     email;
+
 
                 if (
                     contactEmail.tagName === "A"
@@ -861,14 +868,16 @@ async function loadSiteContent() {
             socialLinks?.facebook
         );
 
+
         setupSocialLink(
             contactInstagram,
             socialLinks?.instagram
         );
 
+
         setupSocialLink(
-            contactLinkedin,
-            socialLinks?.linkedin
+            contactYoutube,
+            socialLinks?.youtube
         );
 
 
@@ -975,7 +984,6 @@ function setupSocialLink(
     }
 
 }
-
 
 /* =========================================================
    NOTICE API
