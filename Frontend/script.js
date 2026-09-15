@@ -510,14 +510,13 @@ async function loadSiteContent() {
 
 
         /* =========================
-           ABOUT
-        ========================= */
+         ABOUT
+      ========================= */
 
         if (schoolAbout) {
 
             schoolAbout.textContent =
-                content?.about ||
-                content?.schoolAbout ||
+                content?.aboutDescription ||
                 "School information is not available.";
 
         }
