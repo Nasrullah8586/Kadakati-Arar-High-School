@@ -4813,29 +4813,11 @@ async function loadSiteContent() {
 
         const fields = {
 
-            schoolName:
-                content.schoolName,
-
-            schoolNameBangla:
-                content.schoolNameBangla,
-
-            heroTitle:
-                content.heroTitle,
-
-            heroSubtitle:
-                content.heroSubtitle,
-
             aboutTitle:
                 content.aboutTitle,
 
             aboutDescription:
                 content.aboutDescription,
-
-            mission:
-                content.mission,
-
-            vision:
-                content.vision,
 
             phone:
                 content.phone,
@@ -4917,14 +4899,8 @@ async function saveSiteContent() {
 
     const fields = [
 
-        "schoolName",
-        "schoolNameBangla",
-        "heroTitle",
-        "heroSubtitle",
         "aboutTitle",
         "aboutDescription",
-        "mission",
-        "vision",
         "phone",
         "email",
         "address",
@@ -4974,22 +4950,6 @@ async function saveSiteContent() {
         "socialLinks",
         JSON.stringify(socialLinks)
     );
-
-
-    const heroImage =
-        document.getElementById(
-            "heroImage"
-        )?.files?.[0];
-
-
-    if (heroImage) {
-
-        formData.append(
-            "heroImage",
-            heroImage
-        );
-
-    }
 
 
     try {
@@ -5055,6 +5015,7 @@ document.querySelectorAll(
 
             }
 
+
             if (action === "history") {
 
                 switchSection(
@@ -5091,7 +5052,6 @@ document.querySelectorAll(
     );
 
 });
-
 
 /* =========================================================
    LOGOUT
