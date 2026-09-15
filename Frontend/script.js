@@ -55,8 +55,6 @@ const facebookLink =
 const instagramLink =
     document.getElementById("instagramLink");
 
-const contactYoutube =
-    document.getElementById("contactYoutube");
 
 const noticeList =
     document.getElementById("noticeList");
@@ -80,8 +78,8 @@ const filterButtons =
     document.querySelectorAll(".filter-btn");
 
 
-/* =========================================================
-   CONTACT PAGE ELEMENTS
+/* ========================================================= 
+   CONTACT PAGE ELEMENTS 
 ========================================================= */
 
 const contactAddress =
@@ -99,16 +97,11 @@ const contactFacebook =
 const contactInstagram =
     document.getElementById("contactInstagram");
 
-const contactYoutube =
-    document.getElementById("contactYoutube");
-
 const contactGoogleMaps =
     document.getElementById("contactGoogleMaps");
 
 const contactLocationBtn =
     document.getElementById("contactLocationBtn");
-
-
 /* =========================================================
    HELPER FUNCTIONS
 ========================================================= */
